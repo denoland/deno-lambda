@@ -1,22 +1,38 @@
-import { assertEquals } from "./deps.ts"
+import { assertEquals, runIfMain, test } from "./deps.ts";
 
 const dec = new TextDecoder();
 
-// TODO loop over all .json files and run std testing framework.
-const t = "test_simple.json";
+const testFiles = Deno.readDirSync(".")
+  .map(f => f.name)
+  .filter(x => x.endsWith(".json"));
 
-const p = Deno.run({
-  args: ["deno", "-A", "./serve.ts", t],
-  stdout: "piped"
-});
-const out = dec.decode(await p.output());
-// console.log(out)
+for (const t of testFiles) {
+  const testName = t.slice(0, -5);
+  test({
+    name: testName,
+    fn: async () => {
+      const p = Deno.run({
+        args: ["deno", "-A", "./serve.ts", t],
+        stdout: "piped",
+        stderr: "piped"
+      });
+      const out = dec.decode(await p.output());
 
-const results = out.trim().split("\n").map(x => JSON.parse(x));
-const expected = JSON.parse(dec.decode(await Deno.readFile(t)))["expected"];
+      const results = out
+        .trim()
+        .split("\n")
+        .map(x => JSON.parse(x));
+      const expected = JSON.parse(dec.decode(await Deno.readFile(t)))[
+        "expected"
+      ];
 
-assertEquals(results.length, expected.length)
-for (const [i, r] of results.entries()) {
-  assertEquals(r["status"], expected[i]["status"]);
-  assertEquals(r["content"], expected[i]["content"]);
+      assertEquals(expected.length, results.length);
+      for (const [i, r] of results.entries()) {
+        assertEquals(expected[i]["status"], r["status"]);
+        assertEquals(expected[i]["content"], r["content"]);
+      }
+    }
+  });
 }
+
+runIfMain(import.meta);

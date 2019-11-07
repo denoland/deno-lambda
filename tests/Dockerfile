@@ -17,7 +17,6 @@ ENV AWS_LAMBDA_RUNTIME_API=host.docker.internal:1993 \
     AWS_LAMBDA_LOG_STREAM_NAME=log-stream
 
 # configurable
-ENV _HANDLER=hello.handler
 ENV AWS_LAMBDA_FUNCTION_NAME=hello
 #DENO_DIR
 #DENO_LAMBDA

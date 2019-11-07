@@ -5,5 +5,6 @@
       "status": "ok",
       "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.23.0 🦕\"}"
     }
-  ]
+  ],
+  "env": { "_HANDLER": "hello.handler" }
 }

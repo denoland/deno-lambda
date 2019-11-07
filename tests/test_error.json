@@ -1,0 +1,10 @@
+{
+  "events": [{ "hello": "deno" }],
+  "expected": [
+    {
+      "status": "error",
+      "content": "{\"errorMessage\":\"error thrown\",\"errorType\":\"MyError\"}"
+    }
+  ],
+  "env": { "_HANDLER": "handlers.error" }
+}

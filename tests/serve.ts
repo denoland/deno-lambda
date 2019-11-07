@@ -1,17 +1,24 @@
 import { serve } from "./deps.ts";
 
-// pass a json file
-const testFilename = Deno.args[1];
-
 const encode = new TextEncoder().encode;
 const decode = new TextDecoder();
 
+const testFilename = Deno.args[1];
+const test = JSON.parse(decode.decode(Deno.readFileSync(testFilename)));
+
 function* eventsGen() {
-  const contents = decode.decode(Deno.readFileSync(testFilename));
-  const events = JSON.parse(contents)["events"]
-  for (const e of events) {
+  for (const e of test["events"]) {
     yield e;
   }
+}
+
+const env = test.env || [];
+function envArray(): Array<string> {
+  let e = [];
+  for (const [k, v] of Object.entries(env)) {
+    e.push(`-e${k}=${v}`);
+  }
+  return e;
 }
 
 const PORT = 1993;
@@ -20,19 +27,27 @@ const s = serve(`0.0.0.0:${PORT}`);
 const statusOK = encode('{"status":"OK"}\n');
 
 const p = Deno.run({
-  args: ["docker", "run", "-t", "bootstrap"],
+  args: ["docker", "run", ...envArray(), "-t", "bootstrap"],
   stdout: "piped"
 });
 
-let events = eventsGen();
+const events = eventsGen();
 
+let reqId = 1;
 for await (const req of s) {
-  let reqId = 1;
   if (req.method == "POST") {
-    const body = decode.decode(await req.body());
     if (req.url.endsWith("/response")) {
+      const body = decode.decode(await req.body());
       console.log(JSON.stringify({ status: "ok", content: body }));
-    } else if (req.url.endsWith(`${reqId}/error`)) {
+    } else if (req.url.endsWith("/init/error")) {
+      const body = decode.decode(await req.body());
+      console.log(JSON.stringify({ status: "error", content: body }));
+      p.kill(9);
+      s.close();
+      break;
+    } else if (req.url.endsWith("/null/error")) {
+      // req.url.endsWith(`${reqId}/error`
+      const body = decode.decode(await req.body());
       console.log(JSON.stringify({ status: "error", content: body }));
     }
     // handle initError

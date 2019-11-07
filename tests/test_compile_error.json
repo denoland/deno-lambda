@@ -1,0 +1,10 @@
+{
+  "events": [{ "hello": "deno" }],
+  "expected": [
+    {
+      "status": "error",
+      "content": "{\"errorMessage\" : \"unable to compile compile_error.ts\", \"errorType\" : \"InitException\"}"
+    }
+  ],
+  "env": { "_HANDLER": "compile_error.missing" }
+}
