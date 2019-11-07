@@ -1,0 +1,35 @@
+name: Release
+on:
+  release:
+    types: [published]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Extract compatible deno executable and create artifacts
+      working-directory: ./runtime
+      run: |
+        docker build -f Dockerfile -t amz .
+        docker create --name extract amz
+        docker cp extract:/bin/deno amz-deno
+        ls -ll amz-deno
+        rm -rf .deno_dir
+        DENO_DIR=.deno_dir ./amz-deno fetch hello.ts
+        cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT
+        zip ../deno-lambda-layer.zip -x '.deno_dir/gen/file/*' -r .deno_dir amz-deno bootstrap hello.ts
+        zip ../deno-lambda-example.zip -x '.deno_dir/gen/file/*' -r .deno_dir hello.ts
+        gzip -9 amz-deno
+        mv amz-deno.gz ../amz-deno.gz
+    - name: Upload zip artifacts
+      uses: skx/github-action-publish-binaries@release-1.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        args: deno-lambda-*.zip
+    - name: Upload deno executable
+      uses: skx/github-action-publish-binaries@release-1.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        args: amz-deno.gz
