@@ -1,0 +1,9 @@
+{
+  "events": [{ "hello": "deno" }],
+  "expected": [
+    {
+      "status": "ok",
+      "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.23.0 🦕\"}"
+    }
+  ]
+}

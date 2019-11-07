@@ -1,0 +1,12 @@
+name: Test
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build Docker Image
+      working-directory: ./tests
+      run: |
+        docker build -f Dockerfile -t bootstrap ..
+        deno -A test.ts
