@@ -1,0 +1,18 @@
+{
+  "env": {
+    "_HANDLER": "bundle.handler",
+    "FILE_EXT": "bundle.js",
+    "DENO_LAMBDA": "true"
+  },
+  "events": [{ "hello": "deno" }, { "hello": "again" }],
+  "expected": [
+    {
+      "status": "ok",
+      "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.23.0 🦕\"}"
+    },
+    {
+      "status": "ok",
+      "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.23.0 🦕\"}"
+    }
+  ]
+}
