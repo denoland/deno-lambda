@@ -15,8 +15,8 @@ jobs:
         rm -rf .deno_dir
         DENO_DIR=.deno_dir ./amz-deno fetch hello.ts
         cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT
-        zip deno-lambda-layer.zip -x '.deno_dir/gen/file/*' -r .deno_dir amz-deno bootstrap hello.ts mod.ts
-        zip deno-lambda-example.zip -x '.deno_dir/gen/file/*' -r .deno_dir hello.ts mod.ts
+        zip deno-lambda-layer.zip -x '.deno_dir/gen/file/*' -r .deno_dir amz-deno bootstrap hello.ts
+        zip deno-lambda-example.zip -x '.deno_dir/gen/file/*' -r .deno_dir hello.ts
         gzip -9 amz-deno
     - name: Release
       uses: softprops/action-gh-release@v1
