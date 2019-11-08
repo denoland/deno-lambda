@@ -12,4 +12,4 @@ jobs:
       working-directory: ./tests
       run: |
         docker build -f Dockerfile -t bootstrap ..
-        deno -A test.ts
+        docker run bootstrap

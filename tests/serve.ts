@@ -13,13 +13,6 @@ function* eventsGen() {
 }
 
 const env = test.env || [];
-function envArray(): Array<string> {
-  let e = [];
-  for (const [k, v] of Object.entries(env)) {
-    e.push(`-e${k}=${v}`);
-  }
-  return e;
-}
 
 const PORT = 1993;
 const s = serve(`0.0.0.0:${PORT}`);
@@ -27,8 +20,10 @@ const s = serve(`0.0.0.0:${PORT}`);
 const statusOK = encode('{"status":"OK"}\n');
 
 const p = Deno.run({
-  args: ["docker", "run", ...envArray(), "-t", "bootstrap"],
-  stdout: "piped"
+  args: ["./bootstrap"],
+  stdout: "piped",
+  stderr: "piped",  // comment this out to debug
+  env
 });
 
 const events = eventsGen();
