@@ -1,6 +1,8 @@
-# deno and AWS Lambda
+# deno on AWS Lambda
 
-Using deno on AWS Lambda with a custom runtime.
+A deno runtime for AWS Lambda.
+
+![ci status](https://github.com/hayd/deno_lambda/workflows/Test/badge.svg?branch=master)
 
 ## Quick Start
 
