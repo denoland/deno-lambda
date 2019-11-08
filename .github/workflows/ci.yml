@@ -5,11 +5,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: denolib/setup-deno@v1
-      with:
-        deno-version: 'v0.23.0'
-    - name: Test against bootstrap
+    - name: Build docker image
       working-directory: ./tests
       run: |
         docker build -f Dockerfile -t bootstrap ..
+    - name: Run tests
+      working-directory: ./tests
+      run: |
         docker run bootstrap
