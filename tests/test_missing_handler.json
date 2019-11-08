@@ -1,10 +1,10 @@
 {
+  "env": { "_HANDLER": "handlers.missing" },
   "events": [{ "hello": "deno" }],
   "expected": [
     {
       "status": "error",
       "content": "{\"errorMessage\" : \"handlers.ts must export a function named 'missing'\", \"errorType\" : \"InitException\"}"
     }
-  ],
-  "env": { "_HANDLER": "handlers.missing" }
+  ]
 }

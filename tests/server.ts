@@ -22,7 +22,7 @@ const statusOK = encode('{"status":"OK"}\n');
 const p = Deno.run({
   args: ["./bootstrap"],
   stdout: "piped",
-  stderr: "piped",  // comment this out to debug
+  stderr: "piped", // comment this out to debug
   env
 });
 

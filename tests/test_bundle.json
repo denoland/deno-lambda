@@ -1,5 +1,9 @@
 {
-  "env": { "_HANDLER": "hello.handler" },
+  "env": {
+    "_HANDLER": "bundle.handler",
+    "FILE_EXT": "bundle.js",
+    "DENO_LAMBDA": "true"
+  },
   "events": [{ "hello": "deno" }, { "hello": "again" }],
   "expected": [
     {

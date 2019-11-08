@@ -12,8 +12,8 @@ for (const t of testFiles) {
     name: testName,
     fn: async () => {
       const p = Deno.run({
-        args: ["deno", "-A", "./serve.ts", t],
-        stdout: "piped",
+        args: ["deno", "-A", "./server.ts", t],
+        stdout: "piped"
         // stderr: "piped"
       });
       const out = dec.decode(await p.output());
