@@ -14,17 +14,23 @@ A deno runtime for AWS Lambda.
 ```ts
 // hello.ts
 
-export async function handler(event, context) {
-  return `Welcome to deno ${Deno.version.deno} 🦕`;
+import { Context, Event } from "https://deno.land/x/lambda/mod.ts";
+
+export async function handler(event: Event, context: Context) {
+  return {
+    statusCode: 200,
+    body: `Welcome to deno ${Deno.version.deno} 🦕`
+  };
 }
 ```
+
 Save. And Test. Now you can amend your function in the AWS Lambda editor.
 
 TODO: find commands for this. MAYBE should use an example.zip as the function (deno-lambda-example).
 
 ## Configurations on top of the deno-lambda-layer
 
-Once your lambda function use the *deno-lambda-layer* it can be updated as usual.
+Once your lambda function use the _deno-lambda-layer_ it can be updated as usual.
 Either in the editor or via CLI.
 
 - Supports changing the handler file (must be .ts) and handler function.
@@ -37,6 +43,7 @@ Further configuration TBD.
 In order to create your own layer or custom runtime:
 
 Create a zip file which contains
+
 - bootstrap (found in this directory)
 - the deno executable/binary for Amazon Linux 1 ([amz-deno]())
 - an entry point which exports an async function (e.g. `hello.ts`)
@@ -57,7 +64,7 @@ the executable `/deno/target/release/deno`.
 
 We zip up the binary and bootstrap files as well as the DENO_DIR.
 
-If you are zipping up your function on top of the *deno-lambda-layer* then you should not
+If you are zipping up your function on top of the _deno-lambda-layer_ then you should not
 include those files, you need your source files and DENO_DIR.
 
 Note: Including the DENO_DIR prevents runtime (actually "init-time") compilation,
@@ -66,7 +73,6 @@ files are stored in your local $PWD rather than the lambda's $LAMBDA_TASK_ROOT,
 so we rewrite some filenames to ensure we don't recompile.
 
 This is not required.
-
 
 ```
 # Compile the handler (and fetch dependencies into DENO_DIR).
@@ -84,6 +90,7 @@ zip lambda.zip -x '.deno_dir/gen/file/*' -r .deno_dir amz-deno bootstrap hello.t
 
 # etc. being the other source files, perhaps *.ts ?
 ```
+
 _TODO(hayd): write this as a deno script._
 
 Note: If you use a different directory for your DENO_DIR you can do so,
@@ -94,10 +101,7 @@ but must set this as the DENO_DIR environment variable in the function.
 - [x] Hello example ([`deno-lambda-example.zip`](https://github.com/hayd/deno_docker/releases/))
 - [ ] Web example (behind API Gateway).
 
-
 ---
-
-
 
 ## Create lambda function
 
@@ -134,4 +138,3 @@ From the CLI:
 ```
 aws lambda invoke --function-name FUNCTION_NAME response.json && cat response.json
 ```
-
