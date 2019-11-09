@@ -7,7 +7,6 @@ const testFiles = Deno.readDirSync("/src/tests")
   .filter(x => x.startsWith("test_"))
   .filter(x => x.endsWith(".json"))
   .map(x => x.split("/").slice(-1)[0]);
-//const testFiles = ["test_self_contained.json"];
 
 if (!Deno.env("_IN_DOCKER")) {
   console.error("test.ts must be called inside a docker container");
@@ -35,7 +34,7 @@ async function addFiles(
   }
 }
 
-async function clearDir(dir: string) {
+async function emptyDir(dir: string) {
   for (const f of Deno.readDirSync(dir)) {
     await Deno.remove(`${dir}/${f.name}`, { recursive: true });
   }
@@ -50,11 +49,11 @@ for (const t of testFiles) {
       const testJson = JSON.parse(dec.decode(await Deno.readFile(testPath)));
 
       // This is the layer
-      await clearDir("/opt");
+      await emptyDir("/opt");
       await addFiles(testJson["layer"], "/opt");
 
       // This is the function code
-      await clearDir("/var/task");
+      await emptyDir("/var/task");
       await addFiles(testJson["files"], "/var/task");
 
       const p = Deno.run({

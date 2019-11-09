@@ -18,8 +18,12 @@ RUN mkdir -p /src/runtime /src/tests /var/task /opt \
  && cp /bin/deno /src/runtime/amz-deno \
  && cp /bin/deno /src/tests/amz-deno
 
-ADD tests/deps.ts src/tests/deps.ts
-RUN deno fetch src/tests/deps.ts
+ADD tests/deps.ts /src/tests/deps.ts
+RUN deno fetch /src/tests/deps.ts
+
+ADD hello.ts /src/runtime/hello.ts
+ADD hello.ts /src/tests/hello.ts
+ADD tests/bundle.ts /src/runtime/bundle.ts
 
 ADD runtime /src/runtime
 
