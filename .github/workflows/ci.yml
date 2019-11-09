@@ -8,8 +8,25 @@ jobs:
     - name: Build docker image
       working-directory: ./tests
       run: |
-        docker build -f Dockerfile -t bootstrap ..
+        docker build -f Dockerfile -t test-runner ..
+        docker create --name extract test-runner
     - name: Run tests
-      working-directory: ./tests
       run: |
-        docker run bootstrap
+        docker run test-runner
+    - name: Create artifacts
+      run: |
+        docker cp extract:/bin/deno amz-deno
+        docker cp extract:/src/runtime/deno-lambda-layer.zip deno-lambda-layer.zip
+        docker cp extract:/src/runtime/deno-lambda-example.zip deno-lambda-example.zip
+        gzip -9 amz-deno
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/') && github.repository == 'hayd/deno_lambda'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        files: |
+          amz-deno.gz
+          deno-lambda-layer.zip
+          deno-lambda-example.zip
+        draft: true

@@ -3,7 +3,7 @@
 In order to run the tests you run the `Dockerfile`:
 
 ```
-docker build -f Dockerfile -t bootstrap .. && docker run bootstrap
+docker build -f Dockerfile -t test-runner .. && docker run test-runner
 ```
 
 _Note: it runs in the `..` (root) context._
