@@ -1,9 +1,5 @@
 {
-  "env": {
-    "_HANDLER": "bundle.handler",
-    "HANDLER_EXT": "bundle.js",
-    "DENO_LAMBDA": "true"
-  },
+  "env": { "_HANDLER": "hello.handler" },
   "events": [{ "hello": "deno" }, { "hello": "again" }],
   "expected": [
     {
@@ -15,6 +11,5 @@
       "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.23.0 🦕\"}"
     }
   ],
-  "files": ["bundle.bundle.js"],
-  "layer": "deno-lambda-layer.zip"
+  "files": ["hello.ts", "bootstrap", "amz-deno"]
 }

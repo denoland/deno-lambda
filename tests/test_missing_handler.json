@@ -6,5 +6,7 @@
       "status": "error",
       "content": "{\"errorMessage\" : \"handlers.ts must export a function named 'missing'\", \"errorType\" : \"InitException\"}"
     }
-  ]
+  ],
+  "files": ["handlers.ts"],
+  "layer": "deno-lambda-layer.zip"
 }

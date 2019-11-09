@@ -10,5 +10,7 @@
       "status": "ok",
       "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.23.0 🦕\"}"
     }
-  ]
+  ],
+  "files": ["hello.ts"],
+  "layer": "deno-lambda-layer.zip"
 }

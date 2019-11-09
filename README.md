@@ -11,6 +11,7 @@ From the [AWS console](https://console.aws.amazon.com/lambda/):
 1. Download zip files from the [releases](https://github.com/hayd/deno_lambda/releases) page.
 
 2. Create a _layer_ and upload `deno-lambda-layer.zip`. Note its ARN.
+
 <img width="828" alt="Create layer" src="https://user-images.githubusercontent.com/1931852/68455786-0b618100-01b1-11ea-988a-ba3a5810a8d5.png">
 
 <img width="1122" alt="Layer created" src="https://user-images.githubusercontent.com/1931852/68455785-0b618100-01b1-11ea-9686-8ebefe3b00ff.png">
@@ -49,6 +50,7 @@ export async function handler(event: Event, context: Context) {
   };
 }
 ```
+
 _The default is hello.handler but this can be configured by the `Handler` setting._
 
 ## Configurations on top of the deno-lambda-layer
@@ -57,16 +59,13 @@ Once your lambda function use the _deno-lambda-layer_ it can be updated as usual
 Either in the editor or via CLI.
 
 - Supports `Handler` i.e. setting the handler file and function.
-- Using `FILE_EXT` can select other supported extension (default `ts`).
+- Using `HANDLER_EXT` can select other supported extension (default `ts`).
 - Supports setting the DENO_DIR for storing cached assets, default `.deno_dir`.
 - If you use `deno bundle` since there is no entry point so you need to import the runtime, see `runtime/bundle.ts` as an example.
 
 Further configuration TBD.
 
 ## Creating your own function code zip with a DENO_DIR
-
-
-
 
 Create a zip file which contains
 
@@ -75,7 +74,6 @@ Create a zip file which contains
 - .deno_dir directory\*
 
 \*You can use a different directory by passing it as the DENO_DIR environment variable.
-
 
 ### Prepare zip file to upload to AWS Lambda
 

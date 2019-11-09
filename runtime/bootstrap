@@ -130,8 +130,15 @@ while (true) {
 
 # We copy DENO_DIR into a writable directory (/tmp/deno_dir)
 # and expand DENO_DIR/LAMBDA_TASK_ROOT to match the new location ($LAMBDA_TASK_ROOT).
-mkdir -p /tmp/deno_dir/gen/file$LAMBDA_TASK_ROOT \
- && cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/gen /tmp/deno_dir/gen &> /dev/null \
+
+mkdir -p /tmp/deno_dir/gen/file$LAMBDA_TASK_ROOT
+# We cp first from the deno-lambda-layer.
+cp -R /opt/.deno_dir/gen /tmp/deno_dir/gen &> /dev/null \
+ && cp -R /opt/.deno_dir/deps /tmp/deno_dir/deps &> /dev/null \
+ && cp -R /opt/.deno_dir/LAMBDA_TASK_ROOT/ /tmp/deno_dir/gen/file$LAMBDA_TASK_ROOT &> /dev/null \
+ || true
+# Then we overright with from the DENO_DIR in the function code.
+cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/gen /tmp/deno_dir/gen &> /dev/null \
  && cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/LAMBDA_TASK_ROOT/ /tmp/deno_dir/gen/file$LAMBDA_TASK_ROOT &> /dev/null \
  || echo "warn: unable to import '$DENO_DIR/' as DENO_DIR"
 

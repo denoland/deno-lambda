@@ -6,5 +6,7 @@
       "status": "error",
       "content": "{\"errorMessage\":\"error thrown\",\"errorType\":\"MyError\"}"
     }
-  ]
+  ],
+  "files": ["handlers.ts"],
+  "layer": "deno-lambda-layer.zip"
 }

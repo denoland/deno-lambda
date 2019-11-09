@@ -1,0 +1,12 @@
+{
+  "env": { "_HANDLER": "handlers.foo" },
+  "events": ["a string"],
+  "expected": [
+    {
+      "status": "ok",
+      "content": "\"a string\""
+    }
+  ],
+  "files": ["handlers.ts"],
+  "layer": "deno-lambda-layer.zip"
+}

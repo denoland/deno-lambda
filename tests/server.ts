@@ -12,18 +12,25 @@ function* eventsGen() {
   }
 }
 
-const env = test.env || [];
+const env = test.env || {};
 
 const PORT = 1993;
 const s = serve(`0.0.0.0:${PORT}`);
 
 const statusOK = encode('{"status":"OK"}\n');
 
+const bootstrap = Deno.readDirSync("/var/task/")
+  .map(x => x.name)
+  .includes("bootstrap")
+  ? "/var/task/bootstrap"
+  : "/opt/bootstrap";
+
 const p = Deno.run({
-  args: ["./bootstrap"],
+  args: [bootstrap],
   stdout: "piped",
   stderr: "piped", // comment this out to debug
-  env
+  env,
+  cwd: "/var/task"
 });
 
 const events = eventsGen();
@@ -38,8 +45,7 @@ for await (const req of s) {
       const body = decode.decode(await req.body());
       console.log(JSON.stringify({ status: "error", content: body }));
       p.kill(9);
-      s.close();
-      break;
+      Deno.exit();
     } else if (req.url.endsWith("/null/error")) {
       // req.url.endsWith(`${reqId}/error`
       const body = decode.decode(await req.body());
@@ -51,21 +57,18 @@ for await (const req of s) {
   } else {
     // assert endsWith /next
     const e = events.next();
-    reqId++;
     if (e.done) {
       p.kill(9);
-      s.close();
-      break;
+      Deno.exit();
     } else {
+      // TODO add this back in (currently it breaks the tests!):
+      // const headers = new Headers({
+      //   'lambda-runtime-invoked-function-arn': "arn:aws:lambda:us-east-1:776893852117:function:test",
+      //   'lambda-runtime-aws-request-id': reqId.toString(),
+      //   'lambda-runtime-deadline-ms': (Date.now() + 300000).toString()
+      // })
       await req.respond({ body: encode(JSON.stringify(e.value)) });
+      reqId++;
     }
   }
 }
-
-Deno.exit();
-
-// headers (are these case insensitive?)
-// 'Lambda-Runtime-Aws-Request-Id'
-// 'lambda-runtime-invoked-function-arn'
-// 'lambda-runtime-aws-request-id'
-// 'lambda-runtime-deadline-ms'
