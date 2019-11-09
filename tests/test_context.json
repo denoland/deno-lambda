@@ -4,11 +4,11 @@
   "expected": [
     {
       "status": "ok",
-      "content": "{\"name\":\"test\",\"awsRequestId\":null}"
+      "content": "{\"name\":\"test\",\"awsRequestId\":\"1\"}"
     },
     {
       "status": "ok",
-      "content": "{\"name\":\"test\",\"awsRequestId\":null}"
+      "content": "{\"name\":\"test\",\"awsRequestId\":\"2\"}"
     }
   ],
   "files": ["handlers.ts"],

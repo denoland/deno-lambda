@@ -35,7 +35,7 @@ const p = Deno.run({
 
 const events = eventsGen();
 
-let reqId = 1;
+let reqId = 0;
 for await (const req of s) {
   if (req.method == "POST") {
     if (req.url.endsWith("/response")) {
@@ -44,14 +44,16 @@ for await (const req of s) {
     } else if (req.url.endsWith("/init/error")) {
       const body = decode.decode(await req.body());
       console.log(JSON.stringify({ status: "error", content: body }));
+      await req.respond({ body: statusOK });
       p.kill(9);
+      s.close();
       Deno.exit();
-    } else if (req.url.endsWith("/null/error")) {
-      // req.url.endsWith(`${reqId}/error`
+    } else if (req.url.endsWith(`/${reqId}/error`)) {
       const body = decode.decode(await req.body());
       console.log(JSON.stringify({ status: "error", content: body }));
+    } else {
+      throw new Error("Unreachable!")
     }
-    // handle initError
     // raise on other?
     await req.respond({ body: statusOK });
   } else {
@@ -59,16 +61,16 @@ for await (const req of s) {
     const e = events.next();
     if (e.done) {
       p.kill(9);
+      s.close();
       Deno.exit();
     } else {
-      // TODO add this back in (currently it breaks the tests!):
-      // const headers = new Headers({
-      //   'lambda-runtime-invoked-function-arn': "arn:aws:lambda:us-east-1:776893852117:function:test",
-      //   'lambda-runtime-aws-request-id': reqId.toString(),
-      //   'lambda-runtime-deadline-ms': (Date.now() + 300000).toString()
-      // })
-      await req.respond({ body: encode(JSON.stringify(e.value)) });
       reqId++;
+      const headers = new Headers({
+        'lambda-runtime-invoked-function-arn': "arn:aws:lambda:us-east-1:776893852117:function:test",
+        'lambda-runtime-aws-request-id': reqId.toString(),
+        'lambda-runtime-deadline-ms': (Date.now() + 300000).toString()
+      })
+      await req.respond({ body: encode(JSON.stringify(e.value)), headers });
     }
   }
 }
