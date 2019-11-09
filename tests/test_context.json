@@ -1,0 +1,16 @@
+{
+  "env": { "_HANDLER": "handlers.withContext" },
+  "events": [{ "hello": "deno" }, { "hello": "again" }],
+  "expected": [
+    {
+      "status": "ok",
+      "content": "{\"name\":\"test\",\"awsRequestId\":null}"
+    },
+    {
+      "status": "ok",
+      "content": "{\"name\":\"test\",\"awsRequestId\":null}"
+    }
+  ],
+  "files": ["handlers.ts"],
+  "layer": "deno-lambda-layer.zip"
+}

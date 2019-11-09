@@ -6,5 +6,7 @@
       "status": "error",
       "content": "{\"errorMessage\" : \"unable to compile compile_error.ts\", \"errorType\" : \"InitException\"}"
     }
-  ]
+  ],
+  "files": ["compile_error.ts"],
+  "layer": "deno-lambda-layer.zip"
 }
