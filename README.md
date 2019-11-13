@@ -1,6 +1,6 @@
 # deno on AWS Lambda
 
-A deno runtime for AWS Lambda.
+A [deno](https://github.com/denoland/deno/) runtime for AWS Lambda.
 
 ![ci status](https://github.com/hayd/deno_lambda/workflows/Test/badge.svg?branch=master)
 
@@ -55,7 +55,7 @@ _The default is hello.handler but this can be configured by the `Handler` settin
 
 ## Configurations on top of the deno-lambda-layer
 
-Once your lambda function use the _deno-lambda-layer_ it can be updated as usual.
+Once your lambda function use the [_deno-lambda-layer_](https://github.com/hayd/deno-lambda/releases) it can be updated as usual.
 Either in the editor or via CLI.
 
 - Supports `Handler` i.e. setting the handler file and function.
