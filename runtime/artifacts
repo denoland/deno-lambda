@@ -16,4 +16,4 @@ cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT
 zip -qq deno-lambda-layer.zip -x '.deno_dir/gen/file/*' -r .deno_dir amz-deno bootstrap hello.ts
 zip -qq deno-lambda-example.zip -x '.deno_dir/gen/file/*' -r .deno_dir hello.ts
 
-DENO_DIR=.deno_dir ./amz-deno bundle bundle.ts
+DENO_DIR=.deno_dir ./amz-deno bundle bundle.ts bundle.bundle.js
