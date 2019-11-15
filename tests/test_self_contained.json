@@ -4,11 +4,11 @@
   "expected": [
     {
       "status": "ok",
-      "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.23.0 🦕\"}"
+      "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.24.0 🦕\"}"
     },
     {
       "status": "ok",
-      "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.23.0 🦕\"}"
+      "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.24.0 🦕\"}"
     }
   ],
   "files": ["hello.ts", "bootstrap", "amz-deno"]
