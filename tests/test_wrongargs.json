@@ -1,0 +1,12 @@
+{
+  "env": { "_HANDLER": "handlers.wrongArgs" },
+  "events": [{ "hello": "deno" }],
+  "expected": [
+    {
+      "status": "ok",
+      "content": "{\"result\":null}"
+    }
+  ],
+  "files": ["handlers.ts"],
+  "layer": "deno-lambda-layer.zip"
+}

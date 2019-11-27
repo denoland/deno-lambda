@@ -1,18 +1,17 @@
 {
   "env": {
     "_HANDLER": "bundle.handler",
-    "HANDLER_EXT": "bundle.js",
-    "DENO_LAMBDA": "true"
+    "HANDLER_EXT": "bundle.js"
   },
   "events": [{ "hello": "deno" }, { "hello": "again" }],
   "expected": [
     {
       "status": "ok",
-      "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.24.0 🦕\"}"
+      "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.25.0 🦕\"}"
     },
     {
       "status": "ok",
-      "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.24.0 🦕\"}"
+      "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.25.0 🦕\"}"
     }
   ],
   "files": ["bundle.bundle.js"],

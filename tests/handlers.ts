@@ -27,3 +27,11 @@ export async function log(event: Event, context: Context) {
   console.log(message);
   return { message };
 }
+
+export async function noArgs() {
+  return {};
+}
+
+export async function wrongArgs(a: number, b: number, c: number) {
+  return { result: a * b * c };
+}
