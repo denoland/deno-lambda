@@ -1,4 +1,5 @@
 import { assertEquals, runIfMain, test } from "./deps.ts";
+import { serveEvents } from "./server.ts";
 
 const dec = new TextDecoder();
 
@@ -56,21 +57,12 @@ for (const t of testFiles) {
       await emptyDir("/var/task");
       await addFiles(testJson["files"], "/var/task");
 
-      const p = Deno.run({
-        args: ["deno", "-A", "/src/tests/server.ts", testPath],
-        stdout: "piped",
-        // stderr: "piped",
-        cwd: "/var/task"
-      });
-      const out = dec.decode(await p.output());
-
-      const results = out
-        .trim()
-        .split("\n")
-        .map(x => JSON.parse(x));
+      const out = await serveEvents(testJson);
+      const responses = out.responses.map(x => JSON.parse(x));
       const expected = testJson["expected"];
 
-      assertEquals(expected, results);
+      assertEquals(expected, responses);
+      // console.log(out.out)  // FIXME this is always empty
     }
   });
 }

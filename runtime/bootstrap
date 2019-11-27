@@ -15,9 +15,6 @@ DENO_DIR=${DENO_DIR-'.deno_dir'}
 HANDLER_EXT=${HANDLER_EXT-'ts'}
 HANDLER_FILE=${HANDLER_FILE}.${HANDLER_EXT}
 
-# If this ENV is 'true' then we let deno call the invocation loop.
-DENO_LAMBDA=${DENO_LAMBDA-false}
-
 # If we fail prior to the handler loop we post an init error.
 function error {
   echo "error:" $1
@@ -46,18 +43,9 @@ function investigate {
   DENO_DIR=/tmp/deno_dir NO_COLOR=true $SCRIPT_DIR/amz-deno fetch $LAMBDA_TASK_ROOT/$HANDLER_FILE \
    || error "unable to compile $HANDLER_FILE"
 
-  if [[ $DENO_LAMBDA = 'false' ]];
-  then echo "
-  import { $HANDLER_NAME } from '$LAMBDA_TASK_ROOT/$HANDLER_FILE';
-  " > /tmp/runtime-test.js
+  echo "import { $HANDLER_NAME } from '$LAMBDA_TASK_ROOT/$HANDLER_FILE';" > /tmp/runtime-test.js
   DENO_DIR=/tmp/deno_dir NO_COLOR=true $SCRIPT_DIR/amz-deno fetch /tmp/runtime-test.js 2> /dev/null \
    || error "$HANDLER_FILE must export a function named '$HANDLER_NAME'";
-  fi;
-
-  if [[ $DENO_LAMBDA = 'true' ]] ;
-    # if using bundle we could see if an ENV variable is set. Or something to confirm we're using the lib.
-    then error "unhandled bundle error";
-  fi;
 
   # perhaps a bug in bootstrap? Should we always exit 1?
 }
@@ -142,14 +130,5 @@ cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/gen /tmp/deno_dir/gen &> /dev/null \
  && cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/LAMBDA_TASK_ROOT/ /tmp/deno_dir/gen/file$LAMBDA_TASK_ROOT &> /dev/null \
  || echo "warn: unable to import '$DENO_DIR/' as DENO_DIR"
 
-# If DENO_LAMBDA is misused, not true or false, we exit.
-if ! ( [[ $DENO_LAMBDA = 'true' ]] || [[ $DENO_LAMBDA = 'false' ]] ) ;
-  then error "if set DENO_LAMBDA must be either true or false";
-fi;
-
-if [[ $DENO_LAMBDA = 'false' ]];
-then DENO_DIR=/tmp/deno_dir NO_COLOR=true $SCRIPT_DIR/amz-deno run --allow-net --allow-read --allow-env /tmp/runtime.js \
+DENO_DIR=/tmp/deno_dir NO_COLOR=true $SCRIPT_DIR/amz-deno run --allow-net --allow-read --allow-env /tmp/runtime.js \
  || investigate;
-else DENO_DIR=/tmp/deno_dir NO_COLOR=true $SCRIPT_DIR/amz-deno run --allow-net --allow-read --allow-env $LAMBDA_TASK_ROOT/$HANDLER_FILE \
- || investigate;
-fi;

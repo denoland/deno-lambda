@@ -3,9 +3,7 @@ set -euo pipefail
 
 # populate the cache from deno.land/x/lambda so we use the current files
 mkdir -p .deno_dir/deps/https/deno.land/x/lambda/
-cp bootstrap.ts .deno_dir/deps/https/deno.land/x/lambda/bootstrap.ts
 cp mod.ts .deno_dir/deps/https/deno.land/x/lambda/mod.ts
-cp runtime.ts .deno_dir/deps/https/deno.land/x/lambda/runtime.ts
 # this shouldn't require a fetch to deno.land
 DENO_DIR=.deno_dir ./amz-deno fetch hello.ts
 

@@ -1,0 +1,16 @@
+{
+  "env": { "_HANDLER": "handlers.log" },
+  "events": [{ "hello": "deno" }, { "hello": "again" }],
+  "expected": [
+    {
+      "status": "ok",
+      "content": "{\"message\":\"deno\"}"
+    },
+    {
+      "status": "ok",
+      "content": "{\"message\":\"again\"}"
+    }
+  ],
+  "files": ["handlers.ts"],
+  "layer": "deno-lambda-layer.zip"
+}
