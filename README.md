@@ -36,7 +36,7 @@ From the [AWS console](https://console.aws.amazon.com/lambda/):
 
 ---
 
-Lambda calls the hello.handler function:
+AWS Lambda calls the `hello.handler` function:
 
 ```ts
 // hello.ts
@@ -51,36 +51,36 @@ export async function handler(event: Event, context: Context) {
 }
 ```
 
-_The default is hello.handler but this can be configured by the `Handler` setting._
+_The default is `hello.handler` but this can be configured by the `Handler` setting._
 
-## Configurations on top of the deno-lambda-layer
+## Configuration on top of the deno-lambda-layer
 
-Once your lambda function use the [_deno-lambda-layer_](https://github.com/hayd/deno-lambda/releases) it can be updated as usual.
-Either in the editor or via CLI.
+Lambda functions using the [_deno-lambda-layer_](https://github.com/hayd/deno-lambda/releases):
 
-- Supports `Handler` i.e. setting the handler file and function.
-- Using `HANDLER_EXT` can select other supported extension (default `ts`).
-- Supports setting the DENO_DIR for storing cached assets, default `.deno_dir`.
-- If you use `deno bundle` since there is no entry point so you need to import the runtime, see `runtime/bundle.ts` as an example.
+- Support `Handler` i.e. setting the handler file and function.
+- Use `HANDLER_EXT` to set supported extension e.g. `js` or `bundle.js` (default `ts`).
+- Set `DENO_DIR` for storing cached assets, default `.deno_dir`.
 
 Further configuration TBD.
 
 ## Creating your own function code zip with a DENO_DIR
 
-Create a zip file which contains
+Create a zip file which contains:
 
 - an entry point which exports an async function (e.g. `hello.ts`)
 - any other files needed to run the entry file
-- .deno_dir directory\*
+- (optional) .deno_dir directory\*
 
-\*You can use a different directory by passing it as the DENO_DIR environment variable.
+\*You can use a different directory by passing it as the `DENO_DIR` environment variable.
 
 ### Prepare zip file to upload to AWS Lambda
 
-We zip up the source files and the DENO_DIR, however unfortunately we need to do some
-directory remapping since the directory lambda uses will likely differ from your PWD.
+Zip up the source files and `DENO_DIR`, we need to do some directory remapping
+since the directory lambda uses will likely differ from your `PWD`.
 
-This is not required, but since DENO_DIR caches both remote files and compilation it is prefered to ship this alongside your function code to avoid both runtime compilation or remote fetching.
+_Whilst this is not required including the DENO_DIR cache ensures remote files
+and compilation is shipped alongside your function code avoiding runtime
+compilation and remote fetching._
 
 ```
 # Compile the handler (and fetch dependencies into DENO_DIR).
@@ -93,25 +93,24 @@ cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT
 zip lambda.zip -x '.deno_dir/gen/file/*' -r .deno_dir hello.ts  # other source files
 ```
 
-_TODO(hayd): write this as a deno script._
+In a `serverless.yml` this can be automatically prior to each upload using the
+`serverless-scriptable-plugin`:
 
-Note: If you use a different directory for your DENO_DIR you can do so,
-but must set this as the DENO_DIR environment variable in the function.
+```
+plugins:
+  - serverless-scriptable-plugin
+
+custom:
+  scriptHooks:
+    before:package:createDeploymentArtifacts: DENO_DIR=.deno_dir deno fetch api/candidate.ts && cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT
+```
+
+See `example/serverless.yml`.
 
 ## Examples
 
 - [x] Hello example ([`deno-lambda-example.zip`](https://github.com/hayd/deno_docker/releases/))
-- [ ] Web example (behind API Gateway).
-
-## Via CLI
-
-TODO(hayd): lookup these commands to create, update layers and functions (including using default role).
-
-```
-aws lambda create-function --function-name deno-func --zip-file fileb://lambda.zip --handler lambda.handler --runtime provided --role YOUR_ROLE
-
-aws lambda invoke --function-name FUNCTION_NAME response.json && cat response.json
-```
+- [x] Web example (behind API Gateway) using dynamodb, see `/example` directory.
 
 ---
 
