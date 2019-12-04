@@ -1,6 +1,7 @@
 // FIXME there are no releases of dynamodb atm.
-//export { createClient, Doc, DynamoDBClient } from "https://deno.land/x/dynamodb/mod.ts";
-// export { createClient, Doc, DynamoDBClient } from "./dynamodb/mod.ts";
+// export { createClient, Doc, DynamoDBClient } from "https://deno.land/x/dynamodb/mod.ts";
+// We require a patched version of dynamodb to support temporary session tokens:
+// https://github.com/chiefbiiko/dynamodb/pull/3
 export {
   createClient,
   Doc,
