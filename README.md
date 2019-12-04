@@ -109,7 +109,7 @@ See `example/serverless.yml`.
 
 ## Examples
 
-- [x] Hello example ([`deno-lambda-example.zip`](https://github.com/hayd/deno_docker/releases/))
+- [x] Hello example ([`deno-lambda-example.zip`](https://github.com/hayd/deno-lambda/releases/))
 - [x] Web example (behind API Gateway) using dynamodb, see `/example` directory.
 
 ---
