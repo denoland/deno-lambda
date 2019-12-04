@@ -1,3 +1,5 @@
+import { Context, Event } from "https://deno.land/x/lambda/mod.ts";
+
 import { client } from "../client.ts";
 import { Doc, uuid } from "../deps.ts";
 
@@ -13,7 +15,7 @@ function error(message: string, statusCode: number = 500) {
   return ok({ message: message }, statusCode);
 }
 
-export async function get(event, context) {
+export async function get(event: Event, context: Context) {
   const id = event.pathParameters.id;
   const params = {
     TableName,
@@ -34,7 +36,7 @@ export async function get(event, context) {
   }
 }
 
-export async function list(event, context) {
+export async function list(event: Event, context: Context) {
   var params = {
     TableName,
     ProjectionExpression: "id, fullname, email"
@@ -61,7 +63,7 @@ export async function list(event, context) {
   }
 }
 
-export async function submit(event, context) {
+export async function submit(event: Event, context: Context) {
   const requestBody = JSON.parse(event.body);
   const { fullname, email, experience } = requestBody;
 
