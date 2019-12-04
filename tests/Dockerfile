@@ -28,7 +28,7 @@ RUN deno fetch /src/tests/deps.ts
 ADD hello.ts /src/runtime/hello.ts
 ADD hello.ts /src/tests/hello.ts
 ADD tests/bundle.ts /src/runtime/bundle.ts
-
+ADD tests/remote.ts /src/runtime/remote.ts
 ADD runtime /src/runtime
 
 WORKDIR /src/runtime

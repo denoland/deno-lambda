@@ -12,10 +12,13 @@ function bootstrap(testJson) {
     ? "/var/task/bootstrap"
     : "/opt/bootstrap";
 
+  if (!testJson.env.DENO_DIR) {
+    testJson.env.DENO_DIR = "";
+  }
   return Deno.run({
     args: [bootstrapScript],
     stdout: "piped",
-    stderr: "piped", // comment this out to debug
+    // stderr: "piped", // comment this out to debug
     env: testJson.env,
     cwd: "/var/task"
   });
@@ -73,12 +76,11 @@ export async function serveEvents(testJson) {
       }
     }
   }
-  const out = await read(p.stdout);
+  /// const out = await read(p.stdout);
   p.kill(9);
   s.close();
   await p.status();
   return {
-    responses,
-    out
+    responses: responses
   };
 }
