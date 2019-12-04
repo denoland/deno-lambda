@@ -1,0 +1,88 @@
+service: candidate-service
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: provided
+  stage: dev
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+      Resource:
+        - Fn::GetAtt: [candidatesTable, Arn]
+
+layers:
+  deno:
+    description: "deno"
+    package:
+      artifact: deno-lambda-layer.zip
+# TODO extract this out so we don't redeploy the layer on each push.
+
+package:
+  exclude:
+    - .deno_dir/gen/file
+    - deno-lambda-layer.zip
+    - node_modules
+    - package-lock.json
+
+functions:
+  candidateSubmission:
+    handler: api/candidate.submit
+    layers:
+      - { Ref: DenoLambdaLayer }
+    memorySize: 128
+    description: Submit candidate information and starts interview process.
+    events:
+      - http:
+          path: candidates
+          method: post
+
+  listCandidates:
+    handler: api/candidate.list
+    layers:
+      - { Ref: DenoLambdaLayer }
+    memorySize: 128
+    description: List all candidates
+    events:
+      - http:
+          path: candidates
+          method: get
+
+  candidateDetails:
+    handler: api/candidate.get
+    layers:
+      - { Ref: DenoLambdaLayer }
+    memorySize: 128
+    description: Get candidate by id
+    events:
+      - http:
+          path: candidates/{id}
+          method: get
+
+resources:
+  Resources:
+    candidatesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: candidates
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+plugins:
+  - serverless-scriptable-plugin
+
+custom:
+  scriptHooks:
+    before:package:createDeploymentArtifacts: DENO_DIR=.deno_dir deno fetch api/candidate.ts && cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT
