@@ -2,13 +2,13 @@
 
 A [deno](https://github.com/denoland/deno/) runtime for AWS Lambda.
 
-![ci status](https://github.com/hayd/deno_lambda/workflows/Test/badge.svg?branch=master)
+![ci status](https://github.com/hayd/deno-lambda/workflows/Test/badge.svg?branch=master)
 
 ## Quick Start
 
 From the [AWS console](https://console.aws.amazon.com/lambda/):
 
-1. Download zip files from the [releases](https://github.com/hayd/deno_lambda/releases) page.
+1. Download zip files from the [releases](https://github.com/hayd/deno-lambda/releases) page.
 
 2. Create a _layer_ and upload `deno-lambda-layer.zip`. Note its ARN.
 
@@ -53,7 +53,25 @@ export async function handler(event: Event, context: Context) {
 
 _The default is `hello.handler` but this can be configured by the `Handler` setting._
 
-## Configuration on top of the deno-lambda-layer
+### Warning
+
+The way the lambda platform works means that promises not awaited by the handler
+_may_ never be completed. This is because the underlying container can be paused
+between invocations and will sometimes be shutdown.
+
+```ts
+export async function badHandler(event: Event, context: Context) {
+  somethingAsync()  // not awaited
+  return
+}
+```
+If you need to return immediately but want to invoke a longer running process you can
+[async-invoke](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html)
+another lambda function (which does the `await somethingAsync()`).
+
+---
+
+## Configuration
 
 Lambda functions using the [_deno-lambda-layer_](https://github.com/hayd/deno-lambda/releases):
 
@@ -63,7 +81,7 @@ Lambda functions using the [_deno-lambda-layer_](https://github.com/hayd/deno-la
 
 Further configuration TBD.
 
-## Creating your own function code zip with a DENO_DIR
+## Function code
 
 Create a zip file which contains:
 
@@ -73,20 +91,16 @@ Create a zip file which contains:
 
 \*You can use a different directory by passing it as the `DENO_DIR` environment variable.
 
-### Prepare zip file to upload to AWS Lambda
+### DENO_DIR remapping
 
-Zip up the source files and `DENO_DIR`, we need to do some directory remapping
-since the directory lambda uses will likely differ from your `PWD`.
-
-_Whilst this is not required including the DENO_DIR cache ensures remote files
-and compilation is shipped alongside your function code avoiding runtime
-compilation and remote fetching._
+Zip the source files and `DENO_DIR`. In order for compile artifacts to be recovered
+(avoiding runtime compilation) you need to do the following directory remapping:
 
 ```
 # Compile the handler (and fetch dependencies into DENO_DIR).
 DENO_DIR=.deno_dir deno fetch hello.ts
 
-rm -rf .deno_dir/LAMBDA_TASK_ROOT
+# This is the "remapping" step:
 cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT
 # Note: We do the inverse of this operation in bootstrap.
 
@@ -94,7 +108,7 @@ zip lambda.zip -x '.deno_dir/gen/file/*' -r .deno_dir hello.ts  # other source f
 ```
 
 In a `serverless.yml` this can be automatically prior to each upload using the
-`serverless-scriptable-plugin`:
+[`serverless-scriptable-plugin`](https://www.npmjs.com/package/serverless-scriptable-plugin):
 
 ```
 plugins:
