@@ -1,8 +1,8 @@
 {
   "env": {
-    "_HANDLER": "remote.handler"
+    "_HANDLER": "pad.handler"
   },
-  "events": [{ "hello": "deno" }, { "hello": "again" }],
+  "events": [{ "hello": "deno" }, { "strLen": "6" }],
   "expected": [
     {
       "status": "ok",
@@ -10,9 +10,9 @@
     },
     {
       "status": "ok",
-      "content": "\" deno\""
+      "content": "\"  deno\""
     }
   ],
-  "files": "remote.zip",
+  "files": "pad.zip",
   "layer": "deno-lambda-layer.zip"
 }

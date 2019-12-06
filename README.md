@@ -61,10 +61,11 @@ between invocations and will sometimes be shutdown.
 
 ```ts
 export async function badHandler(event: Event, context: Context) {
-  somethingAsync()  // not awaited
-  return
+  somethingAsync(); // not awaited
+  return;
 }
 ```
+
 If you need to return immediately but want to invoke a longer running process you can
 [async-invoke](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html)
 another lambda function (which does the `await somethingAsync()`).

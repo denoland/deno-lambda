@@ -18,7 +18,7 @@ function bootstrap(testJson) {
   return Deno.run({
     args: [bootstrapScript],
     stdout: "piped",
-    // stderr: "piped", // comment this out to debug
+    stderr: "piped", // comment this out to debug
     env: testJson.env,
     cwd: "/var/task"
   });

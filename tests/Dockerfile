@@ -27,13 +27,12 @@ RUN deno fetch /src/tests/deps.ts
 
 ADD hello.ts /src/runtime/hello.ts
 ADD hello.ts /src/tests/hello.ts
-ADD tests/bundle.ts /src/runtime/bundle.ts
-ADD tests/remote.ts /src/runtime/remote.ts
+ADD tests/pad.ts /src/runtime/pad.ts
 ADD runtime /src/runtime
 
 WORKDIR /src/runtime
 RUN sh artifacts \
- && cp bundle.bundle.js /src/tests/bundle.bundle.js \
+ && cp hello.bundle.js /src/tests/hello.bundle.js \
  && cp bootstrap /src/tests/bootstrap
 
 WORKDIR /src/tests

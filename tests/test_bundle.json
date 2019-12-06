@@ -1,6 +1,6 @@
 {
   "env": {
-    "_HANDLER": "bundle.handler",
+    "_HANDLER": "hello.handler",
     "HANDLER_EXT": "bundle.js"
   },
   "events": [{ "hello": "deno" }, { "hello": "again" }],
@@ -14,6 +14,6 @@
       "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.25.0 🦕\"}"
     }
   ],
-  "files": ["bundle.bundle.js"],
+  "files": ["hello.bundle.js"],
   "layer": "deno-lambda-layer.zip"
 }
