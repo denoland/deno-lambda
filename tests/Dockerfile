@@ -1,6 +1,6 @@
 # Note: This must be built in the .. context
 
-FROM hayd/deno:amazonlinux1-0.25.0
+FROM hayd/deno:amazonlinux1-0.26.0
 # This is the runtime used by AWS Lambda
 # plus a compatible deno executable /bin/deno.
 # https://github.com/hayd/deno_docker
@@ -27,13 +27,12 @@ RUN deno fetch /src/tests/deps.ts
 
 ADD hello.ts /src/runtime/hello.ts
 ADD hello.ts /src/tests/hello.ts
-ADD tests/bundle.ts /src/runtime/bundle.ts
-ADD tests/remote.ts /src/runtime/remote.ts
+ADD tests/pad.ts /src/runtime/pad.ts
 ADD runtime /src/runtime
 
 WORKDIR /src/runtime
 RUN sh artifacts \
- && cp bundle.bundle.js /src/tests/bundle.bundle.js \
+ && cp hello.bundle.js /src/tests/hello.bundle.js \
  && cp bootstrap /src/tests/bootstrap
 
 WORKDIR /src/tests

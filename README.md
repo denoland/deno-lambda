@@ -10,11 +10,13 @@ From the [AWS console](https://console.aws.amazon.com/lambda/):
 
 1. Download zip files from the [releases](https://github.com/hayd/deno-lambda/releases) page.
 
-2. Create a _layer_ and upload `deno-lambda-layer.zip`. Note its ARN.
+2. Create a _layer_ and upload `deno-lambda-layer.zip`.
 
 <img width="828" alt="Create layer" src="https://user-images.githubusercontent.com/1931852/68455786-0b618100-01b1-11ea-988a-ba3a5810a8d5.png">
 
 <img width="1122" alt="Layer created" src="https://user-images.githubusercontent.com/1931852/68455785-0b618100-01b1-11ea-9686-8ebefe3b00ff.png">
+
+Note its Version ARN.
 
 3. Create a lambda function from scratch with runtime "provide your own bootstrap".
 
@@ -32,7 +34,7 @@ From the [AWS console](https://console.aws.amazon.com/lambda/):
 
 6. "Save". "Test" (use the default event).
 
-<img width="1298" alt="Execution successful" src="https://user-images.githubusercontent.com/1931852/68455779-0ac8ea80-01b1-11ea-9204-67bf4cb1c250.png">
+<img width="1277" alt="Execution successful" src="https://user-images.githubusercontent.com/1931852/70288824-bb61e400-1787-11ea-95a6-61bb3a260c05.png">
 
 ---
 
@@ -61,10 +63,11 @@ between invocations and will sometimes be shutdown.
 
 ```ts
 export async function badHandler(event: Event, context: Context) {
-  somethingAsync()  // not awaited
-  return
+  somethingAsync(); // not awaited
+  return;
 }
 ```
+
 If you need to return immediately but want to invoke a longer running process you can
 [async-invoke](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html)
 another lambda function (which does the `await somethingAsync()`).

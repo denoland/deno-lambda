@@ -17,7 +17,6 @@ export async function foo(event: Event, context: Context) {
 }
 
 export async function withContext(event: Event, context: Context) {
-  // is there a foo attribute?! who knows!
   return { name: context.functionName, awsRequestId: context.awsRequestId };
 }
 
