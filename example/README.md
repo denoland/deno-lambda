@@ -1,5 +1,7 @@
 # Serverless example
 
+Deploy in a single step using [`serverless deploy`](https://serverless.com/framework/docs/providers/aws/guide/deploying/).
+
 This example lambda application defines:
 
 - A lambda layer from the `deno-lambda-layer.zip`.
@@ -7,16 +9,15 @@ This example lambda application defines:
 - Three lambda functions a list/get/submit.
 - An API Gateway endpoint to these functions.
 
-This is based on [_Building a REST API in Node.js with AWS Lambda, API Gateway, DynamoDB, and Serverless Framework_ blogpost by Shekhar Gulat](https://serverless.com/blog/node-rest-api-with-serverless-lambda-and-dynamodb/).
+Requires `deno-lambda-layer.zip` to be in the directory:
+
+    curl -sfL https://github.com/hayd/deno-lambda/releases/download/v0.4.0/deno-lambda-layer.zip -o deno-lambda-layer.zip
+
+This example is based on [_Building a REST API in Node.js with AWS Lambda, API Gateway, DynamoDB, and Serverless Framework_ blogpost by Shekhar Gulat](https://serverless.com/blog/node-rest-api-with-serverless-lambda-and-dynamodb/).
 
 See the application described in `serverless.yml` and the exported functions in `api/candidate.ts`.
 
-It can be deployed in a single step using [`serverless deploy`](https://serverless.com/framework/docs/providers/aws/guide/deploying/).
-
-Note: The `serverless-scriptable-plugin` is used to compile (`deno fetch api/candidate.ts`)
-so there is no init-time download/compilation step.
-
-    DENO_DIR=.deno_dir deno fetch api/candidate.ts && cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT
+Note: The `serverless-scriptable-plugin` is used to compile `api/candidate.ts` so there is no init-time download/compilation step.
 
 ---
 
