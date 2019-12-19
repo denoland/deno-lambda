@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  deno-runtime
+
+  Example custom runtime for Deno
+  
+Resources:
+  DenoRuntime:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      Content:
+        S3Bucket: begin-public-east-1
+        S3Key: deno-runtime.zip
+
+Outputs:
+  DenoRuntimeArn:
+    Value: !Ref DenoRuntime
