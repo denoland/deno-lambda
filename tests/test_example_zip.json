@@ -4,11 +4,11 @@
   "expected": [
     {
       "status": "ok",
-      "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.26.0 🦕\"}"
+      "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.27.0 🦕\"}"
     },
     {
       "status": "ok",
-      "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.26.0 🦕\"}"
+      "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 0.27.0 🦕\"}"
     }
   ],
   "files": "deno-lambda-example.zip",
