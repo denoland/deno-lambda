@@ -1,4 +1,4 @@
-import { serve } from "./deps.ts";
+import { serve, ServerRequestBody } from "./deps.ts";
 
 const encode = new TextEncoder().encode;
 const dec = new TextDecoder();
@@ -24,13 +24,6 @@ function bootstrap(testJson) {
   });
 }
 
-// is this in cli/std? r: ReadCloser
-async function read(r) {
-  const buf = new Uint8Array(10000);
-  const n = await r.read(buf);
-  return dec.decode(buf.slice(n));
-}
-
 const statusOK = encode('{"status":"OK"}\n');
 
 export async function serveEvents(testJson) {
@@ -45,15 +38,15 @@ export async function serveEvents(testJson) {
   for await (const req of s) {
     if (req.method == "POST") {
       if (req.url.endsWith("/response")) {
-        const body = dec.decode(await req.body());
+        const body = dec.decode(await Deno.readAll(req.body));
         responses.push(JSON.stringify({ status: "ok", content: body }));
       } else if (req.url.endsWith("/init/error")) {
-        const body = dec.decode(await req.body());
+        const body = dec.decode(await Deno.readAll(req.body));
         responses.push(JSON.stringify({ status: "error", content: body }));
         await req.respond({ body: statusOK });
         break;
       } else if (req.url.endsWith(`/${reqId}/error`)) {
-        const body = dec.decode(await req.body());
+        const body = dec.decode(await Deno.readAll(req.body));
         responses.push(JSON.stringify({ status: "error", content: body }));
       } else {
         throw new Error("Unreachable!");
@@ -76,7 +69,7 @@ export async function serveEvents(testJson) {
       }
     }
   }
-  /// const out = await read(p.stdout);
+  /// const out = await Deno.readAll(p.stdout);
   p.kill(9);
   s.close();
   await p.status();
