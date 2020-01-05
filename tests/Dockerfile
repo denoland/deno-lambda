@@ -1,6 +1,6 @@
 # Note: This must be built in the .. context
 
-FROM hayd/deno:amazonlinux1-0.27.0
+FROM hayd/deno:amazonlinux1-0.28.1
 # This is the runtime used by AWS Lambda
 # plus a compatible deno executable /bin/deno.
 # https://github.com/hayd/deno_docker

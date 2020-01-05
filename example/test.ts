@@ -4,11 +4,11 @@
 // You must also pass a access key/secret environment variables, but these don't have to be real e.g.
 // AWS_ACCESS_KEY_ID=fakeMyKeyId AWS_SECRET_ACCESS_KEY=fakeSecretAccessKey deno --allow-env --allow-net test.ts
 
-import { runIfMain } from "https://deno.land/std@v0.27.0/testing/mod.ts";
+import { runIfMain } from "https://deno.land/std@v0.28.1/testing/mod.ts";
 import {
   assert,
   assertEquals
-} from "https://deno.land/std@v0.27.0/testing/asserts.ts";
+} from "https://deno.land/std@v0.28.1/testing/asserts.ts";
 
 import { client } from "./client.ts";
 import { test } from "./test_util.ts";
