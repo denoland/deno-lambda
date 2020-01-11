@@ -1,4 +1,4 @@
-import { Context, Event } from "https://deno.land/x/lambda/mod.ts";
+import { Context, APIGatewayProxyEvent } from "https://deno.land/x/lambda/mod.ts";
 
 class MyError extends Error {
   constructor(message) {
@@ -7,21 +7,21 @@ class MyError extends Error {
   }
 }
 
-export async function error(event: Event, context: Context) {
+export async function error(event: APIGatewayProxyEvent, context: Context) {
   throw new MyError("error thrown");
 }
 
-export async function foo(event: Event, context: Context) {
+export async function foo(event, context) {
   // is there a foo attribute?! who knows!
   return event.foo || "a string";
 }
 
-export async function withContext(event: Event, context: Context) {
+export async function withContext(event: APIGatewayProxyEvent, context: Context) {
   return { name: context.functionName, awsRequestId: context.awsRequestId };
 }
 
 // TODO add a test for this behavior.
-export async function log(event: Event, context: Context) {
+export async function log(event, context) {
   const message = event.hello;
   console.log(message);
   return { message };

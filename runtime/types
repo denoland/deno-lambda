@@ -1,0 +1,2 @@
+# Update the version and run to update ./types.d.ts
+curl -fSsL https://unpkg.com/@types/aws-lambda@8.10.39/index.d.ts -o types.d.ts
