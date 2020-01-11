@@ -1,6 +1,6 @@
 import { serve, ServerRequestBody } from "./deps.ts";
 
-const encode = new TextEncoder().encode;
+const enc = new TextEncoder();
 const dec = new TextDecoder();
 
 const PORT = 1993;
@@ -24,7 +24,7 @@ function bootstrap(testJson) {
   });
 }
 
-const statusOK = encode('{"status":"OK"}\n');
+const statusOK = enc.encode('{"status":"OK"}\n');
 
 export async function serveEvents(testJson) {
   // start the server prior to running bootstrap.
@@ -65,7 +65,7 @@ export async function serveEvents(testJson) {
           "lambda-runtime-aws-request-id": reqId.toString(),
           "lambda-runtime-deadline-ms": (Date.now() + 300000).toString()
         });
-        await req.respond({ body: encode(JSON.stringify(e.value)), headers });
+        await req.respond({ body: enc.encode(JSON.stringify(e.value)), headers });
       }
     }
   }
