@@ -1,11 +1,11 @@
 # deno on AWS Lambda
 
-The `mod.ts` offers the `Context` and `Event` interfaces for writing handler functions:
+The `mod.ts` offers the types for writing handler functions (see all in `types.d.ts`):
 
 ```ts
-import { Context, Event } from "https://deno.land/x/lambda/mod.ts";
+import { APIGatewayProxyEvent, Context } from "https://deno.land/x/lambda/mod.ts";
 
-export async function handler(event: Event, context: Context) {
+export async function handler(event: APIGatewayProxyEvent, context: Context) {
   return {
     statusCode: 200,
     body: `Welcome to deno ${Deno.version.deno} 🦕`
