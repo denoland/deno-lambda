@@ -4,6 +4,8 @@ A [deno](https://github.com/denoland/deno/) runtime for AWS Lambda.
 
 ![ci status](https://github.com/hayd/deno-lambda/workflows/Test/badge.svg?branch=master)
 
+See /example for usage with serverless.
+
 ## Quick Start
 
 From the [AWS console](https://console.aws.amazon.com/lambda/):
@@ -43,9 +45,9 @@ AWS Lambda calls the `hello.handler` function:
 ```ts
 // hello.ts
 
-import { Context, Event } from "https://deno.land/x/lambda/mod.ts";
+import { APIGatewayProxyEvent, Context } from "https://deno.land/x/lambda/mod.ts";
 
-export async function handler(event: Event, context: Context) {
+export async function handler(event: APIGatewayProxyEvent, context: Context) {
   return {
     statusCode: 200,
     body: `Welcome to deno ${Deno.version.deno} 🦕`
@@ -62,8 +64,13 @@ _may_ never be completed. This is because the underlying container can be paused
 between invocations and will sometimes be shutdown.
 
 ```ts
-export async function badHandler(event: Event, context: Context) {
+export async function badHandler(event: APIGatewayProxyEvent, context: Context) {
   somethingAsync(); // not awaited
+  return;
+}
+
+export async function goodHandler(event: APIGatewayProxyEvent, context: Context) {
+  await somethingAsync();
   return;
 }
 ```
