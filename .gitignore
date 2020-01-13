@@ -1,3 +1,4 @@
 .deno_dir
 .serverless
 node_modules
+*.zip

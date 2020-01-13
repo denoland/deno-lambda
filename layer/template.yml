@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  A custom runtime for deno
+
+Resources:
+  DenoLambdaLayer:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      LayerName: Deno
+      Description: A custom runtime for deno
+      Content:
+        S3Bucket: DENO_LAMBDA_BUCKET
+        S3Key: deno-lambda-layer_DENO_LAMBDA_VERSION.zip
+
+Outputs:
+  DenoArn:
+    Value: !Ref DenoLambdaLayer
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: Deno
+    Description: |
+      A custom runtime for deno
+    Author: Andy Hayden
+    SpdxLicenseId: MIT
+    Labels:
+    - deno
+    - layer
+    - lambda
+    - typescript
+    HomePageUrl: https://github.com/hayd/deno-lambda
+    SemanticVersion: DENO_LAMBDA_VERSION
+    SourceCodeUrl: https://github.com/hayd/deno-lambda
