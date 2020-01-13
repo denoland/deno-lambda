@@ -1,6 +1,10 @@
 #!/bin/sh
 set -euo pipefail
 
+#
+# Generate zip artifacts for deno-lambda publishing.
+#
+
 # populate the cache from deno.land/x/lambda so we use the current files
 mkdir -p .deno_dir/deps/https/deno.land/x/lambda/
 cp mod.ts .deno_dir/deps/https/deno.land/x/lambda/mod.ts
