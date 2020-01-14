@@ -9,7 +9,6 @@ See the [README on github](https://github.com/hayd/deno-lambda) for more informa
 Made with ❤️ by Andy Hayden.  
 Available on the [AWS Serverless Application Repository](https://aws.amazon.com/serverless).
 
-
 ## License
 
 MIT

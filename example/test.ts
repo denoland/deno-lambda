@@ -9,7 +9,10 @@ import {
   assert,
   assertEquals
 } from "https://deno.land/std@v0.29.0/testing/asserts.ts";
-import { APIGatewayProxyEvent, Context } from "https://deno.land/x/lambda/mod.ts";
+import {
+  APIGatewayProxyEvent,
+  Context
+} from "https://deno.land/x/lambda/mod.ts";
 
 import { client } from "./client.ts";
 import { test } from "./test_util.ts";
@@ -35,7 +38,10 @@ test({
 test({
   name: "test list",
   fn: async () => {
-    const result = await listCandidate({} as APIGatewayProxyEvent, {} as Context);
+    const result = await listCandidate(
+      {} as APIGatewayProxyEvent,
+      {} as Context
+    );
     assertEquals(result.statusCode, 200);
     const body = JSON.parse(result.body);
     assertEquals(body.candidates.length, 2);
@@ -45,7 +51,10 @@ test({
 test({
   name: "test get",
   fn: async () => {
-    const result = await getCandidate({ pathParameters: { id: "abc" } } as unknown as APIGatewayProxyEvent, {} as Context);
+    const result = await getCandidate(
+      ({ pathParameters: { id: "abc" } } as unknown) as APIGatewayProxyEvent,
+      {} as Context
+    );
     assertEquals(result.statusCode, 200);
     const body = JSON.parse(result.body);
     assertEquals(body.id, "abc");
@@ -56,7 +65,10 @@ test({
 test({
   name: "test get missing",
   fn: async () => {
-    const result = await getCandidate({ pathParameters: { id: "bad" } } as unknown as APIGatewayProxyEvent, {} as Context);
+    const result = await getCandidate(
+      ({ pathParameters: { id: "bad" } } as unknown) as APIGatewayProxyEvent,
+      {} as Context
+    );
     assertEquals(result.statusCode, 404);
     const body = JSON.parse(result.body);
     assertEquals(body.message, "Not Found: bad");
@@ -70,7 +82,10 @@ test({
       body:
         '{"fullname":"Shekhar Gulati","email": "shekhargulati84@gmail.com", "experience":12}'
     };
-    const result = await submitCandidate(event as APIGatewayProxyEvent, {} as Context);
+    const result = await submitCandidate(
+      event as APIGatewayProxyEvent,
+      {} as Context
+    );
     assertEquals(result.statusCode, 200);
     const body = JSON.parse(result.body);
     assertEquals(
@@ -84,7 +99,10 @@ test({
   name: "test submit empty",
   fn: async () => {
     const event = { body: "{}" };
-    const result = await submitCandidate(event as APIGatewayProxyEvent, {} as Context);
+    const result = await submitCandidate(
+      event as APIGatewayProxyEvent,
+      {} as Context
+    );
     assertEquals(result.statusCode, 422);
     const body = JSON.parse(result.body);
     assertEquals(body.message, "invalid input");
