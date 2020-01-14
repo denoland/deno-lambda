@@ -1,4 +1,7 @@
-import { Context, APIGatewayProxyEvent } from "https://deno.land/x/lambda/mod.ts";
+import {
+  Context,
+  APIGatewayProxyEvent
+} from "https://deno.land/x/lambda/mod.ts";
 
 class MyError extends Error {
   constructor(message) {
@@ -16,7 +19,10 @@ export async function foo(event, context) {
   return event.foo || "a string";
 }
 
-export async function withContext(event: APIGatewayProxyEvent, context: Context) {
+export async function withContext(
+  event: APIGatewayProxyEvent,
+  context: Context
+) {
   return { name: context.functionName, awsRequestId: context.awsRequestId };
 }
 

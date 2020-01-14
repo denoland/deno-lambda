@@ -65,7 +65,10 @@ export async function serveEvents(testJson) {
           "lambda-runtime-aws-request-id": reqId.toString(),
           "lambda-runtime-deadline-ms": (Date.now() + 300000).toString()
         });
-        await req.respond({ body: enc.encode(JSON.stringify(e.value)), headers });
+        await req.respond({
+          body: enc.encode(JSON.stringify(e.value)),
+          headers
+        });
       }
     }
   }
