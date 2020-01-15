@@ -1,4 +1,4 @@
-# Serverless example
+# Serverless
 
 Deploy in a single step using [`serverless deploy`](https://serverless.com/framework/docs/providers/aws/guide/deploying/).
 
@@ -11,9 +11,14 @@ The application defines in `serverless.yml`:
 Note: The `serverless-scriptable-plugin` is used to compile `api/candidate.ts` prior to deployment
 so that there is no init-time download/compilation step.
 
+### Requirements
+
 ```sh
+# Install the serverless cli
+npm install -g serverless
+
 # Install serverless-scriptable-plugin:
-npm install --save-dev serverless-scriptable-plugin
+npm install -g serverless-scriptable-plugin
 ```
 
 ---

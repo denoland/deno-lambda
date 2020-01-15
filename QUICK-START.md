@@ -1,4 +1,4 @@
-## Console Quick Start
+## Quick Start in the AWS console
 
 From the [AWS console](https://console.aws.amazon.com/lambda/):
 

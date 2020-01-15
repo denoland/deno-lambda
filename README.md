@@ -53,13 +53,13 @@ APIGateway use `APIGatewayProxyEvent` and `APIGatewayProxyResult`, SQS use `SQSE
 ## Examples
 
 - Hello example ([`deno-lambda-example.zip`](https://github.com/hayd/deno-lambda/releases/))
-- Web example (behind API Gateway) using dynamodb, see `/example` directory.
+- Web example (behind API Gateway) using dynamodb, see `/example-serverless` directory.
 
 ## Deployment
 
 ### Serverless
 
-See /example.
+See /example-serverless.
 
 ### SAM
 
@@ -71,7 +71,7 @@ Deploy the layer via the
 [SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~Deno)
 or upload the
 [deno-lambda-layer.zip](https://github.com/hayd/deno-lambda/releases)
-manually (see `CONSOLE.md`). Reference the layer by ARN in your Lambda function.
+manually (see `QUICK-START.md`). Reference the layer by ARN in your Lambda function.
 
 ## Warning
 
