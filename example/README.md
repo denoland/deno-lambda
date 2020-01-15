@@ -2,14 +2,14 @@
 
 Deploy in a single step using [`serverless deploy`](https://serverless.com/framework/docs/providers/aws/guide/deploying/).
 
-This example lambda application defines in `serverless.yml`:
+The application defines in `serverless.yml`:
 
+- Three exported handler functions list/get/submit in `api/candidate.ts`.
+- An API Gateway endpoint for each of these functions.
 - A DynamodDB table "candidates".
-- Three lambda functions list/get/submit in `api/candidate.ts`.
-- An API Gateway endpoint to these functions.
 
-Note: The `serverless-scriptable-plugin` is used to compile `api/candidate.ts` prior to upload
-so there is no init-time download/compilation step.
+Note: The `serverless-scriptable-plugin` is used to compile `api/candidate.ts` prior to deployment
+so that there is no init-time download/compilation step.
 
 ```sh
 # Install serverless-scriptable-plugin:
