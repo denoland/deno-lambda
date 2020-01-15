@@ -44,7 +44,7 @@ jobs:
         sudo apt -qq update &> /dev/null
         sudo apt -qq install -y awscli python3-setuptools &> /dev/null
         aws s3 cp --quiet deno-lambda-layer.zip s3://$DENO_LAMBDA_BUCKET/deno-lambda-layer_$DENO_LAMBDA_VERSION.zip --acl public-read
-        cd layer
+        cd sar
         sed -i -e s/DENO_LAMBDA_BUCKET/$DENO_LAMBDA_BUCKET/g template.yml
         sed -i -e s/DENO_LAMBDA_VERSION/$DENO_LAMBDA_VERSION/g template.yml
         pip3 -q install -U --force pip
