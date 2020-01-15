@@ -68,7 +68,7 @@ See https://github.com/brianleroux/sam-example-deno.
 ### Layer
 
 Deploy the layer via the
-[SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~Deno)
+[SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno)
 or upload the
 [deno-lambda-layer.zip](https://github.com/hayd/deno-lambda/releases)
 manually (see `QUICK-START.md`). Reference the layer by ARN in your Lambda function.
