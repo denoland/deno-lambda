@@ -20,7 +20,7 @@ fi
 DENO_FLAGS="--allow-env --allow-net --allow-plugin --allow-read --allow-run --allow-write"
 DENO_FETCH_FLAGS=""
 
-# Once there is a convention for lock filename we could look for it's existence.
+# Once there is a convention for lock filename we could look for its existence.
 # For now we require it to be passed as an env explicitly.
 DENO_LOCK=${DENO_LOCK-}
 if [[ ! -z "$DENO_LOCK" ]]; then

@@ -36,7 +36,7 @@ The following environment variables can be set to change deno-lambda's behavior:
 
 - `HANDLER_EXT` to set supported extension of handler file e.g. `js` or `bundle.js` (default `ts`).
 - `DENO_CONFIG` so deno runs with `--config=$DENO_CONFIG`.
-- `DENO_DIR` so deno runs with `DENO_DIR=.deno_dir deno ...`.
+- `DENO_DIR` so deno runs with `DENO_DIR=$DENO_DIR deno ...`.
 - `DENO_IMPORTMAP` so deno runs with `--importmap=$DENO_IMPORTMAP`.
 - `DENO_LOCK` so deno runs with `--lock=$DENO_LOCK`.
 
