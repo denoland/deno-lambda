@@ -16,13 +16,6 @@ provider:
       Resource:
         - Fn::GetAtt: [candidatesTable, Arn]
 
-layers:
-  deno:
-    description: "deno"
-    package:
-      artifact: deno-lambda-layer.zip
-# TODO extract this out so we don't redeploy the layer on each push.
-
 package:
   exclude:
     - .deno_dir/gen/file
@@ -34,7 +27,7 @@ functions:
   candidateSubmission:
     handler: api/candidate.submit
     layers:
-      - { Ref: DenoLambdaLayer }
+      - !GetAtt Deno.Outputs.DenoArn
     memorySize: 128
     description: Submit candidate info
     events:
@@ -45,7 +38,7 @@ functions:
   listCandidates:
     handler: api/candidate.list
     layers:
-      - { Ref: DenoLambdaLayer }
+      - !GetAtt Deno.Outputs.DenoArn
     memorySize: 128
     description: List all candidates
     events:
@@ -56,7 +49,7 @@ functions:
   candidateDetails:
     handler: api/candidate.get
     layers:
-      - { Ref: DenoLambdaLayer }
+      - !GetAtt Deno.Outputs.DenoArn
     memorySize: 128
     description: Get candidate by id
     events:
@@ -65,7 +58,15 @@ functions:
           method: get
 
 resources:
+  Transform: AWS::Serverless-2016-10-31
   Resources:
+    Deno:
+      Type: AWS::Serverless::Application
+      Properties:
+        Location:
+          ApplicationId: arn:aws:serverlessrepo:us-east-1:390065572566:applications/Deno
+          SemanticVersion: 0.7.0
+
     candidatesTable:
       Type: AWS::DynamoDB::Table
       Properties:
