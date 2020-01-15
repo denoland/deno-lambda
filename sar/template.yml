@@ -7,8 +7,8 @@ Resources:
   DenoLambdaLayer:
     Type: AWS::Lambda::LayerVersion
     Properties:
-      LayerName: Deno
-      Description: A deno runtime for AWS Lambda - deno-lambda DENO_LAMBDA_VERSION
+      LayerName: deno
+      Description: deno-lambda DENO_LAMBDA_VERSION
       Content:
         S3Bucket: DENO_LAMBDA_BUCKET
         S3Key: deno-lambda-layer_DENO_LAMBDA_VERSION.zip
@@ -19,7 +19,7 @@ Outputs:
 
 Metadata:
   AWS::ServerlessRepo::Application:
-    Name: Deno
+    Name: deno
     Description: |
       A deno runtime for AWS Lambda
     Author: Andy Hayden
@@ -31,4 +31,4 @@ Metadata:
     - typescript
     HomePageUrl: https://github.com/hayd/deno-lambda
     SemanticVersion: DENO_LAMBDA_VERSION
-    SourceCodeUrl: https://github.com/hayd/deno-lambda
+    SourceCodeUrl: https://github.com/hayd/deno-lambda/releases/tag/DENO_LAMBDA_VERSION
