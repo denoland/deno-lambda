@@ -28,6 +28,7 @@ RUN deno fetch /src/tests/deps.ts
 ADD hello.ts /src/runtime/hello.ts
 ADD hello.ts /src/tests/hello.ts
 ADD tests/pad.ts /src/runtime/pad.ts
+ADD tests/pad.ts /src/tests/pad.ts
 ADD runtime /src/runtime
 
 WORKDIR /src/runtime
@@ -36,6 +37,10 @@ RUN sh artifacts \
  && cp bootstrap /src/tests/bootstrap
 
 WORKDIR /src/tests
+# Note: We have to run since fetch doesn't write!
+RUN deno pad.ts --lock-write --lock=./lock.json \
+ && echo {} > badlock.json
+
 ADD tests/server.ts server.ts
 RUN deno fetch server.ts
 

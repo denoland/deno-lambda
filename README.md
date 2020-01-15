@@ -37,6 +37,7 @@ Lambda functions using the [_deno-lambda-layer_](https://github.com/hayd/deno-la
 - Support `Handler` i.e. setting the handler file and function.
 - Use `HANDLER_EXT` to set supported extension e.g. `js` or `bundle.js` (default `ts`).
 - Set `DENO_DIR` for storing cached assets, default `.deno_dir`.
+- Optionally set `DENO_LOCK` and include a lock file so deno runs with `--lock=$DENO_LOCK`.
 
 Further configuration TBD.
 
@@ -50,8 +51,8 @@ APIGateway use `APIGatewayProxyEvent` and `APIGatewayProxyResult`, SQS use `SQSE
 
 ## Examples
 
-- [x] Hello example ([`deno-lambda-example.zip`](https://github.com/hayd/deno-lambda/releases/))
-- [x] Web example (behind API Gateway) using dynamodb, see `/example` directory.
+- Hello example ([`deno-lambda-example.zip`](https://github.com/hayd/deno-lambda/releases/))
+- Web example (behind API Gateway) using dynamodb, see `/example` directory.
 
 ## Deployment
 
