@@ -1,0 +1,12 @@
+{
+  "env": { "_HANDLER": "pad.assertLock", "DENO_LOCK": "badlock.json" },
+  "events": [{ "hello": "deno" }],
+  "expected": [
+    {
+      "status": "error",
+      "content": "{\"errorMessage\" : \"lock file error: Subresource integrity check failed --lock=badlock.json\nhttps://deno.land/std/strings/pad.ts\", \"errorType\" : \"InitException\"}"
+    }
+  ],
+  "files": ["pad.ts", "badlock.json"],
+  "layer": "deno-lambda-layer.zip"
+}

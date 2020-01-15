@@ -14,6 +14,32 @@ if [[ -z "$DENO_DIR" ]]; then
   DENO_DIR=.deno_dir
 fi
 
+# Potentially this could be overwritten HOWEVER several permissions are required for bootstrap.
+# FIXME should this simply be -A?
+# FIXME can plugins work?? (If so, it should be documented.)
+DENO_FLAGS="--allow-env --allow-net --allow-plugin --allow-read --allow-run --allow-write"
+DENO_FETCH_FLAGS=""
+
+# Once there is a convention for lock filename we could look for it's existence.
+# For now we require it to be passed as an env explicitly.
+DENO_LOCK=${DENO_LOCK-}
+if [[ ! -z "$DENO_LOCK" ]]; then
+  DENO_FLAGS="$DENO_FLAGS --lock=$DENO_LOCK"
+  DENO_FETCH_FLAGS="$DENO_FETCH_FLAGS --lock=$DENO_LOCK"
+fi
+
+DENO_CONFIG=${DENO_CONFIG-}
+if [[ ! -z "$DENO_CONFIG" ]]; then
+  DENO_FLAGS="$DENO_FLAGS --config=$DENO_CONFIG"
+  DENO_FETCH_FLAGS="$DENO_FETCH_FLAGS --config=$DENO_CONFIG"
+fi
+
+DENO_IMPORTMAP=${DENO_IMPORTMAP-}
+if [[ ! -z "$DENO_IMPORTMAP" ]]; then
+  DENO_FLAGS="$DENO_FLAGS --importmap=$DENO_IMPORTMAP"
+  DENO_FETCH_FLAGS="$DENO_FETCH_FLAGS --importmap=$DENO_IMPORTMAP"
+fi
+
 # whether to use ts, js, bundle.js, etc.
 HANDLER_EXT=${HANDLER_EXT-'ts'}
 HANDLER_FILE=${HANDLER_FILE}.${HANDLER_EXT}
@@ -43,14 +69,23 @@ function investigate {
   [ -f $LAMBDA_TASK_ROOT/$HANDLER_FILE ] \
    || error "missing expected handler file '$HANDLER_FILE'"
 
-  DENO_DIR=/tmp/deno_dir NO_COLOR=true $SCRIPT_DIR/amz-deno fetch $LAMBDA_TASK_ROOT/$HANDLER_FILE \
+  if [[ ! -z "$DENO_LOCK" ]]; then
+    [ -f $DENO_LOCK ] \
+     || error "missing lock file '$DENO_LOCK'"
+    # This second check might be unecessary (in that it would be caught by the 'unable to compile')
+    DENO_DIR=/tmp/deno_dir NO_COLOR=true $SCRIPT_DIR/amz-deno fetch $DENO_FETCH_FLAGS $LAMBDA_TASK_ROOT/$HANDLER_FILE &> /tmp/lock.out \
+     || error "lock file error: $(cat /tmp/lock.out)"
+  fi
+
+  DENO_DIR=/tmp/deno_dir NO_COLOR=true $SCRIPT_DIR/amz-deno fetch $DENO_FETCH_FLAGS $LAMBDA_TASK_ROOT/$HANDLER_FILE 2> /dev/null \
    || error "unable to compile $HANDLER_FILE"
 
   echo "import { $HANDLER_NAME } from '$LAMBDA_TASK_ROOT/$HANDLER_FILE';" > /tmp/runtime-test.js
-  DENO_DIR=/tmp/deno_dir NO_COLOR=true $SCRIPT_DIR/amz-deno fetch /tmp/runtime-test.js 2> /dev/null \
+  DENO_DIR=/tmp/deno_dir NO_COLOR=true $SCRIPT_DIR/amz-deno fetch $DENO_IMPORTMAP /tmp/runtime-test.js 2> /dev/null \
    || error "$HANDLER_FILE must export a function named '$HANDLER_NAME'";
 
-  # perhaps a bug in bootstrap? Should we always exit 1?
+  # FIXME perhaps a bug in bootstrap? Should we always exit 1? Or not?
+  error "deno exited"
 }
 
 # Note: This is a js file to avoid a runtime compilation step.
@@ -135,5 +170,6 @@ cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/gen/. /tmp/deno_dir/gen &> /dev/null \
  && cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/LAMBDA_TASK_ROOT/. /tmp/deno_dir/gen/file$LAMBDA_TASK_ROOT &> /dev/null \
  || echo "warn: unable to import '$DENO_DIR/' as DENO_DIR"
 
-DENO_DIR=/tmp/deno_dir NO_COLOR=true $SCRIPT_DIR/amz-deno run --allow-net --allow-read --allow-env /tmp/runtime.js \
+# FIXME remove DENO_FLAGS=DENO_FLAGS environment variable setting.
+DENO_DIR=/tmp/deno_dir DENO_FLAGS=$DENO_FLAGS NO_COLOR=true $SCRIPT_DIR/amz-deno run $DENO_FLAGS /tmp/runtime.js \
  || investigate;

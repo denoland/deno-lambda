@@ -28,15 +28,17 @@ export async function handler(
 }
 ```
 
-_The default handler function is `hello.handler` but this can be configured by the `Handler` setting._
+_Here the handler is `hello.handler` but this can be configured by the `Handler` setting._
 
 ## Configuration
 
-Lambda functions using the [_deno-lambda-layer_](https://github.com/hayd/deno-lambda/releases):
+The following environment variables can be set to change deno-lambda's behavior:
 
-- Support `Handler` i.e. setting the handler file and function.
-- Use `HANDLER_EXT` to set supported extension e.g. `js` or `bundle.js` (default `ts`).
-- Set `DENO_DIR` for storing cached assets, default `.deno_dir`.
+- `HANDLER_EXT` to set supported extension of handler file e.g. `js` or `bundle.js` (default `ts`).
+- `DENO_CONFIG` so deno runs with `--config=$DENO_CONFIG`.
+- `DENO_DIR` so deno runs with `DENO_DIR=.deno_dir deno ...`.
+- `DENO_IMPORTMAP` so deno runs with `--importmap=$DENO_IMPORTMAP`.
+- `DENO_LOCK` so deno runs with `--lock=$DENO_LOCK`.
 
 Further configuration TBD.
 
@@ -50,8 +52,8 @@ APIGateway use `APIGatewayProxyEvent` and `APIGatewayProxyResult`, SQS use `SQSE
 
 ## Examples
 
-- [x] Hello example ([`deno-lambda-example.zip`](https://github.com/hayd/deno-lambda/releases/))
-- [x] Web example (behind API Gateway) using dynamodb, see `/example` directory.
+- Hello example ([`deno-lambda-example.zip`](https://github.com/hayd/deno-lambda/releases/))
+- Web example (behind API Gateway) using dynamodb, see `/example` directory.
 
 ## Deployment
 
