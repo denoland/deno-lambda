@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sam-hello
+
+  Sample SAM Template for hello.ts
+
+Resources:
+  Deno:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location:
+        ApplicationId: arn:aws:serverlessrepo:us-east-1:390065572566:applications/deno
+        SemanticVersion: 0.8.0
+
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: .
+      MemorySize: 128
+      Handler: hello.handler
+      Runtime: provided
+      Layers:
+        - !GetAtt Deno.Outputs.DenoArn
+      Events:
+        ApiEvent:
+          Type: HttpApi
