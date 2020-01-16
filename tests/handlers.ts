@@ -23,7 +23,12 @@ export async function withContext(
   event: APIGatewayProxyEvent,
   context: Context
 ) {
-  return { name: context.functionName, awsRequestId: context.awsRequestId, clientContext: context.clientContext,  identity: context.identity };
+  return {
+    name: context.functionName,
+    awsRequestId: context.awsRequestId,
+    clientContext: context.clientContext,
+    identity: context.identity
+  };
 }
 
 // TODO add a test for this behavior.
