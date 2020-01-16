@@ -93,23 +93,40 @@ function investigate {
 echo "
 import { $HANDLER_NAME } from '$LAMBDA_TASK_ROOT/$HANDLER_FILE';
 const INVOCATION = '${API_ROOT}invocation/';
+function tryParse(headers, headerName) {
+  const json = headers.get(headerName);
+  if (json) {
+    try {
+      return JSON.parse(json)
+    } catch (e) {
+      console.error(
+        'Unable to parse header \'' + headerName + '\' value as JSON: ' + json)
+    }
+  }
+}
+
 while (true) {
   const next = await fetch(INVOCATION + 'next');
   const headers = next.headers;
-  const reqId = headers.get('Lambda-Runtime-Aws-Request-Id');
+  const reqId = headers.get('lambda-runtime-aws-request-id');
   const context = {
     functionName: '$AWS_LAMBDA_FUNCTION_NAME',
     functionVersion: '$AWS_LAMBDA_FUNCTION_VERSION',
     invokedFunctionArn: headers.get('lambda-runtime-invoked-function-arn'),
-    memoryLimitInMB: $AWS_LAMBDA_FUNCTION_MEMORY_SIZE,
+    memoryLimitInMB: '$AWS_LAMBDA_FUNCTION_MEMORY_SIZE',
     awsRequestId: headers.get('lambda-runtime-aws-request-id'),
     logGroupName: '$AWS_LAMBDA_LOG_GROUP_NAME',
     logStreamName: '$AWS_LAMBDA_LOG_STREAM_NAME',
-    identity: undefined,
-    clientContext: undefined,
+    identity: tryParse(headers, 'lambda-runtime-cognito-identity'),
+    clientContext: tryParse(headers, 'lambda-runtime-client-context'),
     getRemainingTimeInMillis: function() {
       return Number(headers.get('lambda-runtime-deadline-ms')) - Date.now();
-    }
+    },
+    // FIXME: we add these for type compatibility with Definitely Typed.
+    callbackWaitsForEmptyEventLoop: undefined,
+    done: undefined,
+    fail: undefined,
+    succeed: undefined
   }
   let res;
   try {
@@ -170,6 +187,12 @@ cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/gen/. /tmp/deno_dir/gen &> /dev/null \
  && cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/LAMBDA_TASK_ROOT/. /tmp/deno_dir/gen/file$LAMBDA_TASK_ROOT &> /dev/null \
  || echo "warn: unable to import '$DENO_DIR/' as DENO_DIR"
 
-# FIXME remove DENO_FLAGS=DENO_FLAGS environment variable setting.
+# FIXME remove DENO_FLAGS=DENO_FLAGS environment variable setting (used in testing only).
 DENO_DIR=/tmp/deno_dir DENO_FLAGS=$DENO_FLAGS NO_COLOR=true $SCRIPT_DIR/amz-deno run $DENO_FLAGS /tmp/runtime.js \
  || investigate;
+
+# For debugging purposes of the bootstrap script itself it's useful to change the extension to /tmp/runtime.ts
+# and run this code instead to get more verbose and type errors during testing.
+# Note: on production you will see the verbose error message anyway in cloudwatch logs.
+# DENO_DIR=/tmp/deno_dir DENO_FLAGS=$DENO_FLAGS NO_COLOR=true $SCRIPT_DIR/amz-deno run $DENO_FLAGS /tmp/runtime.ts &> /tmp/fail.out \
+#  || error "error: $(cat /tmp/fail.out)"

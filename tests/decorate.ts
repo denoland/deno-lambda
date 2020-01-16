@@ -1,4 +1,4 @@
-function decorate(target) { }
+function decorate(target) {}
 
 @decorate
 class Foo {}
