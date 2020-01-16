@@ -14,7 +14,7 @@ Resources:
         S3Key: deno-lambda-layer_DENO_LAMBDA_VERSION.zip
 
 Outputs:
-  DenoArn:
+  LayerArn:
     Value: !Ref DenoLambdaLayer
 
 Metadata:
