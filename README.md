@@ -50,28 +50,24 @@ listed in https://deno.land/x/lambda/mod.ts and defined in https://deno.land/x/l
 It's good practice to reference the trigger's type in the handler, for example:
 APIGateway use `APIGatewayProxyEvent` and `APIGatewayProxyResult`, SQS use `SQSEvent`, etc.
 
-## Examples
+## How to deploy
 
-- Hello example ([`deno-lambda-example.zip`](https://github.com/hayd/deno-lambda/releases/))
-- Web example (behind API Gateway) using dynamodb, see `/example-serverless` directory.
-
-## Deployment
-
-### Serverless
-
-See /example-serverless.
-
-### SAM
-
-See https://github.com/brianleroux/sam-example-deno.
-
-### Layer
-
-Deploy the layer via the
+The recommended way to deploy is to use the
 [SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno)
-or upload the
-[deno-lambda-layer.zip](https://github.com/hayd/deno-lambda/releases)
-manually (see `QUICK-START.md`). Reference the layer by ARN in your Lambda function.
+and either reference the outputted `LayerArn` as a layer in your function.
+
+- [SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno)
+- [SAM example](https://github.com/hayd/deno-lambda/tree/master/example-sam)
+- [Serverless example])(https://github.com/hayd/deno-lambda/tree/master/example-serverless)
+  (feat. [Dynamodb](https://github.com/chiefbiiko/dynamodb/))
+- Zipped source example, [`deno-lambda-example.zip`](https://github.com/hayd/deno-lambda/releases/),
+  see [bundling-code](https://github.com/hayd/deno-lambda/blob/master/README.md#bundling-code) section.
+
+_See [`QUICK-START.md`](https://github.com/hayd/deno-lambda/blob/master/QUICK-START.md)
+for a walkthrough of how to bundle yourself._
+
+See the [deno_dir-remapping](https://github.com/hayd/deno-lambda/blob/master/README.md#deno_dir-remapping)
+section for how to include the correct DENO_DIR files to avoid any runtime compilation.
 
 ## Warning
 
@@ -101,22 +97,24 @@ If you need to return immediately but want to invoke a longer running process yo
 [async-invoke](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html)
 another lambda function (that does the `await somethingAsync()`).
 
+---
+
 ## Bundling code
 
 Create a zip file which contains:
 
 - an entry point which exports an async function (e.g. `hello.ts`)
-- any other files needed to run the entry file
-- (optional) .deno_dir directory\*
+- include any other files needed to run the entry file
+- (optional) .deno_dir directory
 
-\*You can use a different directory by passing it as the `DENO_DIR` environment variable.
+\*You can use a different directory with `DENO_DIR` environment variable.
 
-_Alternatively you can use `deno bundle` command and upload a zipfile containing this js output._
+_Alternatively use `deno bundle` command and include the outputted js file._
 
-### DENO_DIR remapping
+## DENO_DIR remapping
 
-Zip the source files and `DENO_DIR`. In order for compile artifacts to be recovered
-(avoiding runtime compilation) you must do the following directory remapping:
+In order for compile artifacts to be recovered (and avoid runtime compilation)
+you must do the following directory remapping:
 
 ```
 # Compile the handler (and fetch dependencies into DENO_DIR).
@@ -128,6 +126,8 @@ cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT
 
 zip lambda.zip -x '.deno_dir/gen/file/*' -r .deno_dir hello.ts  # other source files
 ```
+
+### Serverless pre-deploy remapping
 
 In a `serverless.yml` this can be automatically prior to each upload using the
 [`serverless-scriptable-plugin`](https://www.npmjs.com/package/serverless-scriptable-plugin):
@@ -141,7 +141,7 @@ custom:
     before:package:createDeploymentArtifacts: DENO_DIR=.deno_dir deno fetch api/candidate.ts && cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT
 ```
 
-See `example/serverless.yml`.
+See [`example-serverless/serverless.yml`](https://github.com/hayd/deno-lambda/blob/master/example-serverless/serverless.yml).
 
 ---
 
