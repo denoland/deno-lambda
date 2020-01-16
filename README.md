@@ -58,7 +58,7 @@ and either reference the outputted `LayerArn` as a layer in your function.
 
 - [SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno)
 - [SAM example](https://github.com/hayd/deno-lambda/tree/master/example-sam)
-- [Serverless example])(https://github.com/hayd/deno-lambda/tree/master/example-serverless)
+- [Serverless example](https://github.com/hayd/deno-lambda/tree/master/example-serverless)
   (feat. [Dynamodb](https://github.com/chiefbiiko/dynamodb/))
 - Zipped source example, [`deno-lambda-example.zip`](https://github.com/hayd/deno-lambda/releases/),
   see [bundling-code](https://github.com/hayd/deno-lambda/blob/master/README.md#bundling-code) section.
@@ -96,6 +96,10 @@ export async function goodHandler(
 If you need to return immediately but want to invoke a longer running process you can
 [async-invoke](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html)
 another lambda function (that does the `await somethingAsync()`).
+
+## Related Projects
+
+- [deno support for architect](https://blog.begin.com/deno-runtime-support-for-architect-805fcbaa82c3)
 
 ---
 
