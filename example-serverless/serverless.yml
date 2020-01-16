@@ -19,7 +19,6 @@ provider:
 package:
   exclude:
     - .deno_dir/gen/file
-    - deno-lambda-layer.zip
     - node_modules
     - package-lock.json
 
@@ -27,7 +26,7 @@ functions:
   candidateSubmission:
     handler: api/candidate.submit
     layers:
-      - !GetAtt Deno.Outputs.DenoArn
+      - !GetAtt Deno.Outputs.LayerArn
     memorySize: 128
     description: Submit candidate info
     events:
@@ -38,7 +37,7 @@ functions:
   listCandidates:
     handler: api/candidate.list
     layers:
-      - !GetAtt Deno.Outputs.DenoArn
+      - !GetAtt Deno.Outputs.LayerArn
     memorySize: 128
     description: List all candidates
     events:
@@ -49,7 +48,7 @@ functions:
   candidateDetails:
     handler: api/candidate.get
     layers:
-      - !GetAtt Deno.Outputs.DenoArn
+      - !GetAtt Deno.Outputs.LayerArn
     memorySize: 128
     description: Get candidate by id
     events:
@@ -65,7 +64,7 @@ resources:
       Properties:
         Location:
           ApplicationId: arn:aws:serverlessrepo:us-east-1:390065572566:applications/deno
-          SemanticVersion: 0.0.9
+          SemanticVersion: 0.9.0
 
     candidatesTable:
       Type: AWS::DynamoDB::Table
