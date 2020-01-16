@@ -1,0 +1,34 @@
+{
+  "env": { "_HANDLER": "handlers.withContext" },
+  "events": [{ "hello": "deno" }],
+  "expected": [
+    {
+      "status": "ok",
+      "content": "{\"name\":\"test\",\"awsRequestId\":\"1\",\"clientContext\":{\"client\":{\"installationId\":\"installationId\",\"appTitle\":\"appTitle\",\"appVersionName\":\"versionName\",\"appVersionCode\":\"versionCode\",\"appPackageName\":\"packageName\"},\"env\":{\"platformVersion\":\"platformVersion\",\"platform\":\"platform\",\"make\":\"make\",\"model\":\"model\",\"locale\":\"locale\"}},\"identity\":{\"cognitoIdentityId\":\"us-east-1:605249a8-8fc1-40ed-bf89-23bc74ecc232\",\"cognitoIdentityPoolId\":\"us-east-1:1699ebc0-7900-4099-b910-2df94f52a030\"}}"
+    }
+  ],
+  "files": ["handlers.ts"],
+  "layer": "deno-lambda-layer.zip",
+  "headers": {
+    "Lambda-Runtime-Client-Context": {
+      "client": {
+        "installationId": "installationId",
+        "appTitle": "appTitle",
+        "appVersionName": "versionName",
+        "appVersionCode": "versionCode",
+        "appPackageName": "packageName"
+      },
+      "env": {
+        "platformVersion": "platformVersion",
+        "platform": "platform",
+        "make": "make",
+        "model": "model",
+        "locale": "locale"
+      }
+    },
+    "Lambda-Runtime-Cognito-Identity": {
+      "cognitoIdentityId": "us-east-1:605249a8-8fc1-40ed-bf89-23bc74ecc232",
+      "cognitoIdentityPoolId": "us-east-1:1699ebc0-7900-4099-b910-2df94f52a030"
+    }
+  }
+}
