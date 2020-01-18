@@ -67,7 +67,10 @@ export async function serveEvents(testJson) {
         });
         if (testJson.headers) {
           for (let [k, v] of Object.entries(testJson.headers)) {
-            headers.append(k, JSON.stringify(v));
+            if (Object.prototype.toString.call(v) !== "[object String]") {
+              v = JSON.stringify(v);
+            }
+            headers.append(k, v.toString());
           }
         }
         await req.respond({

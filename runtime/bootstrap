@@ -93,14 +93,16 @@ function investigate {
 echo "
 import { $HANDLER_NAME } from '$LAMBDA_TASK_ROOT/$HANDLER_FILE';
 const INVOCATION = '${API_ROOT}invocation/';
-function tryParse(headers, headerName) {
+
+function maybeJson(headers, headerName) {
   const json = headers.get(headerName);
   if (json) {
     try {
-      return JSON.parse(json)
+      return JSON.parse(json);
     } catch (e) {
       console.error(
-        'Unable to parse header \'' + headerName + '\' value as JSON: ' + json)
+        'Unable to parse header', headerName, 'value as JSON:', json
+      );
     }
   }
 }
@@ -109,6 +111,7 @@ while (true) {
   const next = await fetch(INVOCATION + 'next');
   const headers = next.headers;
   const reqId = headers.get('lambda-runtime-aws-request-id');
+  Deno.env()._X_AMZN_TRACE_ID = headers.get('lambda-runtime-trace-id') || '';
   const context = {
     functionName: '$AWS_LAMBDA_FUNCTION_NAME',
     functionVersion: '$AWS_LAMBDA_FUNCTION_VERSION',
@@ -117,12 +120,12 @@ while (true) {
     awsRequestId: headers.get('lambda-runtime-aws-request-id'),
     logGroupName: '$AWS_LAMBDA_LOG_GROUP_NAME',
     logStreamName: '$AWS_LAMBDA_LOG_STREAM_NAME',
-    identity: tryParse(headers, 'lambda-runtime-cognito-identity'),
-    clientContext: tryParse(headers, 'lambda-runtime-client-context'),
+    identity: maybeJson(headers, 'lambda-runtime-cognito-identity'),
+    clientContext: maybeJson(headers, 'lambda-runtime-client-context'),
     getRemainingTimeInMillis: function() {
       return Number(headers.get('lambda-runtime-deadline-ms')) - Date.now();
     },
-    // FIXME: we add these for type compatibility with Definitely Typed.
+    // NOTE: we add these for type compatibility with Definitely Typed.
     callbackWaitsForEmptyEventLoop: undefined,
     done: undefined,
     fail: undefined,
