@@ -45,3 +45,7 @@ export async function noArgs() {
 export async function wrongArgs(a: number, b: number, c: number) {
   return { result: a * b * c };
 }
+
+export async function xray(event, context) {
+  return { "_X_AMZN_TRACE_ID": Deno.env("_X_AMZN_TRACE_ID") }
+}
