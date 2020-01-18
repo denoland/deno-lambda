@@ -1,6 +1,7 @@
-# Deno Lambda Layer
+# Deno Hello World
 
-A custom runtime for [deno](https://github.com/denoland/deno) applications.
+An example [deno](https://github.com/denoland/deno) lambda function on top of the
+[deno SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno).
 
 ```ts
 import {
