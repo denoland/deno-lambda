@@ -1,17 +1,19 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  A deno runtime for AWS Lambda
+  Deno runtime for AWS Lambda
 
 Resources:
   DenoLambdaLayer:
-    Type: AWS::Lambda::LayerVersion
+    Type: AWS::Serverless::LayerVersion
     Properties:
       LayerName: deno
-      Description: deno-lambda DENO_LAMBDA_VERSION
-      Content:
-        S3Bucket: DENO_LAMBDA_BUCKET
-        S3Key: deno-lambda-layer_DENO_LAMBDA_VERSION.zip
+      ContentUri:
+        Bucket: DENO_LAMBDA_BUCKET
+        Key: deno-lambda-layer_DENO_LAMBDA_VERSION.zip
+      Description: deno runtime (deno-lambda@DENO_LAMBDA_VERSION)
+      LicenseInfo: MIT
+      RetentionPolicy: Retain
 
 Outputs:
   LayerArn:
@@ -21,7 +23,7 @@ Metadata:
   AWS::ServerlessRepo::Application:
     Name: deno
     Description: |
-      A deno runtime for AWS Lambda
+      Deno runtime for AWS Lambda
     Author: Andy Hayden
     SpdxLicenseId: MIT
     Labels:
