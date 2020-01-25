@@ -91,7 +91,7 @@ function investigate {
 # Note: This is a js file to avoid a runtime compilation step.
 # Hopefully $HANDLER_FILE's compilation is cached in DENO_DIR.
 echo "
-import { $HANDLER_NAME } from '$LAMBDA_TASK_ROOT/$HANDLER_FILE';
+import { $HANDLER_NAME as handle } from '$LAMBDA_TASK_ROOT/$HANDLER_FILE';
 const INVOCATION = '${API_ROOT}invocation/';
 
 function maybeJson(headers, headerName) {
@@ -106,6 +106,18 @@ function maybeJson(headers, headerName) {
     }
   }
 }
+
+const log = console.log;
+// In order to support multiline cloudwatch logs we replace \n with \r.
+// see https://github.com/hayd/deno-lambda/issues/40
+console.log = (...args) => {
+  const text = Deno[Deno.symbols.internal].stringifyArgs(args);
+  log(text.replace(/\n/g, '\r') + '\n');
+}
+console.debug = console.log;
+console.info = console.log;
+console.warn = console.log;
+console.error = console.log;
 
 while (true) {
   const next = await fetch(INVOCATION + 'next');
@@ -134,7 +146,7 @@ while (true) {
   let res;
   try {
     const event = await next.json();
-    const body = await $HANDLER_NAME(event, context);
+    const body = await handle(event, context);
     res = await fetch(INVOCATION + reqId + '/response', {
       method: 'POST',
       body: JSON.stringify(body)
