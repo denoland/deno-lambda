@@ -1,6 +1,6 @@
 # Note: This must be built in the .. context
 
-FROM hayd/deno:amazonlinux1-0.29.0
+FROM hayd/deno:amazonlinux1-0.31.0
 # This is the runtime used by AWS Lambda
 # plus a compatible deno executable /bin/deno.
 # https://github.com/hayd/deno_docker
@@ -38,7 +38,7 @@ RUN sh artifacts \
 
 WORKDIR /src/tests
 # Note: We have to run since fetch doesn't write!
-RUN deno pad.ts --lock-write --lock=./lock.json \
+RUN deno run --lock-write --lock=lock.json pad.ts \
  && echo {} > badlock.json
 
 ADD tests/server.ts server.ts
