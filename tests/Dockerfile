@@ -14,13 +14,15 @@ ENV AWS_LAMBDA_RUNTIME_API=127.0.0.1:1993 \
     AWS_LAMBDA_FUNCTION_MEMORY_SIZE=128 \
     AWS_LAMBDA_LOG_GROUP_NAME=log-group \
     AWS_LAMBDA_LOG_STREAM_NAME=log-stream \
+    PATH=/usr/local/bin:/usr/bin/:/bin:/opt/bin \
+    LD_LIBRARY_PATH=/lib64:/usr/lib64:/var/runtime:/var/runtime/lib:/var/task:/var/task/lib:/opt/lib \
     _IN_DOCKER=true
 
 # /var/task has function code
 # /opt has the layer code
-RUN mkdir -p /src/runtime /src/tests /var/task /opt \
- && cp /bin/deno /src/runtime/amz-deno \
- && cp /bin/deno /src/tests/amz-deno
+RUN mkdir -p /src/runtime/bin /src/tests/bin /var/task /opt \
+ && cp /bin/deno /src/runtime/bin/deno \
+ && cp /bin/deno /src/tests/bin/deno
 
 ADD tests/deps.ts /src/tests/deps.ts
 RUN deno fetch /src/tests/deps.ts

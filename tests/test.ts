@@ -28,6 +28,7 @@ async function addFiles(
       args: ["unzip", "-qq", `/src/runtime/${zipFile}`, "-d", toDir]
     }).status();
   } else {
+    await Deno.mkdir(toDir + "/bin");
     const files = zipOrFiles;
     for await (const f of files) {
       await Deno.copyFile(`/src/tests/${f}`, `${toDir}/${f}`);
