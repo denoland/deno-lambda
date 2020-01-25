@@ -42,6 +42,13 @@ export async function noArgs() {
   return {};
 }
 
+export async function runDeno(event, context) {
+  const r = Deno.run({ args: ["deno", "--version"], stdout: "piped" });
+  const out = await r.output()
+  const version = new TextDecoder().decode(out).split('\n')[0];
+  return { out: version };
+}
+
 export async function wrongArgs(a: number, b: number, c: number) {
   return { result: a * b * c };
 }

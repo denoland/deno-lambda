@@ -11,5 +11,5 @@
       "content": "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html;charset=utf8\"},\"body\":\"Welcome to deno 0.31.0 🦕\"}"
     }
   ],
-  "files": ["hello.ts", "bootstrap", "amz-deno"]
+  "files": ["hello.ts", "bootstrap", "bin/deno"]
 }
