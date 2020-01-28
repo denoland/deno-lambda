@@ -4,11 +4,11 @@
   "expected": [
     {
       "status": "ok",
-      "content": "{\"log\":[[\"deno\"],[\"i warned you\"],[\"uh oh\"]]}"
+      "content": "{\"log\":[\"INFO\\tRequestId: a\\r{\\r  \\\"message\\\": \\\"deno\\\"\\r}\",\"WARN\\tRequestId: a\\ri warned you\",\"ERROR\\tRequestId: a\\ruh oh\"]}"
     },
     {
       "status": "ok",
-      "content": "{\"log\":[[\"again\"],[\"i warned you\"],[\"uh oh\"]]}"
+      "content": "{\"log\":[\"INFO\\tRequestId: b\\r{\\r  \\\"message\\\": \\\"again\\\"\\r}\",\"WARN\\tRequestId: b\\ri warned you\",\"ERROR\\tRequestId: b\\ruh oh\"]}"
     }
   ],
   "files": ["handlers.ts"],

@@ -45,7 +45,9 @@ export async function serveEvents(testJson) {
         responses.push(JSON.stringify({ status: "error", content: body }));
         await req.respond({ body: statusOK });
         break;
-      } else if (req.url.endsWith(`/${reqId}/error`)) {
+      } else if (
+        req.url.endsWith(`/${String.fromCharCode(96 + reqId)}/error`)
+      ) {
         const body = dec.decode(await Deno.readAll(req.body));
         responses.push(JSON.stringify({ status: "error", content: body }));
       } else {
@@ -62,7 +64,8 @@ export async function serveEvents(testJson) {
         const headers = new Headers({
           "lambda-runtime-invoked-function-arn":
             "arn:aws:lambda:us-east-1:776893852117:function:test",
-          "lambda-runtime-aws-request-id": reqId.toString(),
+          // start at a.
+          "lambda-runtime-aws-request-id": String.fromCharCode(96 + reqId),
           "lambda-runtime-deadline-ms": (Date.now() + 300000).toString()
         });
         if (testJson.headers) {

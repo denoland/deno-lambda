@@ -1,17 +1,17 @@
 {
   "env": {
     "_HANDLER": "handlers.log",
-    "DENO_CONSOLELOG_PREFIX": "${requestId} ${level} "
+    "DENO_PREFIX": "${requestId} ${level} "
   },
   "events": [{ "hello": "deno" }, { "hello": "again" }],
   "expected": [
     {
       "status": "ok",
-      "content": "{\"log\":[[\"1 INFO deno\"],[\"1 WARN i warned you\"],[\"1 ERROR uh oh\"]]}"
+      "content": "{\"log\":[\"a INFO {\\r  \\\"message\\\": \\\"deno\\\"\\r}\",\"a WARN i warned you\",\"a ERROR uh oh\"]}"
     },
     {
       "status": "ok",
-      "content": "{\"log\":[[\"2 INFO again\"],[\"2 WARN i warned you\"],[\"2 ERROR uh oh\"]]}"
+      "content": "{\"log\":[\"b INFO {\\r  \\\"message\\\": \\\"again\\\"\\r}\",\"b WARN i warned you\",\"b ERROR uh oh\"]}"
     }
   ],
   "files": ["handlers.ts"],

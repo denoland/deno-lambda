@@ -40,7 +40,7 @@ if [[ ! -z "$DENO_IMPORTMAP" ]]; then
   DENO_FETCH_FLAGS="$DENO_FETCH_FLAGS --importmap=$DENO_IMPORTMAP"
 fi
 
-DENO_CONSOLELOG_PREFIX=${DENO_CONSOLELOG_PREFIX-}
+DENO_PREFIX=${DENO_PREFIX-"\${level}\tRequestId: \${requestId}\r"}
 
 # whether to use ts, js, bundle.js, etc.
 HANDLER_EXT=${HANDLER_EXT-'ts'}
@@ -109,17 +109,24 @@ function maybeJson(headers, headerName) {
   }
 }
 
-const prefix = Deno.env('DENO_CONSOLELOG_PREFIX')
-const interpolate = prefix ? (params) => {
+const prefix = Deno.env('DENO_PREFIX')
+let interpolate = prefix ? (params) => {
   const names = Object.keys(params);
   const vals = Object.values(params);
   return new Function(...names, \`return \\\`\${prefix}\\\`;\`)(...vals);
 } : (x) => { return '' };
 
+try {
+  interpolate({ requestId: 'a', level: 'TEST' });
+} catch (e) {
+  console.log('warn: DENO_PREFIX', e.message);
+  interpolate = x => { return ''; };
+}
+
 const log = console.log;
 // In order to support multiline cloudwatch logs we replace \n with \r.
 // see https://github.com/hayd/deno-lambda/issues/40
-// we also prefix log events with \`\${DENO_CONSOLELOG_PREFIX}\`
+// we also prefix log events with DENO_PREFIX
 
 let requestId;
 const logger = (level) => {
@@ -131,7 +138,7 @@ const logger = (level) => {
 }
 console.log = logger('INFO');
 console.debug = logger('DEBUG');
-console.info =logger('INFO');
+console.info = logger('INFO');
 console.warn = logger('WARN');
 console.error = logger('ERROR');
 
@@ -219,7 +226,7 @@ cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/gen/. /tmp/deno_dir/gen &> /dev/null \
  || echo "warn: unable to import '$DENO_DIR/' as DENO_DIR"
 
 # FIXME remove DENO_FLAGS=DENO_FLAGS environment variable setting (used in testing only).
-DENO_DIR=/tmp/deno_dir DENO_FLAGS=$DENO_FLAGS NO_COLOR=true deno run $DENO_FLAGS /tmp/runtime.js \
+DENO_DIR=/tmp/deno_dir DENO_PREFIX=$DENO_PREFIX DENO_FLAGS=$DENO_FLAGS NO_COLOR=true deno run $DENO_FLAGS /tmp/runtime.js \
  || investigate;
 
 # For debugging purposes of the bootstrap script itself it's useful to change the extension to /tmp/runtime.ts

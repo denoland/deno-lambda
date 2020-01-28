@@ -41,11 +41,29 @@ console.log = (...args) => {
 };
 export async function log(event, context) {
   LOGGED = [];
-  const message = event.hello;
+  // pretty print with newlines
+  const message = JSON.stringify({ message: event.hello }, null, 2);
   console.log(message);
   console.warn("i warned you");
   console.error("uh oh");
-  return { log: LOGGED };
+  return {
+    log: LOGGED.map(v => {
+      if (v.length !== 1) {
+        throw new Error("expected only one string passed to console.log");
+      }
+      return v[0].replace(/[0-9]/g, "0");
+    })
+  };
+}
+
+export async function badPrefix(event, context) {
+  // assert warning message on init:
+  console.log(event.hello);
+  const log = LOGGED.map(args => {
+    return Deno[Deno.symbols.internal].stringifyArgs(args);
+  });
+  LOGGED = [];
+  return { log: log };
 }
 
 export async function noArgs() {
