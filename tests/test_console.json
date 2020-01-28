@@ -4,11 +4,11 @@
   "expected": [
     {
       "status": "ok",
-      "content": "{\"message\":\"deno\"}"
+      "content":"{\"log\":[[\"deno\"],[\"i warned you\"],[\"uh oh\"]]}"
     },
     {
       "status": "ok",
-      "content": "{\"message\":\"again\"}"
+      "content": "{\"log\":[[\"again\"],[\"i warned you\"],[\"uh oh\"]]}"
     }
   ],
   "files": ["handlers.ts"],

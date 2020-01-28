@@ -31,11 +31,21 @@ export async function withContext(
   };
 }
 
-// TODO add a test for this behavior.
+// Note: This is evaluated prior to the redefinition of console.log in bootstrap.
+// This is a devious trick to catch the output of console.log and friends.
+let LOGGED = [];
+const _log = console.log;
+console.log = (...args) => {
+  LOGGED.push(args);
+  _log(args);
+}
 export async function log(event, context) {
+  LOGGED = [];
   const message = event.hello;
   console.log(message);
-  return { message };
+  console.warn("i warned you");
+  console.error("uh oh");
+  return { log: LOGGED };
 }
 
 export async function noArgs() {
