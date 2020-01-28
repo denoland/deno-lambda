@@ -38,7 +38,7 @@ const _log = console.log;
 console.log = (...args) => {
   LOGGED.push(args);
   _log(args);
-}
+};
 export async function log(event, context) {
   LOGGED = [];
   const message = event.hello;
@@ -54,8 +54,8 @@ export async function noArgs() {
 
 export async function runDeno(event, context) {
   const r = Deno.run({ args: ["deno", "--version"], stdout: "piped" });
-  const out = await r.output()
-  const version = new TextDecoder().decode(out).split('\n')[0];
+  const out = await r.output();
+  const version = new TextDecoder().decode(out).split("\n")[0];
   return { out: version };
 }
 
@@ -64,5 +64,5 @@ export async function wrongArgs(a: number, b: number, c: number) {
 }
 
 export async function xray(event, context) {
-  return { "_X_AMZN_TRACE_ID": Deno.env("_X_AMZN_TRACE_ID") }
+  return { _X_AMZN_TRACE_ID: Deno.env("_X_AMZN_TRACE_ID") };
 }

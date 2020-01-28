@@ -1,5 +1,8 @@
 {
-  "env": { "_HANDLER": "handlers.log", "DENO_CONSOLELOG_PREFIX": "${requestId} ${level} " },
+  "env": {
+    "_HANDLER": "handlers.log",
+    "DENO_CONSOLELOG_PREFIX": "${requestId} ${level} "
+  },
   "events": [{ "hello": "deno" }, { "hello": "again" }],
   "expected": [
     {

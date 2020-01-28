@@ -4,7 +4,7 @@
   "expected": [
     {
       "status": "ok",
-      "content":"{\"log\":[[\"deno\"],[\"i warned you\"],[\"uh oh\"]]}"
+      "content": "{\"log\":[[\"deno\"],[\"i warned you\"],[\"uh oh\"]]}"
     },
     {
       "status": "ok",
