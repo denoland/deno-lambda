@@ -1,0 +1,16 @@
+{
+  "env": { "_HANDLER": "handlers.log", "DENO_PREFIX": "[${level}]\t${new Date().toISOString()}\t${requestId}\r" },
+  "events": [{ "hello": "deno" }, { "hello": "again" }],
+  "expected": [
+    {
+      "status": "ok",
+      "content": "{\"log\":[\"[INFO]\\t0000-00-00T00:00:00.000Z\\ta\\r{\\r  \\\"message\\\": \\\"deno\\\"\\r}\",\"[WARN]\\t0000-00-00T00:00:00.000Z\\ta\\ri warned you\",\"[ERROR]\\t0000-00-00T00:00:00.000Z\\ta\\ruh oh\"]}"
+    },
+    {
+      "status": "ok",
+      "content": "{\"log\":[\"[INFO]\\t0000-00-00T00:00:00.000Z\\tb\\r{\\r  \\\"message\\\": \\\"again\\\"\\r}\",\"[WARN]\\t0000-00-00T00:00:00.000Z\\tb\\ri warned you\",\"[ERROR]\\t0000-00-00T00:00:00.000Z\\tb\\ruh oh\"]}"
+    }
+  ],
+  "files": ["handlers.ts"],
+  "layer": "deno-lambda-layer.zip"
+}

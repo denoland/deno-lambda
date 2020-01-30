@@ -7,7 +7,8 @@ const testFiles = Deno.readDirSync("/src/tests")
   .map(f => f.name)
   .filter(x => x.startsWith("test_"))
   .filter(x => x.endsWith(".json"))
-  .map(x => x.split("/").slice(-1)[0]);
+  .map(x => x.split("/").slice(-1)[0])
+  .sort();
 
 if (!Deno.env("_IN_DOCKER")) {
   console.error("test.ts must be called inside a docker container");
