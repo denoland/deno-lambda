@@ -1,7 +1,7 @@
 import {
   TestDefinition,
   test as stdTest
-} from "https://deno.land/std@v0.31.0/testing/mod.ts";
+} from "https://deno.land/std@v0.32.0/testing/mod.ts";
 
 import { client } from "./client.ts";
 import { TableName } from "./api/candidate.ts";
