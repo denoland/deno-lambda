@@ -22,8 +22,9 @@ export async function handler(
   context: Context
 ): Promise<APIGatewayProxyResult> {
   return {
-    statusCode: 200,
-    body: `Welcome to deno ${Deno.version.deno} 🦕`
+    body: `Welcome to deno ${Deno.version.deno} 🦕`,
+    headers: { "content-type": "text/html;charset=utf8" },
+    statusCode: 200
   };
 }
 ```
@@ -103,6 +104,7 @@ another lambda function (that does the `await somethingAsync()`).
 ## Related projects
 
 - [deno support for architect](https://blog.begin.com/deno-runtime-support-for-architect-805fcbaa82c3)
+- [deno on zeit now](https://github.com/lucacasonato/now-deno)
 - [A layer for AWS Lambda that allows your functions to use `git` and `ssh` binaries](https://github.com/lambci/git-lambda-layer)
 
 ---
