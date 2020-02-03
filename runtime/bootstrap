@@ -40,7 +40,7 @@ if [[ ! -z "$DENO_IMPORTMAP" ]]; then
   DENO_FETCH_FLAGS="$DENO_FETCH_FLAGS --importmap=$DENO_IMPORTMAP"
 fi
 
-DENO_PREFIX=${DENO_PREFIX-"\${level}\tRequestId: \${requestId}\r"}
+DENO_PREFIX=${DENO_PREFIX-"\${level}\tRequestId: \${requestId}\t\${source}\r"}
 
 # whether to use ts, js, bundle.js, etc.
 HANDLER_EXT=${HANDLER_EXT-'ts'}
@@ -117,7 +117,7 @@ let interpolate = prefix ? (params) => {
 } : (x) => { return '' };
 
 try {
-  interpolate({ requestId: 'a', level: 'TEST' });
+  interpolate({ requestId: 'a', level: 'TEST', 'source': 'at FILE:LINE' });
 } catch (e) {
   console.log('warn: DENO_PREFIX', e.message);
   interpolate = x => { return ''; };
@@ -131,7 +131,8 @@ const log = console.log;
 let requestId;
 const logger = (level) => {
   return (...args) => {
-    const prefix = interpolate({ requestId, level })
+    const source = (new Error).stack.split('\n')[2].trim();
+    const prefix = interpolate({ requestId, level, source });
     const text = Deno[Deno.symbols.internal].stringifyArgs(args);
     log((prefix + text).replace(/\n/g, '\r'));
   }

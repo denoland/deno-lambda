@@ -7,11 +7,11 @@
   "expected": [
     {
       "status": "ok",
-      "content": "{\"log\":[\"a INFO {\\r  \\\"message\\\": \\\"deno\\\"\\r}\",\"a WARN i warned you\",\"a ERROR uh oh\"]}"
+      "content": "{\"log\":[\"INFO\\tRequestId: a\\tat log (handlers.ts:48:11)\\r{\\r  \\\"message\\\": \\\"deno\\\"\\r}\",\"WARN\\tRequestId: a\\tat log (handlers.ts:49:11)\\ri warned you\",\"ERROR\\tRequestId: a\\tat log (handlers.ts:50:11)\\ruh oh\"]}"
     },
     {
       "status": "ok",
-      "content": "{\"log\":[\"b INFO {\\r  \\\"message\\\": \\\"again\\\"\\r}\",\"b WARN i warned you\",\"b ERROR uh oh\"]}"
+      "content": "{\"log\":[\"INFO\\tRequestId: b\\tat log (handlers.ts:48:11)\\r{\\r  \\\"message\\\": \\\"again\\\"\\r}\",\"WARN\\tRequestId: b\\tat log (handlers.ts:49:11)\\ri warned you\",\"ERROR\\tRequestId: b\\tat log (handlers.ts:50:11)\\ruh oh\"]}"
     }
   ],
   "files": ["handlers.ts"],

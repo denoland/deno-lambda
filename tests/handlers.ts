@@ -39,9 +39,11 @@ console.log = (...args) => {
   LOGGED.push(args);
   _log(args);
 };
+
 export async function log(event, context) {
   LOGGED = [];
   // pretty print with newlines
+  const stripNumbers = event.time;
   const message = JSON.stringify({ message: event.hello }, null, 2);
   console.log(message);
   console.warn("i warned you");
@@ -51,7 +53,7 @@ export async function log(event, context) {
       if (v.length !== 1) {
         throw new Error("expected only one string passed to console.log");
       }
-      return v[0].replace(/[0-9]/g, "0");
+      return stripNumbers ? v[0].replace(/[0-9]/g, "0") : v[0];
     })
   };
 }
