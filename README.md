@@ -2,7 +2,11 @@
 
 A [deno](https://github.com/denoland/deno/) runtime for AWS Lambda.
 
-_Deploy deno code via SAM, serverless, or bundle it yourself._
+_Deploy deno code via
+[SAR application (in one click)](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno),
+[SAM](https://github.com/hayd/deno-lambda/tree/master/example-sam),
+[serverless](https://github.com/hayd/deno-lambda/tree/master/example-serverless),
+or bundle it yourself._
 
 ![ci status](https://github.com/hayd/deno-lambda/workflows/Test/badge.svg?branch=master)
 
@@ -53,6 +57,11 @@ listed in https://deno.land/x/lambda/mod.ts and defined in https://deno.land/x/l
 
 It's good practice to reference the trigger's type in the handler, for example:
 APIGateway use `APIGatewayProxyEvent` and `APIGatewayProxyResult`, SQS use `SQSEvent`, etc.
+
+_Note: Despite there being multiple interfaces with the `Context` suffix,
+the second handler argument must be `Context`. These other interfaces can be
+accessed from the first argument (the event), for example
+`event.requestContext` of an `APIGatewayProxyEvent`._
 
 ## How to deploy
 
@@ -152,6 +161,22 @@ custom:
 ```
 
 See [`example-serverless/serverless.yml`](https://github.com/hayd/deno-lambda/blob/master/example-serverless/serverless.yml).
+
+## Advanced logging
+
+You can set the way `console.log` etc. outputs to cloudwatch logs using
+`DENO_PREFIX`. You can include the line number using
+`${(new Error).stack.split('\n')[4]}` or the datetime using
+`${new Date().toISOString()}` (though the datetime of every cloudwatch event
+is part of the event itself.
+
+Use these as a template literal, for example:
+
+    DENO_PREFIX=${level}\t${requestId}\t${(new Error).stack.split('\n')[4]}\r
+
+This will prefix each log with the level, the request id and the line number:
+
+<img width="385" alt="Screen Shot 2020-02-11 at 18 12 42" src="https://user-images.githubusercontent.com/1931852/74296949-313f7a00-4cfa-11ea-8293-e37a1712cd3d.png">
 
 ---
 
