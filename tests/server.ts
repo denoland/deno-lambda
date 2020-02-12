@@ -1,4 +1,4 @@
-import { serve, ServerRequestBody } from "./deps.ts";
+import { delay, serve, ServerRequestBody } from "./deps.ts";
 
 const enc = new TextEncoder();
 const dec = new TextDecoder();
@@ -83,11 +83,12 @@ export async function serveEvents(testJson) {
       }
     }
   }
-  /// const out = await Deno.readAll(p.stdout);
+  const out: Uint8Array = await Promise.race([
+    Deno.readAll(p.stdout),
+    delay(testJson.timeout || 1000).then(() => { return new Uint8Array() }),
+  ]);
   p.kill(9);
   s.close();
   await p.status();
-  return {
-    responses: responses
-  };
+  return { responses, out };
 }

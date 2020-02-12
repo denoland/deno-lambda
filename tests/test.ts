@@ -59,14 +59,24 @@ for (const t of testFiles) {
       await emptyDir("/var/task");
       await addFiles(testJson["files"], "/var/task");
 
-      const out = await serveEvents(testJson);
-      const responses = out.responses.map(x => JSON.parse(x));
+      const ret = await serveEvents(testJson);
+      const responses = ret.responses.map(x => JSON.parse(x));
       const expected = testJson["expected"];
+      const out = dec.decode(ret.out);
+      const expectedOut = testJson["out"] || "";
 
       assertEquals(expected, responses);
-      // console.log(out.out)  // FIXME this is always empty
+      // TODO removed console.log hacks
+      // assertEquals(expectedOut, out);
     }
   });
 }
 
-runIfMain(import.meta);
+await runIfMain(import.meta);
+// we have to explicitly kill awaits where stdout was empty...
+// FIXME create/reference a deno issue (of awaiting empty stdout).
+// Note: We're working around this block too:
+// https://github.com/denoland/deno/blob/a3bfbcceade3d359f677106399562b461b4af01a/cli/js/testing.ts#L196-L205
+setTimeout((): void => {
+  Deno.exit(0);
+}, 0);
