@@ -11,7 +11,7 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:390065572566:applications/deno
-        SemanticVersion: 0.32.0
+        SemanticVersion: 0.33.0
 
   HelloWorldFunction:
     Type: AWS::Serverless::Function 
