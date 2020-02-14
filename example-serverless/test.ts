@@ -4,11 +4,10 @@
 // You must also pass a access key/secret environment variables, but these don't have to be real e.g.
 // AWS_ACCESS_KEY_ID=fakeMyKeyId AWS_SECRET_ACCESS_KEY=fakeSecretAccessKey deno --allow-env --allow-net test.ts
 
-import { runIfMain } from "https://deno.land/std@v0.32.0/testing/mod.ts";
 import {
   assert,
   assertEquals
-} from "https://deno.land/std@v0.32.0/testing/asserts.ts";
+} from "https://deno.land/std@v0.33.0/testing/asserts.ts";
 import {
   APIGatewayProxyEvent,
   Context
@@ -109,4 +108,4 @@ test({
   }
 });
 
-runIfMain(import.meta);
+await Deno.runTests();

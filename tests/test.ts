@@ -1,4 +1,4 @@
-import { assertEquals, runIfMain, test } from "./deps.ts";
+import { assertEquals } from "./deps.ts";
 import { serveEvents } from "./server.ts";
 
 const dec = new TextDecoder();
@@ -45,7 +45,7 @@ async function emptyDir(dir: string) {
 
 for (const t of testFiles) {
   const testName = t.slice(0, -5);
-  test({
+  Deno.test({
     name: testName,
     fn: async () => {
       const testPath = `/src/tests/${t}`;
@@ -69,4 +69,4 @@ for (const t of testFiles) {
   });
 }
 
-runIfMain(import.meta);
+await Deno.runTests();

@@ -1,12 +1,7 @@
-import {
-  TestDefinition,
-  test as stdTest
-} from "https://deno.land/std@v0.32.0/testing/mod.ts";
-
 import { client } from "./client.ts";
 import { TableName } from "./api/candidate.ts";
 
-export async function test(t: TestDefinition) {
+export async function test(t: Deno.TestDefinition) {
   async function wrapped() {
     let err;
     await setUp();
@@ -20,7 +15,7 @@ export async function test(t: TestDefinition) {
       throw err;
     }
   }
-  stdTest({ name: t.name, fn: wrapped });
+  Deno.test({ name: t.name, fn: wrapped });
 }
 
 async function setUp() {
