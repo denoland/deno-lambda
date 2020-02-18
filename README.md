@@ -3,7 +3,7 @@
 A [deno](https://github.com/denoland/deno/) runtime for AWS Lambda.
 
 _Deploy deno code via
-[SAR application (in one click)](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno),
+[SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno) (see [quick start](https://github.com/hayd/deno-lambda/blob/master/QUICK-START.md)),
 [SAM](https://github.com/hayd/deno-lambda/tree/master/example-sam),
 [serverless](https://github.com/hayd/deno-lambda/tree/master/example-serverless),
 or bundle it yourself._
@@ -69,14 +69,14 @@ The recommended way to deploy is to use the
 [SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno)
 and either reference the outputted `LayerArn` as a layer in your function.
 
-- [SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno)
+- :bowtie: [SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno) (see [quick start](https://github.com/hayd/deno-lambda/blob/master/QUICK-START.md))
 - [SAM example](https://github.com/hayd/deno-lambda/tree/master/example-sam)
 - [Serverless example](https://github.com/hayd/deno-lambda/tree/master/example-serverless)
   (feat. [Dynamodb](https://github.com/chiefbiiko/dynamodb/))
 - Zipped source example, [`deno-lambda-example.zip`](https://github.com/hayd/deno-lambda/releases/),
   see [bundling-code](https://github.com/hayd/deno-lambda/blob/master/README.md#bundling-code) section.
 
-_See [`QUICK-START.md`](https://github.com/hayd/deno-lambda/blob/master/QUICK-START.md)
+_See [earlier version of quick start](https://github.com/hayd/deno-lambda/blob/56d8b4e4030c0096f7b5c589ba1194201e2f97dc/QUICK-START.md)
 for a walkthrough of how to bundle yourself._
 
 See the [deno_dir-remapping](https://github.com/hayd/deno-lambda/blob/master/README.md#deno_dir-remapping)
@@ -124,11 +124,11 @@ Create a zip file which contains:
 
 - an entry point which exports an async function (e.g. `hello.ts`)
 - include any other files needed to run the entry file
-- (optional) .deno_dir directory
+- (optional but preferred) .deno_dir directory
 
 \*You can use a different directory with `DENO_DIR` environment variable.
 
-_Alternatively use `deno bundle` command and include the outputted js file._
+_Alternatively use `deno bundle` command and include the outputted js file, see also `HANDLER_EXT`._
 
 ## DENO_DIR remapping
 
