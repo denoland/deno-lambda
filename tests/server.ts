@@ -10,7 +10,7 @@ export interface TestJson {
   files: string | string[];
   expected?: string;
   env: Record<string, string>;
-  headers?: any;
+  headers?: Record<string, Record<string, string | Record<string, string>>>;
   events: string[];
 }
 
@@ -79,11 +79,9 @@ export async function serveEvents(testJson: TestJson) {
         });
         if (testJson.headers) {
           for (let [k, v] of Object.entries(testJson.headers)) {
-            if (Object.prototype.toString.call(v) !== "[object String]") {
-              v = JSON.stringify(v);
-            }
-            assert(typeof v === "string");
-            headers.append(k, v.toString());
+            const vv = typeof v === "string" ? v : JSON.stringify(v);
+            assert(typeof vv === "string");
+            headers.append(k, vv);
           }
         }
         await req.respond({
