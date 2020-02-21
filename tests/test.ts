@@ -4,7 +4,7 @@ import { TestJson, serveEvents } from "./server.ts";
 const dec = new TextDecoder();
 
 const testFiles = Deno.readDirSync("/src/tests")
-  .map(f => f.name || 'ignore')
+  .map(f => f.name || "ignore")
   .filter(x => x.startsWith("test_"))
   .filter(x => x.endsWith(".json"))
   .map(x => x.split("/").slice(-1)[0])
@@ -49,7 +49,9 @@ for (const t of testFiles) {
     name: testName,
     fn: async () => {
       const testPath = `/src/tests/${t}`;
-      const testJson: TestJson = JSON.parse(dec.decode(await Deno.readFile(testPath)));
+      const testJson: TestJson = JSON.parse(
+        dec.decode(await Deno.readFile(testPath))
+      );
 
       // This is the layer
       await emptyDir("/opt");

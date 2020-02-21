@@ -1,7 +1,8 @@
 function decorate(target) {}
 
 @decorate
-class Foo {}
+class Foo {
+}
 
 export async function handler(event, context) {
   return {

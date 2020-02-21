@@ -5,7 +5,6 @@ const dec = new TextDecoder();
 
 const PORT = 1993;
 
-
 export interface TestJson {
   layer?: string | string[];
   files: string | string[];
@@ -14,7 +13,6 @@ export interface TestJson {
   headers?: any;
   events: string[];
 }
-
 
 function bootstrap(testJson: TestJson) {
   const bootstrapScript = Deno.readDirSync("/var/task/")
@@ -35,7 +33,7 @@ function bootstrap(testJson: TestJson) {
   });
 }
 
-const statusOK = enc.encode("{\"status\":\"OK\"}\n");
+const statusOK = enc.encode('{"status":"OK"}\n');
 
 export async function serveEvents(testJson: TestJson) {
   // start the server prior to running bootstrap.
