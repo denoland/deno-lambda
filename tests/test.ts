@@ -1,10 +1,10 @@
 import { assertEquals } from "./deps.ts";
-import { serveEvents } from "./server.ts";
+import { TestJson, serveEvents } from "./server.ts";
 
 const dec = new TextDecoder();
 
 const testFiles = Deno.readDirSync("/src/tests")
-  .map(f => f.name)
+  .map(f => f.name || "ignore")
   .filter(x => x.startsWith("test_"))
   .filter(x => x.endsWith(".json"))
   .map(x => x.split("/").slice(-1)[0])
@@ -16,7 +16,7 @@ if (!Deno.env("_IN_DOCKER")) {
 }
 
 async function addFiles(
-  zipOrFiles: string | Array<string>,
+  zipOrFiles: string | Array<string> | undefined,
   toDir: string
 ): Promise<void> {
   if (!zipOrFiles) {
@@ -49,7 +49,9 @@ for (const t of testFiles) {
     name: testName,
     fn: async () => {
       const testPath = `/src/tests/${t}`;
-      const testJson = JSON.parse(dec.decode(await Deno.readFile(testPath)));
+      const testJson: TestJson = JSON.parse(
+        dec.decode(await Deno.readFile(testPath))
+      );
 
       // This is the layer
       await emptyDir("/opt");

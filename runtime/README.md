@@ -14,13 +14,14 @@ export async function handler(
   context: Context
 ): Promise<APIGatewayProxyResult> {
   return {
-    statusCode: 200,
-    body: `Welcome to deno ${Deno.version.deno} 🦕`
+    body: `Welcome to deno ${Deno.version.deno} 🦕`,
+    headers: { "content-type": "text/html;charset=utf8" },
+    statusCode: 200
   };
 }
 ```
 
-_See [deno-lambda repository](https://github.com/hayd/deno-lambda) to run deno on AWS Lambda._
+_See [deno-lambda repository](https://github.com/hayd/deno-lambda) for more info on running deno on AWS Lambda._
 
 ---
 

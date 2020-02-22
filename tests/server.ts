@@ -1,11 +1,20 @@
-import { serve, ServerRequestBody } from "./deps.ts";
+import { assert, serve, ServerRequestBody } from "./deps.ts";
 
 const enc = new TextEncoder();
 const dec = new TextDecoder();
 
 const PORT = 1993;
 
-function bootstrap(testJson) {
+export interface TestJson {
+  layer?: string | string[];
+  files: string | string[];
+  expected?: string;
+  env: Record<string, string>;
+  headers?: any;
+  events: string[];
+}
+
+function bootstrap(testJson: TestJson) {
   const bootstrapScript = Deno.readDirSync("/var/task/")
     .map(x => x.name)
     .includes("bootstrap")
@@ -26,7 +35,7 @@ function bootstrap(testJson) {
 
 const statusOK = enc.encode('{"status":"OK"}\n');
 
-export async function serveEvents(testJson) {
+export async function serveEvents(testJson: TestJson) {
   // start the server prior to running bootstrap.
   const s = serve(`0.0.0.0:${PORT}`);
   const p = bootstrap(testJson);
@@ -73,6 +82,7 @@ export async function serveEvents(testJson) {
             if (Object.prototype.toString.call(v) !== "[object String]") {
               v = JSON.stringify(v);
             }
+            assert(typeof v === "string");
             headers.append(k, v.toString());
           }
         }
