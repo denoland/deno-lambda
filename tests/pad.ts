@@ -2,12 +2,12 @@
 // i.e. we must download precisely one file from deno.land.
 import { pad } from "https://deno.land/std/strings/pad.ts";
 
-export function handler(event, context) {
+export function handler(event: any, context: any) {
   const strLen: number = Number(event.strLen) || 5;
   return pad("deno", strLen);
 }
 
-export async function assertLock(event, context) {
+export async function assertLock(event: any, context: any) {
   // assert --lock was passed
   // Note: This is a file with external imports in order for -lock to be used.
   // FIXME remove this env hack and pull out the actual cli args from Deno itself.
