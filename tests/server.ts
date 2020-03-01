@@ -1,4 +1,4 @@
-import { assert, serve, ServerRequestBody } from "./deps.ts";
+import { assert, serve } from "./deps.ts";
 
 const enc = new TextEncoder();
 const dec = new TextDecoder();
