@@ -3,7 +3,7 @@ import { TestJson, serveEvents } from "./server.ts";
 
 const dec = new TextDecoder();
 
-const testFiles = Deno.readDirSync("/src/tests")
+const testFiles = Deno.readdirSync("/src/tests")
   .map(f => f.name || "ignore")
   .filter(x => x.startsWith("test_"))
   .filter(x => x.endsWith(".json"))
@@ -38,7 +38,7 @@ async function addFiles(
 }
 
 async function emptyDir(dir: string) {
-  for (const f of Deno.readDirSync(dir)) {
+  for (const f of Deno.readdirSync(dir)) {
     await Deno.remove(`${dir}/${f.name}`, { recursive: true });
   }
 }
