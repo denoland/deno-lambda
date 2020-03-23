@@ -1,6 +1,6 @@
 # Note: This must be built in the .. context
 
-FROM hayd/deno:amazonlinux1-0.36.0
+FROM hayd/amazonlinux1-deno:0.37.0
 # This is the runtime used by AWS Lambda
 # plus a compatible deno executable /bin/deno.
 # https://github.com/hayd/deno_docker
@@ -52,4 +52,4 @@ RUN deno fetch test.ts
 ADD tests .
 
 
-ENTRYPOINT ["deno", "-A", "test.ts"]
+ENTRYPOINT ["deno", "test", "-A"]

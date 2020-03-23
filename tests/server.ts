@@ -25,7 +25,7 @@ function bootstrap(testJson: TestJson) {
     testJson.env.DENO_DIR = "";
   }
   return Deno.run({
-    args: [bootstrapScript],
+    cmd: [bootstrapScript],
     stdout: "piped",
     stderr: "piped", // comment this out to debug
     env: testJson.env,
@@ -93,8 +93,11 @@ export async function serveEvents(testJson: TestJson) {
   }
   /// const out = await Deno.readAll(p.stdout);
   p.kill(9);
+  p.stdout!.close();
+  p.stderr!.close();
   s.close();
   await p.status();
+  p.close();
   return {
     responses: responses
   };
