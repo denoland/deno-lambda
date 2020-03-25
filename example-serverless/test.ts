@@ -2,7 +2,7 @@
 // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html
 
 // You must also pass a access key/secret environment variables, but these don't have to be real e.g.
-// AWS_ACCESS_KEY_ID=fakeMyKeyId AWS_SECRET_ACCESS_KEY=fakeSecretAccessKey deno --allow-env --allow-net test.ts
+// AWS_ACCESS_KEY_ID=fakeMyKeyId AWS_SECRET_ACCESS_KEY=fakeSecretAccessKey AWS_DEFAULT_REGION=local deno run --allow-env --allow-net
 
 import {
   assert,
@@ -107,5 +107,3 @@ test({
     assertEquals(body.message, "invalid input");
   }
 });
-
-await Deno.runTests();

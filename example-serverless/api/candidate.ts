@@ -19,7 +19,11 @@ function error(message: string, statusCode: number = 500) {
 }
 
 export async function get(event: APIGatewayProxyEvent, context: Context) {
-  const id = event.pathParameters.id;
+  const id = event.pathParameters && event.pathParameters.id;
+  if (id === null) {
+    return error(`id not found in pathParameters`);
+  }
+
   const params = {
     TableName,
     Key: {
@@ -67,7 +71,12 @@ export async function list(event: APIGatewayProxyEvent, context: Context) {
 }
 
 export async function submit(event: APIGatewayProxyEvent, context: Context) {
-  const requestBody = JSON.parse(event.body);
+  let requestBody;
+  try {
+    requestBody = JSON.parse(event.body!);
+  } catch {
+    return error("invalid input", 422);
+  }
   const { fullname, email, experience } = requestBody;
 
   if (
