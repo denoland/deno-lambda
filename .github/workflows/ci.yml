@@ -62,3 +62,21 @@ jobs:
         cat template.yml
         sam publish --region us-east-1
         echo ---
+
+  test_example:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: denolib/setup-deno@v1.2.0
+        with:
+          deno-version: 0.37.0
+      - name: start a local dynamodb
+        run: |
+          mkdir dyno
+          curl -q https://s3-us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_latest.tar.gz | tar --directory=dyno -zxf -
+          java -D"java.library.path=$DIR/DynamoDBLocal_lib" -jar "dyno/DynamoDBLocal.jar" -sharedDb &
+          sleep 4.2
+      - name: run serverless tests
+        working-directory: example-serverless
+        run: |
+          AWS_ACCESS_KEY_ID=fakeMyKeyId AWS_SECRET_ACCESS_KEY=fakeSecretAccessKey AWS_DEFAULT_REGION=local deno test --allow-env --allow-net test.ts
