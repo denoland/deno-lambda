@@ -23,7 +23,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/') && github.repository == 'hayd/deno-lambda'
       run: |
         export DENO_LAMBDA_VERSION=$(echo $GITHUB_REF | tr / '\n' | tail -n 1)
-        docker run -e DENO_LAMBDA_VERSION=$DENO_LAMBDA_VERSION test-runner test --allow-env tests/version_check.ts
+        docker run -e DENO_LAMBDA_VERSION=$DENO_LAMBDA_VERSION test-runner test --allow-env /src/tests/version_check.ts
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/') && github.repository == 'hayd/deno-lambda'
