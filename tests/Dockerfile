@@ -52,5 +52,4 @@ RUN deno fetch test.ts
 ADD tests .
 
 
-ENTRYPOINT ["deno"]
 CMD ["test", "-A"]
