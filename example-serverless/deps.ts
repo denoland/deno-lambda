@@ -1,8 +1,8 @@
 export {
   createClient,
   Doc,
-  DynamoDBClient
+  DynamoDBClient,
 } from "https://deno.land/x/dynamodb@v0.3.1/mod.ts";
 
-import { v4 } from "https://deno.land/std@v0.38.0/uuid/mod.ts";
+import { v4 } from "https://deno.land/std@v0.39.0/uuid/mod.ts";
 export const uuid = v4.generate;

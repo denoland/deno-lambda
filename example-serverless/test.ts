@@ -6,11 +6,11 @@
 
 import {
   assert,
-  assertEquals
-} from "https://deno.land/std@v0.38.0/testing/asserts.ts";
+  assertEquals,
+} from "https://deno.land/std@v0.39.0/testing/asserts.ts";
 import {
   APIGatewayProxyEvent,
-  Context
+  Context,
 } from "https://deno.land/x/lambda/mod.ts";
 
 import { client } from "./client.ts";
@@ -19,7 +19,7 @@ import {
   list as listCandidate,
   get as getCandidate,
   submit as submitCandidate,
-  TableName
+  TableName,
 } from "./api/candidate.ts";
 
 test({
@@ -27,11 +27,11 @@ test({
   fn: async () => {
     const result = await client.getItem({
       TableName,
-      Key: { id: "abc" }
+      Key: { id: "abc" },
     });
     const user = result.Item;
     assertEquals(user.role, "admin");
-  }
+  },
 });
 
 test({
@@ -44,7 +44,7 @@ test({
     assertEquals(result.statusCode, 200);
     const body = JSON.parse(result.body);
     assertEquals(body.candidates.length, 2);
-  }
+  },
 });
 
 test({
@@ -58,7 +58,7 @@ test({
     const body = JSON.parse(result.body);
     assertEquals(body.id, "abc");
     assertEquals(body.role, "admin");
-  }
+  },
 });
 
 test({
@@ -71,7 +71,7 @@ test({
     assertEquals(result.statusCode, 404);
     const body = JSON.parse(result.body);
     assertEquals(body.message, "Not Found: bad");
-  }
+  },
 });
 
 test({
@@ -79,7 +79,7 @@ test({
   fn: async () => {
     const event = {
       body:
-        '{"fullname":"Shekhar Gulati","email": "shekhargulati84@gmail.com", "experience":12}'
+        '{"fullname":"Shekhar Gulati","email": "shekhargulati84@gmail.com", "experience":12}',
     };
     const result = await submitCandidate(
       event as APIGatewayProxyEvent,
@@ -91,7 +91,7 @@ test({
       body.message,
       "Sucessfully submitted candidate with email shekhargulati84@gmail.com"
     );
-  }
+  },
 });
 
 test({
@@ -105,5 +105,5 @@ test({
     assertEquals(result.statusCode, 422);
     const body = JSON.parse(result.body);
     assertEquals(body.message, "invalid input");
-  }
+  },
 });
