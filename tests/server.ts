@@ -16,7 +16,7 @@ export interface TestJson {
 
 function bootstrap(testJson: TestJson) {
   const bootstrapScript = Deno.readdirSync("/var/task/")
-    .map(x => x.name)
+    .map((x) => x.name)
     .includes("bootstrap")
     ? "/var/task/bootstrap"
     : "/opt/bootstrap";
@@ -29,7 +29,7 @@ function bootstrap(testJson: TestJson) {
     stdout: "piped",
     stderr: "piped", // comment this out to debug
     env: testJson.env,
-    cwd: "/var/task"
+    cwd: "/var/task",
   });
 }
 
@@ -75,7 +75,7 @@ export async function serveEvents(testJson: TestJson) {
             "arn:aws:lambda:us-east-1:776893852117:function:test",
           // start at a.
           "lambda-runtime-aws-request-id": String.fromCharCode(96 + reqId),
-          "lambda-runtime-deadline-ms": (Date.now() + 300000).toString()
+          "lambda-runtime-deadline-ms": (Date.now() + 300000).toString(),
         });
         if (testJson.headers) {
           for (let [k, v] of Object.entries(testJson.headers)) {
@@ -86,7 +86,7 @@ export async function serveEvents(testJson: TestJson) {
         }
         await req.respond({
           body: enc.encode(JSON.stringify(e.value)),
-          headers
+          headers,
         });
       }
     }
@@ -99,6 +99,6 @@ export async function serveEvents(testJson: TestJson) {
   await p.status();
   p.close();
   return {
-    responses: responses
+    responses: responses,
   };
 }

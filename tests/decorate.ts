@@ -12,6 +12,6 @@ class Foo {
 export async function handler(event: APIGatewayProxyEvent, context: Context) {
   return {
     statusCode: 200,
-    body: `decorated 🦕`
+    body: `decorated 🦕`,
   };
 }

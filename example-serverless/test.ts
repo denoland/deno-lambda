@@ -6,11 +6,11 @@
 
 import {
   assert,
-  assertEquals,
+  assertEquals
 } from "https://deno.land/std@v0.39.0/testing/asserts.ts";
 import {
   APIGatewayProxyEvent,
-  Context,
+  Context
 } from "https://deno.land/x/lambda/mod.ts";
 
 import { client } from "./client.ts";
@@ -19,7 +19,7 @@ import {
   list as listCandidate,
   get as getCandidate,
   submit as submitCandidate,
-  TableName,
+  TableName
 } from "./api/candidate.ts";
 
 test({
@@ -39,7 +39,7 @@ test({
   fn: async () => {
     const result = await listCandidate(
       {} as APIGatewayProxyEvent,
-      {} as Context
+      {} as Context,
     );
     assertEquals(result.statusCode, 200);
     const body = JSON.parse(result.body);
@@ -52,7 +52,7 @@ test({
   fn: async () => {
     const result = await getCandidate(
       ({ pathParameters: { id: "abc" } } as unknown) as APIGatewayProxyEvent,
-      {} as Context
+      {} as Context,
     );
     assertEquals(result.statusCode, 200);
     const body = JSON.parse(result.body);
@@ -66,7 +66,7 @@ test({
   fn: async () => {
     const result = await getCandidate(
       ({ pathParameters: { id: "bad" } } as unknown) as APIGatewayProxyEvent,
-      {} as Context
+      {} as Context,
     );
     assertEquals(result.statusCode, 404);
     const body = JSON.parse(result.body);
@@ -83,13 +83,13 @@ test({
     };
     const result = await submitCandidate(
       event as APIGatewayProxyEvent,
-      {} as Context
+      {} as Context,
     );
     assertEquals(result.statusCode, 200);
     const body = JSON.parse(result.body);
     assertEquals(
       body.message,
-      "Sucessfully submitted candidate with email shekhargulati84@gmail.com"
+      "Sucessfully submitted candidate with email shekhargulati84@gmail.com",
     );
   },
 });
@@ -100,7 +100,7 @@ test({
     const event = { body: "{}" };
     const result = await submitCandidate(
       event as APIGatewayProxyEvent,
-      {} as Context
+      {} as Context,
     );
     assertEquals(result.statusCode, 422);
     const body = JSON.parse(result.body);

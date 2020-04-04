@@ -6,11 +6,11 @@ import {
 
 export async function handler(
   event: APIGatewayProxyEvent,
-  context: Context
+  context: Context,
 ): Promise<APIGatewayProxyResult> {
   return {
     statusCode: 200,
     headers: { "content-type": "text/html;charset=utf8" },
-    body: `Hello World! Sent from deno ${Deno.version.deno} 🦕`
+    body: `Hello World! Sent from deno ${Deno.version.deno} 🦕`,
   };
 }
