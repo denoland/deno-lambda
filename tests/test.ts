@@ -4,10 +4,10 @@ import { TestJson, serveEvents } from "./server.ts";
 const dec = new TextDecoder();
 
 const testFiles = Deno.readdirSync("/src/tests")
-  .map(f => f.name || "ignore")
-  .filter(x => x.startsWith("test_"))
-  .filter(x => x.endsWith(".json"))
-  .map(x => x.split("/").slice(-1)[0])
+  .map((f) => f.name || "ignore")
+  .filter((x) => x.startsWith("test_"))
+  .filter((x) => x.endsWith(".json"))
+  .map((x) => x.split("/").slice(-1)[0])
   .sort();
 
 if (!Deno.env("_IN_DOCKER")) {
@@ -17,7 +17,7 @@ if (!Deno.env("_IN_DOCKER")) {
 
 async function addFiles(
   zipOrFiles: string | Array<string> | undefined,
-  toDir: string
+  toDir: string,
 ): Promise<void> {
   if (!zipOrFiles) {
     return;
@@ -26,7 +26,7 @@ async function addFiles(
     const zipFile = zipOrFiles;
     // TODO check it raises on errors?
     const p = Deno.run({
-      cmd: ["unzip", "-qq", `/src/runtime/${zipFile}`, "-d", toDir]
+      cmd: ["unzip", "-qq", `/src/runtime/${zipFile}`, "-d", toDir],
     });
     await p.status();
     p.close();
@@ -52,7 +52,7 @@ for (const t of testFiles) {
     fn: async () => {
       const testPath = `/src/tests/${t}`;
       const testJson: TestJson = JSON.parse(
-        dec.decode(await Deno.readFile(testPath))
+        dec.decode(await Deno.readFile(testPath)),
       );
 
       // This is the layer
@@ -64,11 +64,11 @@ for (const t of testFiles) {
       await addFiles(testJson["files"], "/var/task");
 
       const out = await serveEvents(testJson);
-      const responses = out.responses.map(x => JSON.parse(x));
+      const responses = out.responses.map((x) => JSON.parse(x));
       const expected = testJson["expected"];
 
       assertEquals(expected, responses);
       // console.log(out.out)  // FIXME this is always empty
-    }
+    },
   });
 }

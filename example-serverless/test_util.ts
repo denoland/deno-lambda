@@ -24,31 +24,31 @@ async function setUp() {
       TableName,
       KeySchema: [{ KeyType: "HASH", AttributeName: "id" }],
       AttributeDefinitions: [{ AttributeName: "id", AttributeType: "S" }],
-      ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1 }
+      ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1 },
     },
-    { translateJSON: false }
+    { translateJSON: false },
   );
 
   await client.putItem(
     {
       TableName,
-      Item: { id: { S: "abc" }, role: { S: "admin" } }
+      Item: { id: { S: "abc" }, role: { S: "admin" } },
     },
-    { translateJSON: false }
+    { translateJSON: false },
   );
   await client.putItem(
     {
       TableName,
-      Item: { id: { S: "def" } }
+      Item: { id: { S: "def" } },
     },
-    { translateJSON: false }
+    { translateJSON: false },
   );
 }
 async function tearDown() {
   await client.deleteTable(
     {
-      TableName: TableName
+      TableName: TableName,
     },
-    { translateJSON: false }
+    { translateJSON: false },
   );
 }

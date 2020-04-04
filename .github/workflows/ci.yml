@@ -1,80 +1,32 @@
 name: Test
-on: push
+on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Build docker image
-      working-directory: ./tests
-      run: |
-        docker build -f Dockerfile -t test-runner ..
-        docker create --name extract test-runner
-    - name: Run tests
-      run: |
-        docker run test-runner
-    - name: Extract artifacts
-      run: |
-        docker cp extract:/bin/deno amz-deno
-        docker cp extract:/src/runtime/deno-lambda-layer.zip deno-lambda-layer.zip
-        docker cp extract:/src/runtime/deno-lambda-example.zip deno-lambda-example.zip
-        gzip -9 amz-deno
-    - name: Verify Release Version Matches Deno Version
-      if: startsWith(github.ref, 'refs/tags/') && github.repository == 'hayd/deno-lambda'
-      run: |
-        export DENO_LAMBDA_VERSION=$(echo $GITHUB_REF | tr / '\n' | tail -n 1)
-        docker run -e DENO_LAMBDA_VERSION=$DENO_LAMBDA_VERSION test-runner test --allow-env /src/tests/version_check.ts
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/') && github.repository == 'hayd/deno-lambda'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        files: |
-          amz-deno.gz
-          deno-lambda-layer.zip
-          deno-lambda-example.zip
-        draft: true
-    - name: Publish to SAR
-      if: startsWith(github.ref, 'refs/tags/') && github.repository == 'hayd/deno-lambda'
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        DENO_LAMBDA_BUCKET: ${{ secrets.DENO_LAMBDA_BUCKET }}
-      run: |
-        export DENO_LAMBDA_VERSION=$(echo $GITHUB_REF | tr / '\n' | tail -n 1)
-        echo tag: $DENO_LAMBDA_VERSION
-        # FIXME: Installation of sam is fiddly.
-        export DEBIAN_FRONTEND=noninteractive
-        sudo apt -qq update &> /dev/null
-        sudo apt -qq install -y awscli python3-setuptools &> /dev/null
-        pip3 -q install -U --force pip
-        export PATH=/home/runner/.local/bin:$PATH
-        export SAM_CLI_TELEMETRY=1
-        python3 -m pip -q install --user aws-sam-cli
-        aws s3 cp --quiet deno-lambda-layer.zip s3://$DENO_LAMBDA_BUCKET/deno-lambda-layer_$DENO_LAMBDA_VERSION.zip --acl public-read
-        aws s3 cp --quiet deno-lambda-example.zip s3://$DENO_LAMBDA_BUCKET/deno-lambda-example_$DENO_LAMBDA_VERSION.zip --acl public-read
-        echo ---
-        cd SAR
-        sed -i -e s/DENO_LAMBDA_BUCKET/$DENO_LAMBDA_BUCKET/g template.yml
-        sed -i -e s/DENO_LAMBDA_VERSION/$DENO_LAMBDA_VERSION/g template.yml
-        cat template.yml
-        sam publish --region us-east-1
-        echo ---
-        cd blueprint
-        sed -i -e s/DENO_LAMBDA_BUCKET/$DENO_LAMBDA_BUCKET/g template.yml
-        sed -i -e s/DENO_LAMBDA_VERSION/$DENO_LAMBDA_VERSION/g template.yml
-        cat template.yml
-        sam publish --region us-east-1
-        echo ---
+      - uses: actions/checkout@v1
+      - name: Build docker image
+        working-directory: ./tests
+        run: |
+          docker build -f Dockerfile -t test-runner ..
+          docker create --name extract test-runner
+      - name: Run tests
+        run: |
+          docker run test-runner
+      - name: Extract artifacts
+        run: |
+          docker cp extract:/bin/deno amz-deno
+          docker cp extract:/src/runtime/deno-lambda-layer.zip deno-lambda-layer.zip
+          docker cp extract:/src/runtime/deno-lambda-example.zip deno-lambda-example.zip
+          gzip -9 amz-deno
 
   test_example:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: denolib/setup-deno@v1.2.0
+      - uses: denolib/setup-deno@master
         with:
-          deno-version: 0.38.0
+          deno-version: 0.39.0
       - name: start a local dynamodb
         run: |
           mkdir dyno

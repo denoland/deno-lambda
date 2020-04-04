@@ -21,13 +21,13 @@ export async function foo(event: any, context: Context) {
 
 export async function withContext(
   event: APIGatewayProxyEvent,
-  context: Context
+  context: Context,
 ) {
   return {
     name: context.functionName,
     awsRequestId: context.awsRequestId,
     clientContext: context.clientContext,
-    identity: context.identity
+    identity: context.identity,
   };
 }
 
@@ -47,19 +47,19 @@ export async function log(event: any, context: Context) {
   console.warn("i warned you");
   console.error("uh oh");
   return {
-    log: LOGGED.map(v => {
+    log: LOGGED.map((v) => {
       if (v.length !== 1) {
         throw new Error("expected only one string passed to console.log");
       }
       return v[0].replace(/[0-9]/g, "0");
-    })
+    }),
   };
 }
 
 export async function badPrefix(event: any, context: Context) {
   // assert warning message on init:
   console.log(event.hello);
-  const log = LOGGED.map(args => {
+  const log = LOGGED.map((args) => {
     // @ts-ignore
     return Deno[Deno.symbols.internal].stringifyArgs(args);
   });

@@ -11,7 +11,7 @@ export const TableName = "candidates";
 function ok(body: any, statusCode: number = 200) {
   return {
     statusCode,
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   };
 }
 function error(message: string, statusCode: number = 500) {
@@ -27,8 +27,8 @@ export async function get(event: APIGatewayProxyEvent, context: Context) {
   const params = {
     TableName,
     Key: {
-      id: id
-    }
+      id: id,
+    },
   };
   let result: Doc;
   try {
@@ -46,7 +46,7 @@ export async function get(event: APIGatewayProxyEvent, context: Context) {
 export async function list(event: APIGatewayProxyEvent, context: Context) {
   var params = {
     TableName,
-    ProjectionExpression: "id, fullname, email"
+    ProjectionExpression: "id, fullname, email",
   };
   let result: any;
   try {
@@ -94,7 +94,7 @@ export async function submit(event: APIGatewayProxyEvent, context: Context) {
     email,
     experience,
     submittedAt: now,
-    updatedAt: now
+    updatedAt: now,
   };
 
   try {
@@ -105,6 +105,6 @@ export async function submit(event: APIGatewayProxyEvent, context: Context) {
   }
   return ok({
     message: `Sucessfully submitted candidate with email ${email}`,
-    candidateId: candidate.id
+    candidateId: candidate.id,
   });
 }
