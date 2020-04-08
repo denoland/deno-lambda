@@ -136,7 +136,7 @@ In order for compile artifacts to be recovered (and avoid runtime compilation)
 you must do the following directory remapping:
 
 ```
-# Compile the handler (and fetch dependencies into DENO_DIR).
+# Compile the handler (and cache dependencies and compile artifacts into DENO_DIR).
 DENO_DIR=.deno_dir deno cache hello.ts
 
 # This is the "remapping" step:
