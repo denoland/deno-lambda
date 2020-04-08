@@ -18,26 +18,26 @@ fi
 # FIXME should this simply be -A?
 # FIXME can plugins work?? (If so, it should be documented.)
 DENO_FLAGS="--allow-env --allow-net --allow-plugin --allow-read --allow-run --allow-write"
-DENO_FETCH_FLAGS=""
+DENO_CACHE_FLAGS=""
 
 # Once there is a convention for lock filename we could look for its existence.
 # For now we require it to be passed as an env explicitly.
 DENO_LOCK=${DENO_LOCK-}
 if [[ ! -z "$DENO_LOCK" ]]; then
   DENO_FLAGS="$DENO_FLAGS --lock=$DENO_LOCK"
-  DENO_FETCH_FLAGS="$DENO_FETCH_FLAGS --lock=$DENO_LOCK"
+  DENO_CACHE_FLAGS="$DENO_CACHE_FLAGS --lock=$DENO_LOCK"
 fi
 
 DENO_CONFIG=${DENO_CONFIG-}
 if [[ ! -z "$DENO_CONFIG" ]]; then
   DENO_FLAGS="$DENO_FLAGS --config=$DENO_CONFIG"
-  DENO_FETCH_FLAGS="$DENO_FETCH_FLAGS --config=$DENO_CONFIG"
+  DENO_CACHE_FLAGS="$DENO_CACHE_FLAGS --config=$DENO_CONFIG"
 fi
 
 DENO_IMPORTMAP=${DENO_IMPORTMAP-}
 if [[ ! -z "$DENO_IMPORTMAP" ]]; then
   DENO_FLAGS="$DENO_FLAGS --importmap=$DENO_IMPORTMAP"
-  DENO_FETCH_FLAGS="$DENO_FETCH_FLAGS --importmap=$DENO_IMPORTMAP"
+  DENO_CACHE_FLAGS="$DENO_CACHE_FLAGS --importmap=$DENO_IMPORTMAP"
 fi
 
 DENO_PREFIX=${DENO_PREFIX-"\${level}\tRequestId: \${requestId}\r"}
@@ -75,11 +75,11 @@ function investigate {
     [ -f $DENO_LOCK ] \
      || error "missing lock file '$DENO_LOCK'"
     # This second check might be unecessary (in that it would be caught by the 'unable to compile')
-    DENO_DIR=/tmp/deno_dir NO_COLOR=true deno cache $DENO_FETCH_FLAGS $LAMBDA_TASK_ROOT/$HANDLER_FILE &> /tmp/lock.out \
+    DENO_DIR=/tmp/deno_dir NO_COLOR=true deno cache $DENO_CACHE_FLAGS $LAMBDA_TASK_ROOT/$HANDLER_FILE &> /tmp/lock.out \
      || error "lock file error: $(cat /tmp/lock.out)"
   fi
 
-  DENO_DIR=/tmp/deno_dir NO_COLOR=true deno cache $DENO_FETCH_FLAGS $LAMBDA_TASK_ROOT/$HANDLER_FILE 2> /dev/null \
+  DENO_DIR=/tmp/deno_dir NO_COLOR=true deno cache $DENO_CACHE_FLAGS $LAMBDA_TASK_ROOT/$HANDLER_FILE 2> /dev/null \
    || error "unable to compile $HANDLER_FILE"
 
   echo "import { $HANDLER_NAME } from '$LAMBDA_TASK_ROOT/$HANDLER_FILE';" > /tmp/runtime-test.js
