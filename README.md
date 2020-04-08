@@ -137,7 +137,7 @@ you must do the following directory remapping:
 
 ```
 # Compile the handler (and fetch dependencies into DENO_DIR).
-DENO_DIR=.deno_dir deno fetch hello.ts
+DENO_DIR=.deno_dir deno cache hello.ts
 
 # This is the "remapping" step:
 cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT
@@ -157,7 +157,7 @@ plugins:
 
 custom:
   scriptHooks:
-    before:package:createDeploymentArtifacts: DENO_DIR=.deno_dir deno fetch api/candidate.ts && cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT
+    before:package:createDeploymentArtifacts: DENO_DIR=.deno_dir deno cache api/candidate.ts && cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT
 ```
 
 See [`example-serverless/serverless.yml`](https://github.com/hayd/deno-lambda/blob/master/example-serverless/serverless.yml).

@@ -7,7 +7,7 @@
 import {
   assert,
   assertEquals
-} from "https://deno.land/std@v0.39.0/testing/asserts.ts";
+} from "https://deno.land/std@v0.40.0/testing/asserts.ts";
 import {
   APIGatewayProxyEvent,
   Context
