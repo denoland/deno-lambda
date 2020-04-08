@@ -75,15 +75,15 @@ function investigate {
     [ -f $DENO_LOCK ] \
      || error "missing lock file '$DENO_LOCK'"
     # This second check might be unecessary (in that it would be caught by the 'unable to compile')
-    DENO_DIR=/tmp/deno_dir NO_COLOR=true deno fetch $DENO_FETCH_FLAGS $LAMBDA_TASK_ROOT/$HANDLER_FILE &> /tmp/lock.out \
+    DENO_DIR=/tmp/deno_dir NO_COLOR=true deno cache $DENO_FETCH_FLAGS $LAMBDA_TASK_ROOT/$HANDLER_FILE &> /tmp/lock.out \
      || error "lock file error: $(cat /tmp/lock.out)"
   fi
 
-  DENO_DIR=/tmp/deno_dir NO_COLOR=true deno fetch $DENO_FETCH_FLAGS $LAMBDA_TASK_ROOT/$HANDLER_FILE 2> /dev/null \
+  DENO_DIR=/tmp/deno_dir NO_COLOR=true deno cache $DENO_FETCH_FLAGS $LAMBDA_TASK_ROOT/$HANDLER_FILE 2> /dev/null \
    || error "unable to compile $HANDLER_FILE"
 
   echo "import { $HANDLER_NAME } from '$LAMBDA_TASK_ROOT/$HANDLER_FILE';" > /tmp/runtime-test.js
-  DENO_DIR=/tmp/deno_dir NO_COLOR=true deno fetch $DENO_IMPORTMAP /tmp/runtime-test.js 2> /dev/null \
+  DENO_DIR=/tmp/deno_dir NO_COLOR=true deno cache $DENO_IMPORTMAP /tmp/runtime-test.js 2> /dev/null \
    || error "$HANDLER_FILE must export a function named '$HANDLER_NAME'";
 
   # FIXME perhaps a bug in bootstrap? Should we always exit 1? Or not?

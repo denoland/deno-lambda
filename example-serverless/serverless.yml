@@ -85,4 +85,4 @@ plugins:
 
 custom:
   scriptHooks:
-    before:package:createDeploymentArtifacts: DENO_DIR=.deno_dir deno fetch api/candidate.ts && cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT
+    before:package:createDeploymentArtifacts: DENO_DIR=.deno_dir deno cache api/candidate.ts && cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT
