@@ -15,7 +15,7 @@ export interface TestJson {
 }
 
 function bootstrap(testJson: TestJson) {
-  const bootstrapScript = Deno.readdirSync("/var/task/")
+  const bootstrapScript = [...Deno.readdirSync("/var/task/")]
     .map((x) => x.name)
     .includes("bootstrap")
     ? "/var/task/bootstrap"
