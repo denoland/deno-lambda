@@ -3,7 +3,7 @@ import { TestJson, serveEvents } from "./server.ts";
 
 const dec = new TextDecoder();
 
-const testFiles = Deno.readdirSync("/src/tests")
+const testFiles = [...Deno.readdirSync("/src/tests")]
   .map((f) => f.name || "ignore")
   .filter((x) => x.startsWith("test_"))
   .filter((x) => x.endsWith(".json"))
