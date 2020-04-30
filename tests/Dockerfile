@@ -52,4 +52,4 @@ RUN deno cache test.ts
 ADD tests .
 
 
-CMD ["test", "-A"]
+CMD ["test", "-A", "--unstable"]
