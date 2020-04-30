@@ -15,7 +15,7 @@ export interface TestJson {
 }
 
 function bootstrap(testJson: TestJson) {
-  const bootstrapScript = [...Deno.readdirSync("/var/task/")]
+  const bootstrapScript = [...Deno.readDirSync("/var/task/")]
     .map((x) => x.name)
     .includes("bootstrap")
     ? "/var/task/bootstrap"
@@ -27,6 +27,7 @@ function bootstrap(testJson: TestJson) {
   return Deno.run({
     cmd: [bootstrapScript],
     stdout: "piped",
+    // FIXME: uncommenting this no longer works cleanly (since .close is undefined on stderr)
     stderr: "piped", // comment this out to debug
     env: testJson.env,
     cwd: "/var/task",

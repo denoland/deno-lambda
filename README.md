@@ -47,6 +47,7 @@ The following environment variables can be set to change deno-lambda's behavior:
 - `DENO_PREFIX` prepends to console.log etc. a template literal,
   this can include `requestId` and `level` variables only
   (default `${level}\tRequestId: ${requestId}\r`).
+- `DENO_UNSTABLE` so deno runs with the `--unstable`.
 
 Further configuration TBD.
 

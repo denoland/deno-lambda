@@ -17,8 +17,15 @@ fi
 # Potentially this could be overwritten HOWEVER several permissions are required for bootstrap.
 # FIXME should this simply be -A?
 # FIXME can plugins work?? (If so, it should be documented.)
-DENO_FLAGS="--allow-env --allow-net --allow-plugin --allow-read --allow-run --allow-write"
+DENO_FLAGS="-A"
 DENO_CACHE_FLAGS=""
+
+# For unstable flags we must pass --unstable
+DENO_UNSTABLE=${DENO_UNSTABLE-}
+if [[ ! -z "$DENO_UNSTABLE${DENO_IMPORTMAP-}" ]]; then
+  DENO_FLAGS="$DENO_FLAGS --unstable"
+  DENO_CACHE_FLAGS="$DENO_CACHE_FLAGS --unstable"
+fi
 
 # Once there is a convention for lock filename we could look for its existence.
 # For now we require it to be passed as an env explicitly.
@@ -109,7 +116,7 @@ function maybeJson(headers, headerName) {
   }
 }
 
-const prefix = Deno.env('DENO_PREFIX')
+const prefix = Deno.env.get('DENO_PREFIX')
 let interpolate = prefix ? (params) => {
   const names = Object.keys(params);
   const vals = Object.values(params);
@@ -132,7 +139,7 @@ let requestId;
 const logger = (level) => {
   return (...args) => {
     const prefix = interpolate({ requestId, level })
-    const text = Deno[Deno.symbols.internal].stringifyArgs(args);
+    const text = Deno[Deno.internal].stringifyArgs(args);
     log((prefix + text).replace(/\n/g, '\r'));
   }
 }
@@ -146,7 +153,7 @@ while (true) {
   const next = await fetch(INVOCATION + 'next');
   const headers = next.headers;
   requestId = headers.get('lambda-runtime-aws-request-id');
-  Deno.env()._X_AMZN_TRACE_ID = headers.get('lambda-runtime-trace-id') || '';
+  Deno.env.set('_X_AMZN_TRACE_ID', headers.get('lambda-runtime-trace-id') || '');
   const context = {
     functionName: '$AWS_LAMBDA_FUNCTION_NAME',
     functionVersion: '$AWS_LAMBDA_FUNCTION_VERSION',
