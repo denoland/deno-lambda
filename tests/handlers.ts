@@ -61,7 +61,7 @@ export async function badPrefix(event: any, context: Context) {
   console.log(event.hello);
   const log = LOGGED.map((args) => {
     // @ts-ignore
-    return Deno[Deno.symbols.internal].stringifyArgs(args);
+    return Deno[Deno.internal].stringifyArgs(args);
   });
   LOGGED = [];
   return { log: log };
@@ -83,5 +83,5 @@ export async function wrongArgs(a: number, b: number, c: number) {
 }
 
 export async function xray(event: APIGatewayProxyEvent, context: Context) {
-  return { _X_AMZN_TRACE_ID: Deno.env("_X_AMZN_TRACE_ID") };
+  return { _X_AMZN_TRACE_ID: Deno.env.get("_X_AMZN_TRACE_ID") };
 }

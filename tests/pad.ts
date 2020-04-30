@@ -15,7 +15,7 @@ export async function assertLock(event: any, context: any) {
   // Note: This is a file with external imports in order for -lock to be used.
   // FIXME remove this env hack and pull out the actual cli args from Deno itself.
   // (we shouldn't need to set DENO_FLAGS for deno in bootstrap.)
-  const flags: string = Deno.env("DENO_FLAGS")!;
+  const flags: string = Deno.env.get("DENO_FLAGS")!;
   if (/--lock=lock\.json/.test(flags)) {
     return {};
   }

@@ -3,14 +3,14 @@ import { TestJson, serveEvents } from "./server.ts";
 
 const dec = new TextDecoder();
 
-const testFiles = [...Deno.readdirSync("/src/tests")]
+const testFiles = [...Deno.readDirSync("/src/tests")]
   .map((f) => f.name || "ignore")
   .filter((x) => x.startsWith("test_"))
   .filter((x) => x.endsWith(".json"))
   .map((x) => x.split("/").slice(-1)[0])
   .sort();
 
-if (!Deno.env("_IN_DOCKER")) {
+if (!Deno.env.get("_IN_DOCKER")) {
   console.error("test.ts must be called inside a docker container");
   Deno.exit(1);
 }
@@ -40,7 +40,7 @@ async function addFiles(
 }
 
 async function emptyDir(dir: string) {
-  for (const f of Deno.readdirSync(dir)) {
+  for (const f of Deno.readDirSync(dir)) {
     await Deno.remove(`${dir}/${f.name}`, { recursive: true });
   }
 }
