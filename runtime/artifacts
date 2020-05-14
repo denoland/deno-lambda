@@ -10,7 +10,7 @@ mkdir -p .deno_dir/deps/https/deno.land/x/lambda/
 cp mod.ts .deno_dir/deps/https/deno.land/x/lambda/mod.ts
 cp types.d.ts .deno_dir/deps/https/deno.land/x/lambda/types.d.ts
 # this shouldn't require a fetch to deno.land
-DENO_DIR=.deno_dir ./bin/deno cache hello.ts
+DENO_DIR=/src/runtime/.deno_dir ./bin/deno cache hello.ts
 
 # assert the required files are going to be present in the zip
 ls bin/deno &> /dev/null && ls bootstrap &> /dev/null && ls hello.ts &> /dev/null
@@ -19,11 +19,11 @@ cp -R .deno_dir/gen/file/$PWD/. .deno_dir/LAMBDA_TASK_ROOT
 zip -qq deno-lambda-layer.zip -x '.deno_dir/gen/file/*' -r .deno_dir ./bin/deno bootstrap hello.ts
 zip -qq deno-lambda-example.zip -x '.deno_dir/gen/file/*' -r .deno_dir hello.ts
 
-DENO_DIR=.deno_dir ./bin/deno bundle hello.ts hello.bundle.js
+DENO_DIR=/src/runtime/.deno_dir ./bin/deno bundle hello.ts hello.bundle.js
 
 rm -rf .deno_dir
 mkdir -p .deno_dir/deps/https/deno.land/x/lambda/
 cp mod.ts .deno_dir/deps/https/deno.land/x/lambda/mod.ts
-DENO_DIR=.deno_dir ./bin/deno cache pad.ts
+DENO_DIR=/src/runtime/.deno_dir ./bin/deno cache pad.ts
 cp -R .deno_dir/gen/file/$PWD/. .deno_dir/LAMBDA_TASK_ROOT
 zip -qq pad.zip -x '.deno_dir/gen/file/*' -r .deno_dir pad.ts
