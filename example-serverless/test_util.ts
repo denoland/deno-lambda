@@ -15,7 +15,7 @@ export async function test(t: Deno.TestDefinition) {
       throw err;
     }
   }
-  Deno.test({ name: t.name, fn: wrapped });
+  await Deno.test({ name: t.name, fn: wrapped });
 }
 
 async function setUp() {
