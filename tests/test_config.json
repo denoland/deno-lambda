@@ -1,4 +1,3 @@
-// skipped because of upstream https://github.com/denoland/deno/issues/5715. ref https://github.com/hayd/deno-lambda/pull/79
 {
   "env": { "_HANDLER": "decorate.handler", "DENO_CONFIG": "tsconfig.json" },
   "events": [{ "hello": "deno" }],
