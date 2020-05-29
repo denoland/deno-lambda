@@ -163,6 +163,39 @@ custom:
 
 See [`example-serverless/serverless.yml`](https://github.com/hayd/deno-lambda/blob/master/example-serverless/serverless.yml).
 
+## Testing locally with docker-lambda
+
+You can execute deno-lambda locally using [docker-lambda](https://github.com/lambci/docker-lambda).  
+First, unzip the [deno-lambda-layer.zip](https://github.com/hayd/deno-lambda/releases) layer into a directory.
+
+Now, from the directory of your application:
+
+```sh
+# replace LAYER_DIR with the directory you unzipped the layer to e.g. $PWD/layer
+# replace hello.handler with your file/handler function
+# replace '{}' with the json to pass to the handler
+$ docker run -it --rm -v "$PWD":/var/task:ro,delegated -v "LAYER_DIR":/opt:ro,delegated lambci/lambda:provided hello.handler '{}'
+# handler response from goes to stdout
+```
+To execute multiple times AKA "stay-open" API mode:
+
+```sh
+# replace LAYER_DIR with the directory you unzipped to e.g. $PWD/layer
+# replace hello.handler with your file.handler function
+$ docker run -e DOCKER_LAMBDA_STAY_OPEN=1 -p 9001:9001 -it --rm -v "$PWD":/var/task:ro,delegated -v "LAYER_DIR":/opt:ro,delegated lambci/lambda:provided hello.handler
+Lambda API listening on port 9001...
+```
+and in another terminal:
+
+```sh
+# replace '{}' with the json to pass to the handler
+$ aws lambda invoke --endpoint http://localhost:9001 --no-sign-request --function-name deno-func --payload '{}' output.json
+# output.json is populated with the handler response
+```
+For more advanced usage, e.g. including multiple layers and installing additional libraries
+(with [yumbda](https://github.com/lambci/yumda)),
+please consult the [docker-lambda](https://github.com/lambci/docker-lambda) documentation.
+
 ## Advanced logging
 
 You can set the way `console.log` etc. outputs to cloudwatch logs using
