@@ -1,5 +1,5 @@
 service: candidate-service
-frameworkVersion: ">=1.1.0 <2.0.0"
+frameworkVersion: ">=1.1.1 <2.0.0"
 
 provider:
   name: aws
@@ -64,7 +64,7 @@ resources:
       Properties:
         Location:
           ApplicationId: arn:aws:serverlessrepo:us-east-1:390065572566:applications/deno
-          SemanticVersion: 1.1.0
+          SemanticVersion: 1.1.1
 
     candidatesTable:
       Type: AWS::DynamoDB::Table
