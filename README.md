@@ -74,6 +74,7 @@ and either reference the outputted `LayerArn` as a layer in your function.
 - [SAM example](https://github.com/hayd/deno-lambda/tree/master/example-sam)
 - [Serverless example](https://github.com/hayd/deno-lambda/tree/master/example-serverless)
   (feat. [Dynamodb](https://github.com/chiefbiiko/dynamodb/))
+- [AWS CDK example](https://github.com/hayd/deno-lambda/tree/master/example-aws-cdk)
 - Zipped source example, [`deno-lambda-example.zip`](https://github.com/hayd/deno-lambda/releases/),
   see [bundling-code](https://github.com/hayd/deno-lambda/blob/master/README.md#bundling-code) section.
 

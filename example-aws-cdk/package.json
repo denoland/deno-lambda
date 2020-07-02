@@ -1,0 +1,26 @@
+{
+  "name": "example-aws-cdk",
+  "version": "0.1.0",
+  "bin": {
+    "example-aws-cdk": "cdk/bin/example-aws-cdk.js"
+  },
+  "scripts": {
+    "build": "cdk/node_modules/.bin/tsc",
+    "watch": "cdk/node_modules/.bin/tsc -w",
+    "cdk": "cdk/node_modules/.bin/cdk"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "1.48.0",
+    "@aws-cdk/aws-sam": "^1.48.0",
+    "@aws-cdk/aws-lambda": "^1.48.0",
+    "@aws-cdk/aws-apigateway": "^1.48.0",
+    "@types/node": "10.17.5",
+    "aws-cdk": "1.48.0",
+    "ts-node": "^8.1.0",
+    "typescript": "~3.7.2"
+  },
+  "dependencies": {
+    "@aws-cdk/core": "1.48.0",
+    "source-map-support": "^0.5.16"
+  }
+}
