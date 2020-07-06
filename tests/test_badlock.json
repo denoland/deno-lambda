@@ -4,7 +4,7 @@
   "expected": [
     {
       "status": "error",
-      "content": "{\"errorMessage\" : \"lock file error: Compile file:///var/task/pad.ts\nSubresource integrity check failed --lock=badlock.json\nhttps://deno.land/std@v0.38.0/strings/pad.ts\", \"errorType\" : \"InitException\"}"
+      "content": "{\"errorMessage\" : \"lock file error: Subresource integrity check failed --lock=badlock.json\nhttps://deno.land/std@v0.38.0/strings/pad.ts\", \"errorType\" : \"InitException\"}"
     }
   ],
   "files": ["pad.ts", "badlock.json"],

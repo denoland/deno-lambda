@@ -67,7 +67,7 @@ for (const t of testFiles) {
       const responses = out.responses.map((x) => JSON.parse(x));
       const expected = testJson["expected"];
 
-      assertEquals(expected, responses);
+      assertEquals(responses, expected);
       // console.log(out.out)  // FIXME this is always empty
     },
   });
