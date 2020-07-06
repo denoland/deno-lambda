@@ -1,5 +1,5 @@
 export {
   assert,
-  assertEquals
-} from "https://deno.land/std@v0.58.0/testing/asserts.ts";
-export { serve } from "https://deno.land/std@v0.58.0/http/server.ts";
+  assertEquals,
+} from "https://deno.land/std@0.60.0/testing/asserts.ts";
+export { serve } from "https://deno.land/std@0.60.0/http/server.ts";
