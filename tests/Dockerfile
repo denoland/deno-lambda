@@ -40,7 +40,7 @@ RUN sh artifacts \
 
 WORKDIR /src/tests
 # Note: We have to run since fetch doesn't write!
-RUN deno cache --lock-write --lock=lock.json pad.ts \
+RUN deno cache --lock-write --lock=lock.json --quiet pad.ts \
  && echo {} > badlock.json
 
 ADD tests/server.ts server.ts
