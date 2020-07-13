@@ -61,7 +61,7 @@ export async function badPrefix(event: any, context: Context) {
   console.log(event.hello);
   const log = LOGGED.map((args) => {
     // @ts-ignore
-    return Deno[Deno.internal].stringifyArgs(args);
+    return Deno[Deno.internal].inspectArgs(args);
   });
   LOGGED = [];
   return { log: log };

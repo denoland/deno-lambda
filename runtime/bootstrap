@@ -139,7 +139,7 @@ let requestId;
 const logger = (level) => {
   return (...args) => {
     const prefix = interpolate({ requestId, level })
-    const text = Deno[Deno.internal].stringifyArgs(args);
+    const text = Deno[Deno.internal].inspectArgs(args);
     log((prefix + text).replace(/\n/g, '\r'));
   }
 }
