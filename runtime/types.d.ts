@@ -1,8 +1,8 @@
 // Type definitions for AWS Lambda 8.10
 // Project: http://docs.aws.amazon.com/lambda
-// Definitions by: James Darbyshire <https://github.com/darbio/aws-lambda-typescript>
+// Definitions by: James Darbyshire <https://github.com/darbio>
 //                 Michael Skarum <https://github.com/skarum>
-//                 Stef Heyenrath <https://github.com/StefH/DefinitelyTyped>
+//                 Stef Heyenrath <https://github.com/StefH>
 //                 Toby Hede <https://github.com/tobyhede>
 //                 Rich Buggy <https://github.com/buggy>
 //                 Yoriki Yamaguchi <https://github.com/y13i>
@@ -33,497 +33,96 @@
 //                 Alex Bolenok <https://github.com/alex-bolenok-centralreach>
 //                 Marian Zange <https://github.com/marianzange>
 //                 Alexander Pepper <https://github.com/apepper>
+//                 Alessandro Palumbo <https://github.com/apalumbo>
+//                 Sachin Shekhar <https://github.com/SachinShekhar>
+//                 Ivan Martos <https://github.com/ivanmartos>
+//                 Zach Anthony <https://github.com/zach-anthony>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-// TypeScript Version: 2.8
-
-// API Gateway "event" request context
-export interface APIGatewayEventRequestContext {
-  accountId: string;
-  apiId: string;
-  authorizer?: AuthResponseContext | null;
-  connectedAt?: number;
-  connectionId?: string;
-  domainName?: string;
-  domainPrefix?: string;
-  eventType?: string;
-  extendedRequestId?: string;
-  httpMethod: string;
-  identity: {
-    accessKey: string | null;
-    accountId: string | null;
-    apiKey: string | null;
-    apiKeyId: string | null;
-    caller: string | null;
-    cognitoAuthenticationProvider: string | null;
-    cognitoAuthenticationType: string | null;
-    cognitoIdentityId: string | null;
-    cognitoIdentityPoolId: string | null;
-    principalOrgId: string | null;
-    sourceIp: string;
-    user: string | null;
-    userAgent: string | null;
-    userArn: string | null;
-  };
-  messageDirection?: string;
-  messageId?: string | null;
-  path: string;
-  stage: string;
-  requestId: string;
-  requestTime?: string;
-  requestTimeEpoch: number;
-  resourceId: string;
-  resourcePath: string;
-  routeKey?: string;
-}
-
-// API Gateway "event"
-export interface APIGatewayProxyEvent {
-  body: string | null;
-  headers: { [name: string]: string };
-  multiValueHeaders: { [name: string]: string[] };
-  httpMethod: string;
-  isBase64Encoded: boolean;
-  path: string;
-  pathParameters: { [name: string]: string } | null;
-  queryStringParameters: { [name: string]: string } | null;
-  multiValueQueryStringParameters: { [name: string]: string[] } | null;
-  stageVariables: { [name: string]: string } | null;
-  requestContext: APIGatewayEventRequestContext;
-  resource: string;
-}
-export type APIGatewayEvent = APIGatewayProxyEvent; // Old name
-
-// https://docs.aws.amazon.com/elasticloadbalancing/latest/application/lambda-functions.html
-export interface ALBEventRequestContext {
-  elb: {
-    targetGroupArn: string;
-  };
-}
-export interface ALBEvent {
-  requestContext: ALBEventRequestContext;
-  httpMethod: string;
-  path: string;
-  queryStringParameters?: { [parameter: string]: string }; // URL encoded
-  headers?: { [header: string]: string };
-  multiValueQueryStringParameters?: { [parameter: string]: string[] }; // URL encoded
-  multiValueHeaders?: { [header: string]: string[] };
-  body: string | null;
-  isBase64Encoded: boolean;
-}
-
-// API Gateway CustomAuthorizer "event"
-export interface CustomAuthorizerEvent {
-  type: string;
-  methodArn: string;
-  authorizationToken?: string;
-  resource?: string;
-  path?: string;
-  httpMethod?: string;
-  headers?: { [name: string]: string };
-  multiValueHeaders?: { [name: string]: string[] };
-  pathParameters?: { [name: string]: string } | null;
-  queryStringParameters?: { [name: string]: string } | null;
-  multiValueQueryStringParameters?: { [name: string]: string[] } | null;
-  stageVariables?: { [name: string]: string };
-  requestContext?: APIGatewayEventRequestContext;
-  domainName?: string;
-  apiId?: string;
-}
-
-// Context
-// http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_streams_AttributeValue.html
-export interface AttributeValue {
-  B?: string;
-  BS?: string[];
-  BOOL?: boolean;
-  L?: AttributeValue[];
-  M?: { [id: string]: AttributeValue };
-  N?: string;
-  NS?: string[];
-  NULL?: boolean;
-  S?: string;
-  SS?: string[];
-}
-
-// Context
-// http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_streams_StreamRecord.html
-export interface StreamRecord {
-  ApproximateCreationDateTime?: number;
-  Keys?: { [key: string]: AttributeValue };
-  NewImage?: { [key: string]: AttributeValue };
-  OldImage?: { [key: string]: AttributeValue };
-  SequenceNumber?: string;
-  SizeBytes?: number;
-  StreamViewType?:
-    | "KEYS_ONLY"
-    | "NEW_IMAGE"
-    | "OLD_IMAGE"
-    | "NEW_AND_OLD_IMAGES";
-}
-
-// Context
-// http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_streams_Record.html
-export interface DynamoDBRecord {
-  awsRegion?: string;
-  dynamodb?: StreamRecord;
-  eventID?: string;
-  eventName?: "INSERT" | "MODIFY" | "REMOVE";
-  eventSource?: string;
-  eventSourceARN?: string;
-  eventVersion?: string;
-  userIdentity?: any;
-}
-
-// AWS Lambda Stream event
-// Context
-// http://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-ddb-update
-export interface DynamoDBStreamEvent {
-  Records: DynamoDBRecord[];
-}
-
-// SNS "event"
-export interface SNSMessageAttribute {
-  Type: string;
-  Value: string;
-}
-
-export interface SNSMessageAttributes {
-  [name: string]: SNSMessageAttribute;
-}
-
-export interface SNSMessage {
-  SignatureVersion: string;
-  Timestamp: string;
-  Signature: string;
-  SigningCertUrl: string;
-  MessageId: string;
-  Message: string;
-  MessageAttributes: SNSMessageAttributes;
-  Type: string;
-  UnsubscribeUrl: string;
-  TopicArn: string;
-  Subject: string;
-}
-
-export interface SNSEventRecord {
-  EventVersion: string;
-  EventSubscriptionArn: string;
-  EventSource: string;
-  Sns: SNSMessage;
-}
-
-export interface SNSEvent {
-  Records: SNSEventRecord[];
-}
+// TypeScript Version: 3.0
 
 /**
- * S3Create event
- * https://docs.aws.amazon.com/AmazonS3/latest/dev/notification-content-structure.html
+ * The interface that AWS Lambda will invoke your handler with.
+ * There are more specialized types for many cases where AWS services
+ * invoke your lambda, but you can directly use this type for when you are invoking
+ * your lambda directly.
+ *
+ * See tme {@link http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html AWS documentation}
+ * for more information about the runtime behavior, and the
+ * {@link https://aws.amazon.com/blogs/compute/node-js-8-10-runtime-now-available-in-aws-lambda/ AWS Blog post}
+ * introducing the async handler behavior in the 8.10 runtime.
+ *
+ * @example <caption>Defining a custom handler type</caption>
+ * interface NameEvent {
+ *     fullName: string
+ * }
+ * interface NameResult {
+ *     firstName: string
+ *     middleNames: string
+ *     lastName: string
+ * }
+ * type PersonHandler = Handler<NameEvent, NameResult>
+ *
+ * export const handler: PersonHandler = async (event) => {
+ *   const names = event.fullName.split(' ')
+ *   const firstName = names.shift()
+ *   const lastName = names.pop()
+ *   return { firstName, middleNames: names, lastName }
+ * }
+ *
+ * @example <caption>Logs the contents of the event object and returns the location of the logs</caption>
+ * export const handler: Handler = async (event, context) => {
+ *   console.log("EVENT: \n" + JSON.stringify(event, null, 2))
+ *   return context.logStreamName
+ * }
+ *
+ * @example <caption>AWS SDK with Async Function and Promises</caption>
+ * const s3 = new AWS.S3()
+ *
+ * export const handler: Handler = async (event) => {
+ *   const response = await s3.listBuckets().promise()
+ *   return response?.Buckets.map((bucket) => bucket.Name)
+ * }
+ *
+ * @example <caption>HTTP Request with Callback</caption>
+ * let url = "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html"
+ *
+ * export const handler: Handler<void, number> = (event, context, callback) => {
+ *  https.get(url, (res) => {
+ *    callback(null, res.statusCode)
+ *  }).on('error', (e) => {
+ *    callback(Error(e))
+ *  })
+ * }
+ *
+ * @param event
+ *      Parsed JSON data in the lambda request payload. For an AWS service triggered
+ *      lambda this should be in the format of a type ending in Event, for example the
+ *      S3Handler receives an event of type S3Event.
+ * @param context
+ *      Runtime contextual information of the current invocation, for example the caller
+ *      identity, available memory and time remaining, legacy completion callbacks, and
+ *      a mutable property controlling when the lambda execution completes.
+ * @param callback
+ *      NodeJS-style completion callback that the AWS Lambda runtime will provide that can
+ *      be used to provide the lambda result payload value, or any execution error. Can
+ *      instead return a promise that resolves with the result payload value or rejects
+ *      with the execution error.
+ * @return
+ *      A promise that resolves with the lambda result payload value, or rejects with the
+ *      execution error. Note that if you implement your handler as an async function,
+ *      you will automatically return a promise that will resolve with a returned value,
+ *      or reject with a thrown value.
  */
-
-export interface S3EventRecordGlacierRestoreEventData {
-  lifecycleRestorationExpiryTime: string;
-  lifecycleRestoreStorageClass: string;
-}
-
-export interface S3EventRecordGlacierEventData {
-  restoreEventData: S3EventRecordGlacierRestoreEventData;
-}
-
-export interface S3EventRecord {
-  eventVersion: string;
-  eventSource: string;
-  awsRegion: string;
-  eventTime: string;
-  eventName: string;
-  userIdentity: {
-    principalId: string;
-  };
-  requestParameters: {
-    sourceIPAddress: string;
-  };
-  responseElements: {
-    "x-amz-request-id": string;
-    "x-amz-id-2": string;
-  };
-  s3: {
-    s3SchemaVersion: string;
-    configurationId: string;
-    bucket: {
-      name: string;
-      ownerIdentity: {
-        principalId: string;
-      };
-      arn: string;
-    };
-    object: {
-      key: string;
-      size: number;
-      eTag: string;
-      versionId?: string;
-      sequencer: string;
-    };
-  };
-  glacierEventData?: S3EventRecordGlacierEventData;
-}
-
-export interface S3Event {
-  Records: S3EventRecord[];
-}
-
-export type S3CreateEvent = S3Event; // old name
+export type Handler<TEvent = any, TResult = any> = (
+  event: TEvent,
+  context: Context,
+) => Promise<TResult>;
 
 /**
- * S3 Batch Operations event
- * https://docs.aws.amazon.com/AmazonS3/latest/dev/batch-ops-invoke-lambda.html
- */
-
-export interface S3BatchEvent {
-  invocationSchemaVersion: string;
-  invocationId: string;
-  job: S3BatchEventJob;
-  tasks: S3BatchEventTask[];
-}
-
-export interface S3BatchEventJob {
-  id: string;
-}
-
-export interface S3BatchEventTask {
-  taskId: string;
-  s3Key: string;
-  s3VersionId: string | null;
-  s3BucketArn: string;
-}
-
-export interface S3BatchResult {
-  invocationSchemaVersion: string;
-  treatMissingKeysAs: S3BatchResultResultCode;
-  invocationId: string;
-  results: S3BatchResultResult[];
-}
-
-export type S3BatchResultResultCode =
-  | "Succeeded"
-  | "TemporaryFailure"
-  | "PermanentFailure";
-
-export interface S3BatchResultResult {
-  taskId: string;
-  resultCode: S3BatchResultResultCode;
-  resultString: string;
-}
-
-/**
- * Cognito User Pool event
- * http://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools-working-with-aws-lambda-triggers.html
- */
-export interface CognitoUserPoolTriggerEvent {
-  version: number;
-  triggerSource:
-    | "PreSignUp_SignUp"
-    | "PreSignUp_ExternalProvider"
-    | "PostConfirmation_ConfirmSignUp"
-    | "PreAuthentication_Authentication"
-    | "PostAuthentication_Authentication"
-    | "CustomMessage_SignUp"
-    | "CustomMessage_AdminCreateUser"
-    | "CustomMessage_ResendCode"
-    | "CustomMessage_ForgotPassword"
-    | "CustomMessage_UpdateUserAttribute"
-    | "CustomMessage_VerifyUserAttribute"
-    | "CustomMessage_Authentication"
-    | "DefineAuthChallenge_Authentication"
-    | "CreateAuthChallenge_Authentication"
-    | "VerifyAuthChallengeResponse_Authentication"
-    | "PreSignUp_AdminCreateUser"
-    | "PostConfirmation_ConfirmForgotPassword"
-    | "TokenGeneration_HostedAuth"
-    | "TokenGeneration_Authentication"
-    | "TokenGeneration_NewPasswordChallenge"
-    | "TokenGeneration_AuthenticateDevice"
-    | "TokenGeneration_RefreshTokens"
-    | "UserMigration_Authentication"
-    | "UserMigration_ForgotPassword";
-  region: string;
-  userPoolId: string;
-  userName?: string;
-  callerContext: {
-    awsSdkVersion: string;
-    clientId: string;
-  };
-  request: {
-    userAttributes: { [key: string]: string };
-    validationData?: { [key: string]: string };
-    codeParameter?: string;
-    linkParameter?: string;
-    usernameParameter?: string;
-    newDeviceUsed?: boolean;
-    session?: Array<{
-      challengeName:
-        | "CUSTOM_CHALLENGE"
-        | "PASSWORD_VERIFIER"
-        | "SMS_MFA"
-        | "DEVICE_SRP_AUTH"
-        | "DEVICE_PASSWORD_VERIFIER"
-        | "ADMIN_NO_SRP_AUTH";
-      challengeResult: boolean;
-      challengeMetadata?: string;
-    }>;
-    challengeName?: string;
-    privateChallengeParameters?: { [key: string]: string };
-    challengeAnswer?: string;
-    password?: string;
-  };
-  response: {
-    autoConfirmUser?: boolean;
-    autoVerifyPhone?: boolean;
-    autoVerifyEmail?: boolean;
-    smsMessage?: string;
-    emailMessage?: string;
-    emailSubject?: string;
-    challengeName?: string;
-    issueTokens?: boolean;
-    failAuthentication?: boolean;
-    publicChallengeParameters?: { [key: string]: string };
-    privateChallengeParameters?: { [key: string]: string };
-    challengeMetadata?: string;
-    answerCorrect?: boolean;
-    userAttributes?: { [key: string]: string };
-    finalUserStatus?: "CONFIRMED" | "RESET_REQUIRED";
-    messageAction?: "SUPPRESS";
-    desiredDeliveryMediums?: Array<"EMAIL" | "SMS">;
-    forceAliasCreation?: boolean;
-    claimsOverrideDetails?: {
-      claimsToAddOrOverride?: { [key: string]: string };
-      claimsToSuppress?: string[];
-      groupOverrideDetails?: null | {
-        groupsToOverride?: string[];
-        iamRolesToOverride?: string[];
-        preferredRole?: string;
-      };
-    };
-  };
-}
-export type CognitoUserPoolEvent = CognitoUserPoolTriggerEvent;
-
-/**
- * CloudFormation Custom Resource event and response
- * http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/crpg-ref.html
- */
-export interface CloudFormationCustomResourceEventCommon {
-  ServiceToken: string;
-  ResponseURL: string;
-  StackId: string;
-  RequestId: string;
-  LogicalResourceId: string;
-  ResourceType: string;
-  ResourceProperties: {
-    ServiceToken: string;
-    [Key: string]: any;
-  };
-}
-
-export interface CloudFormationCustomResourceCreateEvent
-  extends CloudFormationCustomResourceEventCommon {
-  RequestType: "Create";
-}
-
-export interface CloudFormationCustomResourceUpdateEvent
-  extends CloudFormationCustomResourceEventCommon {
-  RequestType: "Update";
-  PhysicalResourceId: string;
-  OldResourceProperties: {
-    [Key: string]: any;
-  };
-}
-
-export interface CloudFormationCustomResourceDeleteEvent
-  extends CloudFormationCustomResourceEventCommon {
-  RequestType: "Delete";
-  PhysicalResourceId: string;
-}
-
-export type CloudFormationCustomResourceEvent =
-  | CloudFormationCustomResourceCreateEvent
-  | CloudFormationCustomResourceUpdateEvent
-  | CloudFormationCustomResourceDeleteEvent;
-
-export interface CloudFormationCustomResourceResponseCommon {
-  PhysicalResourceId: string;
-  StackId: string;
-  RequestId: string;
-  LogicalResourceId: string;
-  Data?: {
-    [Key: string]: any;
-  };
-  NoEcho?: boolean;
-}
-
-export interface CloudFormationCustomResourceSuccessResponse
-  extends CloudFormationCustomResourceResponseCommon {
-  Status: "SUCCESS";
-  Reason?: string;
-}
-
-export interface CloudFormationCustomResourceFailedResponse
-  extends CloudFormationCustomResourceResponseCommon {
-  Status: "FAILED";
-  Reason: string;
-}
-
-export type CloudFormationCustomResourceResponse =
-  | CloudFormationCustomResourceSuccessResponse
-  | CloudFormationCustomResourceFailedResponse;
-
-/**
- * See https://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-scheduled-event
- */
-export interface ScheduledEvent {
-  account: string;
-  region: string;
-  detail: any;
-  "detail-type": string;
-  source: string;
-  time: string;
-  id: string;
-  resources: string[];
-}
-
-/**
- * See http://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-cloudwatch-logs
- */
-export interface CloudWatchLogsEvent {
-  awslogs: CloudWatchLogsEventData;
-}
-
-export interface CloudWatchLogsEventData {
-  data: string;
-}
-
-export interface CloudWatchLogsDecodedData {
-  owner: string;
-  logGroup: string;
-  logStream: string;
-  subscriptionFilters: string[];
-  messageType: string;
-  logEvents: CloudWatchLogsLogEvent[];
-}
-
-/**
- * See http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html#LambdaFunctionExample
- */
-export interface CloudWatchLogsLogEvent {
-  id: string;
-  timestamp: number;
-  message: string;
-  extractedFields?: { [key: string]: string };
-}
-
-// Context
-// http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html
+* {@link Handler} context parameter.
+* See {@link https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html AWS documentation}.
+*/
 export interface Context {
-  // Properties
   callbackWaitsForEmptyEventLoop: boolean;
   functionName: string;
   functionVersion: string;
@@ -535,14 +134,21 @@ export interface Context {
   identity?: CognitoIdentity;
   clientContext?: ClientContext;
 
-  // Functions
   getRemainingTimeInMillis(): number;
 
   // Functions for compatibility with earlier Node.js Runtime v0.10.42
-  // For more details see http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-using-old-runtime.html#nodejs-prog-model-oldruntime-context-methods
+  // No longer documented, so they are deprecated, but they still work
+  // as of the 12.x runtime, so they are not removed from the types.
+
+  /** @deprecated Use handler callback or promise result */
   done(error?: Error, result?: any): void;
+  /** @deprecated Use handler callback with first argument or reject a promise result */
   fail(error: Error | string): void;
+  /** @deprecated Use handler callback with second argument or resolve a promise result */
   succeed(messageOrObject: any): void;
+  // Unclear what behavior this is supposed to have, I couldn't find any still extant reference,
+  // and it behaves like the above, ignoring the object parameter.
+  /** @deprecated Use handler callback or promise result */
   succeed(message: string, object: any): void;
 }
 
@@ -573,260 +179,102 @@ export interface ClientContextEnv {
   locale: string;
 }
 
-export interface APIGatewayProxyResult {
-  statusCode: number;
-  headers?: {
-    [header: string]: boolean | number | string;
-  };
-  multiValueHeaders?: {
-    [header: string]: Array<boolean | number | string>;
-  };
-  body: string;
-  isBase64Encoded?: boolean;
-}
-export type ProxyResult = APIGatewayProxyResult; // Old name
-
-export interface ALBResult {
-  statusCode: number;
-  statusDescription: string;
-  headers?: { [header: string]: boolean | number | string };
-  multiValueHeaders?: { [header: string]: Array<boolean | number | string> };
-  body: string;
-  isBase64Encoded: boolean;
-}
-
 /**
- * API Gateway CustomAuthorizer AuthResponse.
- * http://docs.aws.amazon.com/apigateway/latest/developerguide/use-custom-authorizer.html#api-gateway-custom-authorizer-output
- */
-export interface CustomAuthorizerResult {
-  principalId: string;
-  policyDocument: PolicyDocument;
-  context?: AuthResponseContext;
-  usageIdentifierKey?: string;
-}
-export type AuthResponse = CustomAuthorizerResult;
+* NodeJS-style callback parameter for the {@link Handler} type.
+* Can be used instead of returning a promise, see the
+* {@link https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html AWS documentation}
+* for the handler programming model.
+*
+* @param error
+*   Parameter to use to provide the error payload for a failed lambda execution.
+*   See {@link https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-mode-exceptions.html AWS documentation}
+*   for error handling.
+*   If an Error instance is passed, the error payload uses the `name` property as the `errorType`,
+*   the `message` property as the `errorMessage`, and parses the `stack` property string into
+*   the `trace` array.
+*   For other values, the `errorType` is `typeof value`, the `errorMessage` is `String(value)`, and
+*   `trace` is an empty array.
+*
+* @param result
+*   Parameter to use to provide the result payload for a successful lambda execution.
+*   Pass `null` or `undefined` for the `error` parameter to use this parameter.
+*/
+export type Callback<TResult = any> = (
+  error?: Error | string | null,
+  result?: TResult,
+) => void;
 
-/**
- * API Gateway CustomAuthorizer AuthResponse.PolicyDocument.
- * https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-lambda-authorizer-output.html
- * https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html#Condition
- */
-export interface PolicyDocument {
-  Version: string;
-  Id?: string;
-  Statement: Statement[];
-}
+// Types shared between trigger/api-gateway-authorizer.d.ts and api-gateway-proxy.d.ts
 
-/**
- * API Gateway CustomAuthorizer AuthResponse.PolicyDocument.Condition.
- * https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-control-access-policy-language-overview.html
- * https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition.html
- */
-export interface ConditionBlock {
-  [condition: string]: Condition | Condition[];
-}
-
-export interface Condition {
-  [key: string]: string | string[];
-}
-
-/**
- * API Gateway CustomAuthorizer AuthResponse.PolicyDocument.Statement.
- * https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-control-access-policy-language-overview.html
- * https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html
- */
-export type Statement = BaseStatement &
-  StatementAction &
-  (StatementResource | StatementPrincipal);
-
-export interface BaseStatement {
-  Effect: string;
-  Sid?: string;
-  Condition?: ConditionBlock;
+// Poorly documented, but API Gateway will just fail internally if
+// the context type does not match this.
+// Note that although non-string types will be accepted, they will be
+// coerced to strings on the other side.
+export interface APIGatewayAuthorizerResultContext {
+  [name: string]: string | number | boolean | null | undefined;
 }
 
-export type PrincipalValue =
-  | { [key: string]: string | string[] }
-  | string
-  | string[];
-export interface MaybeStatementPrincipal {
-  Principal?: PrincipalValue;
-  NotPrincipal?: PrincipalValue;
-}
-export interface MaybeStatementResource {
-  Resource?: string | string[];
-  NotResource?: string | string[];
-}
-export type StatementAction =
-  | { Action: string | string[] }
-  | { NotAction: string | string[] };
-export type StatementResource = MaybeStatementPrincipal &
-  ({ Resource: string | string[] } | { NotResource: string | string[] });
-export type StatementPrincipal = MaybeStatementResource &
-  ({ Principal: PrincipalValue } | { NotPrincipal: PrincipalValue });
-/**
- * API Gateway CustomAuthorizer AuthResponse.PolicyDocument.Statement.
- * http://docs.aws.amazon.com/apigateway/latest/developerguide/use-custom-authorizer.html#api-gateway-custom-authorizer-output
- */
-export interface AuthResponseContext {
+// Default authorizer type, prefer using a specific type with the "...WithAuthorizer..." variant types.
+// Note that this doesn't have to be a context from a custom lambda outhorizer, AWS also has a cognito
+// authorizer type and could add more, so the property won't always be a string.
+export type APIGatewayEventDefaultAuthorizerContext = undefined | null | {
   [name: string]: any;
+};
+
+export type APIGatewayEventRequestContext =
+  APIGatewayEventRequestContextWithAuthorizer<
+    APIGatewayEventDefaultAuthorizerContext
+  >;
+
+// The requestContext property of both request authorizer and proxy integration events.
+export interface APIGatewayEventRequestContextWithAuthorizer<
+  TAuthorizerContext,
+> {
+  accountId: string;
+  apiId: string;
+  // This one is a bit confusing: it is not actually present in authorizer calls
+  // and proxy calls without an authorizer. We model this by allowing undefined in the type,
+  // since it ends up the same and avoids breaking users that are testing the property.
+  // This lets us allow parameterizing the authorizer for proxy events that know what authorizer
+  // context values they have.
+  authorizer: TAuthorizerContext;
+  connectedAt?: number;
+  connectionId?: string;
+  domainName?: string;
+  domainPrefix?: string;
+  eventType?: string;
+  extendedRequestId?: string;
+  protocol: string;
+  httpMethod: string;
+  identity: APIGatewayEventIdentity;
+  messageDirection?: string;
+  messageId?: string | null;
+  path: string;
+  stage: string;
+  requestId: string;
+  requestTime?: string;
+  requestTimeEpoch: number;
+  resourceId: string;
+  resourcePath: string;
+  routeKey?: string;
 }
 
-/**
- * CodePipeline events
- * https://docs.aws.amazon.com/codepipeline/latest/userguide/actions-invoke-lambda-function.html
- */
-export interface S3ArtifactLocation {
-  bucketName: string;
-  objectKey: string;
+export interface APIGatewayEventIdentity {
+  accessKey: string | null;
+  accountId: string | null;
+  apiKey: string | null;
+  apiKeyId: string | null;
+  caller: string | null;
+  cognitoAuthenticationProvider: string | null;
+  cognitoAuthenticationType: string | null;
+  cognitoIdentityId: string | null;
+  cognitoIdentityPoolId: string | null;
+  principalOrgId: string | null;
+  sourceIp: string;
+  user: string | null;
+  userAgent: string | null;
+  userArn: string | null;
 }
-export interface S3ArtifactStore {
-  type: "S3";
-  s3Location: S3ArtifactLocation;
-}
-
-export type ArtifactLocation = S3ArtifactStore;
-
-export interface Artifact {
-  name: string;
-  revision: string | null;
-  location: ArtifactLocation;
-}
-
-export interface Credentials {
-  accessKeyId: string;
-  secretAccessKey: string;
-  sessionToken?: string;
-}
-
-export interface EncryptionKey {
-  type: string;
-  id: string;
-}
-
-export interface CodePipelineEvent {
-  "CodePipeline.job": {
-    id: string;
-    accountId: string;
-    data: {
-      actionConfiguration: {
-        configuration: {
-          FunctionName: string;
-          UserParameters: string;
-        };
-      };
-      inputArtifacts: Artifact[];
-      outputArtifacts: Artifact[];
-      artifactCredentials: Credentials;
-      encryptionKey?: EncryptionKey & { type: "KMS" };
-      continuationToken?: string;
-    };
-  };
-}
-
-/**
- * CodePipeline CloudWatch Events
- * https://docs.aws.amazon.com/codepipeline/latest/userguide/detect-state-changes-cloudwatch-events.html
- *
- * The above CodePipelineEvent is when a lambda is invoked by a CodePipeline.
- * These events are when you subscribe to CodePipeline events in CloudWatch.
- *
- * Their documentation says that detail.version is a string, but it is actually an integer
- */
-export type CodePipelineState =
-  | "STARTED"
-  | "SUCCEEDED"
-  | "RESUMED"
-  | "FAILED"
-  | "CANCELED"
-  | "SUPERSEDED";
-
-export type CodePipelineStageState =
-  | "STARTED"
-  | "SUCCEEDED"
-  | "RESUMED"
-  | "FAILED"
-  | "CANCELED";
-
-export type CodePipelineActionState =
-  | "STARTED"
-  | "SUCCEEDED"
-  | "FAILED"
-  | "CANCELED";
-
-export interface CodePipelineCloudWatchPipelineEvent {
-  version: string;
-  id: string;
-  "detail-type": "CodePipeline Pipeline Execution State Change";
-  source: "aws.codepipeline";
-  account: string;
-  time: string;
-  region: string;
-  resources: string[];
-  detail: {
-    pipeline: string;
-    version: number;
-    state: CodePipelineState;
-    "execution-id": string;
-  };
-}
-
-export interface CodePipelineCloudWatchStageEvent {
-  version: string;
-  id: string;
-  "detail-type": "CodePipeline Stage Execution State Change";
-  source: "aws.codepipeline";
-  account: string;
-  time: string;
-  region: string;
-  resources: string[];
-  detail: {
-    pipeline: string;
-    version: number;
-    "execution-id": string;
-    stage: string;
-    state: CodePipelineStageState;
-  };
-}
-
-export type CodePipelineActionCategory =
-  | "Approval"
-  | "Build"
-  | "Deploy"
-  | "Invoke"
-  | "Source"
-  | "Test";
-
-export interface CodePipelineCloudWatchActionEvent {
-  version: string;
-  id: string;
-  "detail-type": "CodePipeline Action Execution State Change";
-  source: "aws.codepipeline";
-  account: string;
-  time: string;
-  region: string;
-  resources: string[];
-  detail: {
-    pipeline: string;
-    version: number;
-    "execution-id": string;
-    stage: string;
-    action: string;
-    state: CodePipelineActionState;
-    type: {
-      owner: "AWS" | "Custom" | "ThirdParty";
-      category: CodePipelineActionCategory;
-      provider: string;
-      version: number;
-    };
-  };
-}
-
-export type CodePipelineCloudWatchEvent =
-  | CodePipelineCloudWatchPipelineEvent
-  | CodePipelineCloudWatchStageEvent
-  | CodePipelineCloudWatchActionEvent;
 
 /**
  * CloudFront events
@@ -890,20 +338,20 @@ export interface CloudFrontEvent {
   config: {
     readonly distributionDomainName: string;
     readonly distributionId: string;
-  } & (
-    | { readonly eventType: "origin-request" | "origin-response" }
-    | {
-        readonly eventType: "viewer-request" | "viewer-response";
-        readonly requestId: string;
-      }
-  );
+    readonly eventType:
+      | "origin-request"
+      | "origin-response"
+      | "viewer-request"
+      | "viewer-response";
+    readonly requestId: string;
+  };
 }
 
 /**
- * Generated HTTP response in viewer request event or origin request event
- *
- * https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-generating-http-responses-in-requests.html#lambda-generating-http-responses-object
- */
+* Generated HTTP response in viewer request event or origin request event
+*
+* https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-generating-http-responses-in-requests.html#lambda-generating-http-responses-object
+*/
 export interface CloudFrontResultResponse {
   status: string;
   statusDescription?: string;
@@ -911,6 +359,511 @@ export interface CloudFrontResultResponse {
   bodyEncoding?: "text" | "base64";
   body?: string;
 }
+
+export type ALBHandler = Handler<ALBEvent, ALBResult>;
+export type ALBCallback = Callback<ALBResult>;
+
+// https://docs.aws.amazon.com/elasticloadbalancing/latest/application/lambda-functions.html
+export interface ALBEventRequestContext {
+  elb: {
+    targetGroupArn: string;
+  };
+}
+
+export interface ALBEvent {
+  requestContext: ALBEventRequestContext;
+  httpMethod: string;
+  path: string;
+  queryStringParameters?: { [parameter: string]: string }; // URL encoded
+  headers?: { [header: string]: string };
+  multiValueQueryStringParameters?: { [parameter: string]: string[] }; // URL encoded
+  multiValueHeaders?: { [header: string]: string[] };
+  body: string | null;
+  isBase64Encoded: boolean;
+}
+
+export interface ALBResult {
+  statusCode: number;
+  statusDescription?: string;
+  headers?: { [header: string]: boolean | number | string };
+  multiValueHeaders?: { [header: string]: Array<boolean | number | string> };
+  body?: string;
+  isBase64Encoded?: boolean;
+}
+
+export type APIGatewayAuthorizerHandler = Handler<
+  APIGatewayAuthorizerEvent,
+  APIGatewayAuthorizerResult
+>;
+export type APIGatewayAuthorizerWithContextHandler<
+  TAuthorizerContext extends APIGatewayAuthorizerResultContext,
+> = Handler<
+  APIGatewayAuthorizerEvent,
+  APIGatewayAuthorizerWithContextResult<TAuthorizerContext>
+>;
+
+export type APIGatewayAuthorizerCallback = Callback<APIGatewayAuthorizerResult>;
+export type APIGatewayAuthorizerWithContextCallback<
+  TAuthorizerContext extends APIGatewayAuthorizerResultContext,
+> = Callback<APIGatewayAuthorizerWithContextResult<TAuthorizerContext>>;
+
+export type APIGatewayTokenAuthorizerHandler = Handler<
+  APIGatewayTokenAuthorizerEvent,
+  APIGatewayAuthorizerResult
+>;
+export type APIGatewayTokenAuthorizerWithContextHandler<
+  TAuthorizerContext extends APIGatewayAuthorizerResultContext,
+> = Handler<
+  APIGatewayTokenAuthorizerEvent,
+  APIGatewayAuthorizerWithContextResult<TAuthorizerContext>
+>;
+
+export type APIGatewayRequestAuthorizerHandler = Handler<
+  APIGatewayRequestAuthorizerEvent,
+  APIGatewayAuthorizerResult
+>;
+export type APIGatewayRequestAuthorizerWithContextHandler<
+  TAuthorizerContext extends APIGatewayAuthorizerResultContext,
+> = Handler<
+  APIGatewayRequestAuthorizerEvent,
+  APIGatewayAuthorizerWithContextResult<TAuthorizerContext>
+>;
+
+export type APIGatewayAuthorizerEvent =
+  | APIGatewayTokenAuthorizerEvent
+  | APIGatewayRequestAuthorizerEvent;
+
+export interface APIGatewayTokenAuthorizerEvent {
+  type: "TOKEN";
+  methodArn: string;
+  authorizationToken: string;
+}
+
+// Note, when invoked by the tester in the AWS web console, the map values can be null,
+// but they will be empty objects in the real object.
+// Worse, it will include "body" and "isBase64Encoded" properties, unlike the real call!
+// See https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-lambda-authorizer-input.html for the
+// formal definition.
+export interface APIGatewayRequestAuthorizerEvent {
+  type: "REQUEST";
+  methodArn: string;
+  resource: string;
+  path: string;
+  httpMethod: string;
+  headers: { [name: string]: string } | null;
+  multiValueHeaders: { [name: string]: string[] } | null;
+  pathParameters: { [name: string]: string } | null;
+  queryStringParameters: { [name: string]: string } | null;
+  multiValueQueryStringParameters: { [name: string]: string[] } | null;
+  stageVariables: { [name: string]: string } | null;
+  requestContext: APIGatewayEventRequestContextWithAuthorizer<undefined>;
+}
+
+export interface APIGatewayAuthorizerResult {
+  principalId: string;
+  policyDocument: PolicyDocument;
+  context?: APIGatewayAuthorizerResultContext | null;
+  usageIdentifierKey?: string | null;
+}
+
+// Separate type so the context property is required, without pulling complex type magic.
+export interface APIGatewayAuthorizerWithContextResult<
+  TAuthorizerContext extends APIGatewayAuthorizerResultContext,
+> {
+  principalId: string;
+  policyDocument: PolicyDocument;
+  context: TAuthorizerContext;
+  usageIdentifierKey?: string | null;
+}
+
+// Legacy event / names
+
+/** @deprecated Use APIGatewayAuthorizerHandler or a subtype */
+export type CustomAuthorizerHandler = Handler<
+  CustomAuthorizerEvent,
+  APIGatewayAuthorizerResult
+>;
+
+// This one is actually fine.
+export type CustomAuthorizerCallback = APIGatewayAuthorizerCallback;
+
+/** @deprecated Use APIGatewayAuthorizerEvent or a subtype */
+export interface CustomAuthorizerEvent {
+  type: string;
+  methodArn: string;
+  authorizationToken?: string;
+  resource?: string;
+  path?: string;
+  httpMethod?: string;
+  headers?: { [name: string]: string };
+  multiValueHeaders?: { [name: string]: string[] };
+  pathParameters?: { [name: string]: string } | null;
+  queryStringParameters?: { [name: string]: string } | null;
+  multiValueQueryStringParameters?: { [name: string]: string[] } | null;
+  stageVariables?: { [name: string]: string };
+  requestContext?: APIGatewayEventRequestContextWithAuthorizer<
+    APIGatewayEventDefaultAuthorizerContext
+  >;
+  domainName?: string;
+  apiId?: string;
+}
+
+export type CustomAuthorizerResult = APIGatewayAuthorizerResult;
+export type AuthResponse = APIGatewayAuthorizerResult;
+export type AuthResponseContext = APIGatewayAuthorizerResultContext;
+
+/**
+* API Gateway CustomAuthorizer AuthResponse.PolicyDocument.
+* https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-lambda-authorizer-output.html
+* https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html#Condition
+*/
+export interface PolicyDocument {
+  Version: string;
+  Id?: string;
+  Statement: Statement[];
+}
+
+/**
+* API Gateway CustomAuthorizer AuthResponse.PolicyDocument.Condition.
+* https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-control-access-policy-language-overview.html
+* https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition.html
+*/
+export interface ConditionBlock {
+  [condition: string]: Condition | Condition[];
+}
+
+export interface Condition {
+  [key: string]: string | string[];
+}
+
+/**
+* API Gateway CustomAuthorizer AuthResponse.PolicyDocument.Statement.
+* https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-control-access-policy-language-overview.html
+* https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html
+*/
+export type Statement =
+  & BaseStatement
+  & StatementAction
+  & (StatementResource | StatementPrincipal);
+
+export interface BaseStatement {
+  Effect: string;
+  Sid?: string;
+  Condition?: ConditionBlock;
+}
+
+export type PrincipalValue =
+  | { [key: string]: string | string[] }
+  | string
+  | string[];
+export interface MaybeStatementPrincipal {
+  Principal?: PrincipalValue;
+  NotPrincipal?: PrincipalValue;
+}
+export interface MaybeStatementResource {
+  Resource?: string | string[];
+  NotResource?: string | string[];
+}
+export type StatementAction = { Action: string | string[] } | {
+  NotAction: string | string[];
+};
+export type StatementResource =
+  & MaybeStatementPrincipal
+  & ({ Resource: string | string[] } | { NotResource: string | string[] });
+export type StatementPrincipal =
+  & MaybeStatementResource
+  & ({ Principal: PrincipalValue } | { NotPrincipal: PrincipalValue });
+
+/**
+ * Works with Lambda Proxy Integration for Rest API or HTTP API integration Payload Format version 1.0
+ * @see - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html
+ */
+export type APIGatewayProxyHandler = Handler<
+  APIGatewayProxyEvent,
+  APIGatewayProxyResult
+>;
+/**
+ * Works with Lambda Proxy Integration for Rest API or HTTP API integration Payload Format version 1.0
+ * @see - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html
+ */
+export type APIGatewayProxyCallback = Callback<APIGatewayProxyResult>;
+
+/**
+ * Works with HTTP API integration Payload Format version 2.0
+ * @see - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html
+ */
+export type APIGatewayProxyHandlerV2<T = never> = Handler<
+  APIGatewayProxyEventV2,
+  APIGatewayProxyResultV2<T>
+>;
+/**
+ * Works with HTTP API integration Payload Format version 2.0
+ * @see - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html
+ */
+export type APIGatewayProxyCallbackV2 = Callback<APIGatewayProxyResultV2>;
+
+/**
+ * Works with Lambda Proxy Integration for Rest API or HTTP API integration Payload Format version 1.0
+ * @see - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html
+ */
+export type APIGatewayProxyEvent = APIGatewayProxyEventBase<
+  APIGatewayEventDefaultAuthorizerContext
+>;
+
+export type APIGatewayProxyWithLambdaAuthorizerHandler<TAuthorizerContext> =
+  Handler<
+    APIGatewayProxyWithLambdaAuthorizerEvent<TAuthorizerContext>,
+    APIGatewayProxyResult
+  >;
+
+export type APIGatewayProxyWithCognitoAuthorizerHandler = Handler<
+  APIGatewayProxyWithCognitoAuthorizerEvent,
+  APIGatewayProxyResult
+>;
+
+export type APIGatewayProxyWithLambdaAuthorizerEvent<TAuthorizerContext> =
+  APIGatewayProxyEventBase<
+    APIGatewayEventLambdaAuthorizerContext<TAuthorizerContext>
+  >;
+
+export type APIGatewayProxyWithLambdaAuthorizerEventRequestContext<
+  TAuthorizerContext,
+> = APIGatewayEventRequestContextWithAuthorizer<
+  APIGatewayEventLambdaAuthorizerContext<TAuthorizerContext>
+>;
+
+// API Gateway proxy integration mangles the context from a custom authorizer,
+// converting all number or boolean properties to string, and adding some extra properties.
+export type APIGatewayEventLambdaAuthorizerContext<TAuthorizerContext> =
+  & {
+    [P in keyof TAuthorizerContext]: TAuthorizerContext[P] extends null ? null
+      : string;
+  }
+  & {
+    principalId: string;
+    integrationLatency: number;
+  };
+
+export type APIGatewayProxyWithCognitoAuthorizerEvent =
+  APIGatewayProxyEventBase<APIGatewayProxyCognitoAuthorizer>;
+
+// All claims are coerced into strings.
+export interface APIGatewayProxyCognitoAuthorizer {
+  claims: {
+    [name: string]: string;
+  };
+}
+
+export interface APIGatewayProxyEventBase<TAuthorizerContext> {
+  body: string | null;
+  headers: { [name: string]: string };
+  multiValueHeaders: { [name: string]: string[] };
+  httpMethod: string;
+  isBase64Encoded: boolean;
+  path: string;
+  pathParameters: { [name: string]: string } | null;
+  queryStringParameters: { [name: string]: string } | null;
+  multiValueQueryStringParameters: { [name: string]: string[] } | null;
+  stageVariables: { [name: string]: string } | null;
+  requestContext: APIGatewayEventRequestContextWithAuthorizer<
+    TAuthorizerContext
+  >;
+  resource: string;
+}
+
+/**
+ * Works with Lambda Proxy Integration for Rest API or HTTP API integration Payload Format version 1.0
+ * @see - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html
+ */
+export interface APIGatewayProxyResult {
+  statusCode: number;
+  headers?: {
+    [header: string]: boolean | number | string;
+  };
+  multiValueHeaders?: {
+    [header: string]: Array<boolean | number | string>;
+  };
+  body: string;
+  isBase64Encoded?: boolean;
+}
+
+/**
+ * Works with HTTP API integration Payload Format version 2.0
+ * @see - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html
+ */
+export interface APIGatewayProxyEventV2 {
+  version: string;
+  routeKey: string;
+  rawPath: string;
+  rawQueryString: string;
+  cookies?: string[];
+  headers: { [name: string]: string };
+  queryStringParameters?: { [name: string]: string };
+  requestContext: {
+    accountId: string;
+    apiId: string;
+    authorizer?: {
+      jwt: {
+        claims: { [name: string]: string | number | boolean | string[] };
+        scopes: string[];
+      };
+    };
+    domainName: string;
+    domainPrefix: string;
+    http: {
+      method: string;
+      path: string;
+      protocol: string;
+      sourceIp: string;
+      userAgent: string;
+    };
+    requestId: string;
+    routeKey: string;
+    stage: string;
+    time: string;
+    timeEpoch: number;
+  };
+  body?: string;
+  pathParameters?: { [name: string]: string };
+  isBase64Encoded: boolean;
+  stageVariables?: { [name: string]: string };
+}
+
+/**
+ * Works with HTTP API integration Payload Format version 2.0
+ * @see - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html
+ */
+export type APIGatewayProxyResultV2<T = never> =
+  | APIGatewayProxyStructuredResultV2
+  | string
+  | T;
+
+/**
+ * Interface for structured response with `statusCode` and`headers`
+ * Works with HTTP API integration Payload Format version 2.0
+ * @see - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html
+ */
+export interface APIGatewayProxyStructuredResultV2 {
+  statusCode?: number;
+  headers?: {
+    [header: string]: boolean | number | string;
+  };
+  body?: string;
+  isBase64Encoded?: boolean;
+  cookies?: string[];
+}
+
+// Legacy names
+export type ProxyHandler = APIGatewayProxyHandler;
+export type ProxyCallback = APIGatewayProxyCallback;
+export type APIGatewayEvent = APIGatewayProxyEvent;
+export type ProxyResult = APIGatewayProxyResult;
+
+// Note, responses are *not* lambda results, they are sent to the event ResponseURL.
+export type CloudFormationCustomResourceHandler = Handler<
+  CloudFormationCustomResourceEvent,
+  void
+>;
+
+export type CloudFormationCustomResourceEvent =
+  | CloudFormationCustomResourceCreateEvent
+  | CloudFormationCustomResourceUpdateEvent
+  | CloudFormationCustomResourceDeleteEvent;
+
+export type CloudFormationCustomResourceResponse =
+  | CloudFormationCustomResourceSuccessResponse
+  | CloudFormationCustomResourceFailedResponse;
+
+/**
+ * CloudFormation Custom Resource event and response
+ * http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/crpg-ref.html
+ */
+export interface CloudFormationCustomResourceEventCommon {
+  ServiceToken: string;
+  ResponseURL: string;
+  StackId: string;
+  RequestId: string;
+  LogicalResourceId: string;
+  ResourceType: string;
+  ResourceProperties: {
+    ServiceToken: string;
+    [Key: string]: any;
+  };
+}
+
+export interface CloudFormationCustomResourceCreateEvent
+  extends CloudFormationCustomResourceEventCommon {
+  RequestType: "Create";
+}
+
+export interface CloudFormationCustomResourceUpdateEvent
+  extends CloudFormationCustomResourceEventCommon {
+  RequestType: "Update";
+  PhysicalResourceId: string;
+  OldResourceProperties: {
+    [Key: string]: any;
+  };
+}
+
+export interface CloudFormationCustomResourceDeleteEvent
+  extends CloudFormationCustomResourceEventCommon {
+  RequestType: "Delete";
+  PhysicalResourceId: string;
+}
+
+export interface CloudFormationCustomResourceResponseCommon {
+  PhysicalResourceId: string;
+  StackId: string;
+  RequestId: string;
+  LogicalResourceId: string;
+  Data?: {
+    [Key: string]: any;
+  };
+  NoEcho?: boolean;
+}
+
+export interface CloudFormationCustomResourceSuccessResponse
+  extends CloudFormationCustomResourceResponseCommon {
+  Status: "SUCCESS";
+  Reason?: string;
+}
+
+export interface CloudFormationCustomResourceFailedResponse
+  extends CloudFormationCustomResourceResponseCommon {
+  Status: "FAILED";
+  Reason: string;
+}
+
+export type CloudFrontRequestHandler = Handler<
+  CloudFrontRequestEvent,
+  CloudFrontRequestResult
+>;
+export type CloudFrontRequestCallback = Callback<CloudFrontRequestResult>;
+
+/**
+ * CloudFront viewer request or origin request event
+ *
+ * https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-event-structure.html#lambda-event-structure-request
+ */
+export interface CloudFrontRequestEvent {
+  Records: Array<{
+    cf: CloudFrontEvent & {
+      request: CloudFrontRequest;
+    };
+  }>;
+}
+
+export type CloudFrontRequestResult =
+  | undefined
+  | null
+  | CloudFrontResultResponse
+  | CloudFrontRequest;
+
+export type CloudFrontResponseHandler = Handler<
+  CloudFrontResponseEvent,
+  CloudFrontResponseResult
+>;
+export type CloudFrontResponseCallback = Callback<CloudFrontResponseResult>;
 
 /**
  * CloudFront viewer response or origin response event
@@ -929,29 +882,628 @@ export interface CloudFrontResponseEvent {
   }>;
 }
 
-export type CloudFrontRequestResult =
-  | undefined
-  | null
-  | CloudFrontResultResponse
-  | CloudFrontRequest;
-
-/**
- * CloudFront viewer request or origin request event
- *
- * https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-event-structure.html#lambda-event-structure-request
- */
-export interface CloudFrontRequestEvent {
-  Records: Array<{
-    cf: CloudFrontEvent & {
-      request: CloudFrontRequest;
-    };
-  }>;
-}
-
 export type CloudFrontResponseResult =
   | undefined
   | null
   | CloudFrontResultResponse;
+
+export type ScheduledHandler<TDetail = any> = EventBridgeHandler<
+  "Scheduled Event",
+  TDetail,
+  void
+>;
+
+/**
+ * https://docs.aws.amazon.com/lambda/latest/dg/with-scheduled-events.html
+ */
+export interface ScheduledEvent<TDetail = any>
+  extends EventBridgeEvent<"Scheduled Event", TDetail> {}
+
+export type CloudWatchLogsHandler = Handler<CloudWatchLogsEvent, void>;
+
+/**
+ * See http://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-cloudwatch-logs
+ */
+export interface CloudWatchLogsEvent {
+  awslogs: CloudWatchLogsEventData;
+}
+
+export interface CloudWatchLogsEventData {
+  data: string;
+}
+
+export interface CloudWatchLogsDecodedData {
+  owner: string;
+  logGroup: string;
+  logStream: string;
+  subscriptionFilters: string[];
+  messageType: string;
+  logEvents: CloudWatchLogsLogEvent[];
+}
+
+/**
+ * See http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html#LambdaFunctionExample
+ */
+export interface CloudWatchLogsLogEvent {
+  id: string;
+  timestamp: number;
+  message: string;
+  extractedFields?: { [key: string]: string };
+}
+
+export type CodeBuildCloudWatchStateHandler = EventBridgeHandler<
+  "CodeBuild Build State Change",
+  CodeBuildStateEventDetail,
+  void
+>;
+
+export type CodeBuildStateType =
+  | "IN_PROGRESS"
+  | "SUCCEEDED"
+  | "FAILED"
+  | "STOPPED";
+export type CodeBuildPhaseType =
+  | "COMPLETED"
+  | "FINALIZING"
+  | "UPLOAD_ARTIFACTS"
+  | "POST_BUILD"
+  | "BUILD"
+  | "PRE_BUILD"
+  | "INSTALL"
+  | "QUEUED"
+  | "DOWNLOAD_SOURCE"
+  | "PROVISIONING"
+  | "SUBMITTED";
+export type CodeBuildPhaseStatusType =
+  | "TIMED_OUT"
+  | "STOPPED"
+  | "FAILED"
+  | "SUCCEEDED"
+  | "FAULT"
+  | "CLIENT_ERROR";
+export type CodeBuildCacheType = "NO_CACHE" | "LOCAL" | "S3";
+export type CodeBuildSourceLocationType =
+  | "CODECOMMIT"
+  | "CODEPIPELINE"
+  | "GITHUB"
+  | "GITHUB_ENTERPRISE"
+  | "BITBUCKET"
+  | "S3"
+  | "NO_SOURCE";
+export type CodeBuildEnvironmentType =
+  | "LINUX_CONTAINER"
+  | "LINUX_GPU_CONTAINER"
+  | "WINDOWS_CONTAINER"
+  | "ARM_CONTAINER";
+export type CodeBuildEnvironmentPullCredentialsType =
+  | "CODEBUILD"
+  | "SERVICE_ROLE";
+export type CodeBuildEnvironmentComputeType =
+  | "BUILD_GENERAL1_SMALL"
+  | "BUILD_GENERAL1_MEDIUM"
+  | "BUILD_GENERAL1_LARGE"
+  | "BUILD_GENERAL1_2XLARGE";
+export type CodeBuildEnvironmentVariableType =
+  | "PARAMETER_STORE"
+  | "PLAINTEXT"
+  | "SECRETS_MANAGER";
+
+export interface CodeBuildStateEventDetail {
+  "build-status": CodeBuildStateType;
+  "project-name": string;
+  "build-id": string;
+  "current-phase": CodeBuildPhaseType;
+  "current-phase-context": string;
+  version: string;
+  "additional-information": {
+    cache: {
+      type: CodeBuildCacheType;
+    };
+    "build-number": number;
+    "timeout-in-minutes": number;
+    "build-complete": boolean;
+    initiator: string;
+    "build-start-time": string;
+    source: {
+      buildspec: string;
+      location: string;
+      type: CodeBuildSourceLocationType;
+    };
+    "source-version": string;
+    artifact: {
+      location: string;
+    };
+    environment: {
+      image: string;
+      "privileged-mode": boolean;
+      "image-pull-credentials-type"?: CodeBuildEnvironmentPullCredentialsType;
+      "compute-type": CodeBuildEnvironmentComputeType;
+      type: CodeBuildEnvironmentType;
+      "environment-variables": Array<{
+        name: string;
+        type?: CodeBuildEnvironmentVariableType;
+        value: string;
+      }>;
+    };
+    "project-file-system-locations": [];
+    logs: {
+      "group-name": string;
+      "stream-name": string;
+      "deep-link": string;
+    };
+    phases: Array<{
+      "phase-context"?: string[]; // Not available for COMPLETED phase-type
+      "start-time": string;
+      "end-time"?: string; // Not available for COMPLETED phase-type
+      "duration-in-seconds"?: number; // Not available for COMPLETED phase-type
+      "phase-type": CodeBuildPhaseType;
+      "phase-status"?: CodeBuildPhaseStatusType; // Not available for COMPLETED phase-type
+    }>;
+    "queued-timeout-in-minutes": number;
+  };
+}
+
+export interface CodeBuildCloudWatchStateEvent extends
+  EventBridgeEvent<
+    "CodeBuild Build State Change",
+    CodeBuildStateEventDetail
+  > {
+  source: "aws.codebuild";
+}
+
+export type CodePipelineHandler = Handler<CodePipelineEvent, void>;
+
+/**
+ * CodePipeline events
+ * https://docs.aws.amazon.com/codepipeline/latest/userguide/actions-invoke-lambda-function.html
+ */
+export interface S3ArtifactLocation {
+  bucketName: string;
+  objectKey: string;
+}
+export interface S3ArtifactStore {
+  type: "S3";
+  s3Location: S3ArtifactLocation;
+}
+
+export type ArtifactLocation = S3ArtifactStore;
+
+export interface Artifact {
+  name: string;
+  revision: string | null;
+  location: ArtifactLocation;
+}
+
+export interface Credentials {
+  accessKeyId: string;
+  secretAccessKey: string;
+  sessionToken?: string;
+}
+
+export interface EncryptionKey {
+  type: string;
+  id: string;
+}
+
+export interface CodePipelineEvent {
+  "CodePipeline.job": {
+    id: string;
+    accountId: string;
+    data: {
+      actionConfiguration: {
+        configuration: {
+          FunctionName: string;
+          UserParameters: string;
+        };
+      };
+      inputArtifacts: Artifact[];
+      outputArtifacts: Artifact[];
+      artifactCredentials: Credentials;
+      encryptionKey?: EncryptionKey & { type: "KMS" };
+      continuationToken?: string;
+    };
+  };
+}
+
+export type CodePipelineCloudWatchHandler = Handler<
+  CodePipelineCloudWatchEvent,
+  void
+>;
+
+export type CodePipelineCloudWatchEvent =
+  | CodePipelineCloudWatchPipelineEvent
+  | CodePipelineCloudWatchStageEvent
+  | CodePipelineCloudWatchActionEvent;
+
+export type CodePipelineCloudWatchActionHandler = Handler<
+  CodePipelineCloudWatchActionEvent,
+  void
+>;
+
+export type CodePipelineActionCategory =
+  | "Approval"
+  | "Build"
+  | "Deploy"
+  | "Invoke"
+  | "Source"
+  | "Test";
+export type CodePipelineActionState =
+  | "STARTED"
+  | "SUCCEEDED"
+  | "FAILED"
+  | "CANCELED";
+
+export interface CodePipelineCloudWatchActionEvent {
+  version: string;
+  id: string;
+  "detail-type": "CodePipeline Action Execution State Change";
+  source: "aws.codepipeline";
+  account: string;
+  time: string;
+  region: string;
+  resources: string[];
+  detail: {
+    pipeline: string;
+    version: number;
+    "execution-id": string;
+    stage: string;
+    action: string;
+    state: CodePipelineActionState;
+    type: {
+      owner: "AWS" | "Custom" | "ThirdParty";
+      category: CodePipelineActionCategory;
+      provider: string;
+      version: number;
+    };
+  };
+}
+
+export type CodePipelineCloudWatchPipelineHandler = Handler<
+  CodePipelineCloudWatchPipelineEvent,
+  void
+>;
+
+export type CodePipelineState =
+  | "STARTED"
+  | "SUCCEEDED"
+  | "RESUMED"
+  | "FAILED"
+  | "CANCELED"
+  | "SUPERSEDED";
+
+/**
+ * CodePipeline CloudWatch Events
+ * https://docs.aws.amazon.com/codepipeline/latest/userguide/detect-state-changes-cloudwatch-events.html
+ *
+ * The above CodePipelineEvent is when a lambda is invoked by a CodePipeline.
+ * These events are when you subscribe to CodePipeline events in CloudWatch.
+ *
+ * Their documentation says that detail.version is a string, but it is actually an integer
+ */
+
+export interface CodePipelineCloudWatchPipelineEvent {
+  version: string;
+  id: string;
+  "detail-type": "CodePipeline Pipeline Execution State Change";
+  source: "aws.codepipeline";
+  account: string;
+  time: string;
+  region: string;
+  resources: string[];
+  detail: {
+    pipeline: string;
+    version: number;
+    state: CodePipelineState;
+    "execution-id": string;
+  };
+}
+
+export type CodePipelineCloudWatchStageHandler = Handler<
+  CodePipelineCloudWatchStageEvent,
+  void
+>;
+
+export type CodePipelineStageState =
+  | "STARTED"
+  | "SUCCEEDED"
+  | "RESUMED"
+  | "FAILED"
+  | "CANCELED";
+
+export interface CodePipelineCloudWatchStageEvent {
+  version: string;
+  id: string;
+  "detail-type": "CodePipeline Stage Execution State Change";
+  source: "aws.codepipeline";
+  account: string;
+  time: string;
+  region: string;
+  resources: string[];
+  detail: {
+    pipeline: string;
+    version: number;
+    "execution-id": string;
+    stage: string;
+    state: CodePipelineStageState;
+  };
+}
+
+// Result type is weird: docs and samples say to return the mutated event, but it only requires an object
+// with a "response" field, the type of which is specific to the event.triggerType. Leave as any for now.
+export type CognitoUserPoolTriggerHandler = Handler<
+  CognitoUserPoolTriggerEvent
+>;
+// TODO: Different event/handler types for each event trigger so we can type the result?
+
+/**
+ * Cognito User Pool event
+ * http://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools-working-with-aws-lambda-triggers.html
+ */
+export interface CognitoUserPoolTriggerEvent {
+  version: number;
+  triggerSource:
+    | "PreSignUp_SignUp"
+    | "PreSignUp_ExternalProvider"
+    | "PostConfirmation_ConfirmSignUp"
+    | "PreAuthentication_Authentication"
+    | "PostAuthentication_Authentication"
+    | "CustomMessage_SignUp"
+    | "CustomMessage_AdminCreateUser"
+    | "CustomMessage_ResendCode"
+    | "CustomMessage_ForgotPassword"
+    | "CustomMessage_UpdateUserAttribute"
+    | "CustomMessage_VerifyUserAttribute"
+    | "CustomMessage_Authentication"
+    | "DefineAuthChallenge_Authentication"
+    | "CreateAuthChallenge_Authentication"
+    | "VerifyAuthChallengeResponse_Authentication"
+    | "PreSignUp_AdminCreateUser"
+    | "PostConfirmation_ConfirmForgotPassword"
+    | "TokenGeneration_HostedAuth"
+    | "TokenGeneration_Authentication"
+    | "TokenGeneration_NewPasswordChallenge"
+    | "TokenGeneration_AuthenticateDevice"
+    | "TokenGeneration_RefreshTokens"
+    | "UserMigration_Authentication"
+    | "UserMigration_ForgotPassword";
+  region: string;
+  userPoolId: string;
+  userName?: string;
+  callerContext: {
+    awsSdkVersion: string;
+    clientId: string;
+  };
+  request: {
+    userAttributes: { [key: string]: string };
+    validationData?: { [key: string]: string };
+    codeParameter?: string;
+    linkParameter?: string;
+    usernameParameter?: string;
+    newDeviceUsed?: boolean;
+    session?: Array<{
+      challengeName:
+        | "CUSTOM_CHALLENGE"
+        | "PASSWORD_VERIFIER"
+        | "SMS_MFA"
+        | "DEVICE_SRP_AUTH"
+        | "DEVICE_PASSWORD_VERIFIER"
+        | "ADMIN_NO_SRP_AUTH"
+        | "SRP_A";
+      challengeResult: boolean;
+      challengeMetadata?: string;
+    }>;
+    challengeName?: string;
+    privateChallengeParameters?: { [key: string]: string };
+    challengeAnswer?: string;
+    password?: string;
+    clientMetadata?: { [key: string]: string };
+    userNotFound?: boolean;
+  };
+  response: {
+    autoConfirmUser?: boolean;
+    autoVerifyPhone?: boolean;
+    autoVerifyEmail?: boolean;
+    smsMessage?: string;
+    emailMessage?: string;
+    emailSubject?: string;
+    challengeName?: string;
+    issueTokens?: boolean;
+    failAuthentication?: boolean;
+    publicChallengeParameters?: { [key: string]: string };
+    privateChallengeParameters?: { [key: string]: string };
+    challengeMetadata?: string;
+    answerCorrect?: boolean;
+    userAttributes?: { [key: string]: string };
+    finalUserStatus?: "CONFIRMED" | "RESET_REQUIRED";
+    messageAction?: "SUPPRESS";
+    desiredDeliveryMediums?: Array<"EMAIL" | "SMS">;
+    forceAliasCreation?: boolean;
+    claimsOverrideDetails?: {
+      claimsToAddOrOverride?: { [key: string]: string };
+      claimsToSuppress?: string[];
+      groupOverrideDetails?: null | {
+        groupsToOverride?: string[];
+        iamRolesToOverride?: string[];
+        preferredRole?: string;
+      };
+    };
+  };
+}
+export type CognitoUserPoolEvent = CognitoUserPoolTriggerEvent;
+
+export type ConnectContactFlowHandler = Handler<
+  ConnectContactFlowEvent,
+  ConnectContactFlowResult
+>;
+export type ConnectContactFlowCallback = Callback<ConnectContactFlowResult>;
+
+// Connect
+// https://docs.aws.amazon.com/connect/latest/adminguide/connect-lambda-functions.html
+export interface ConnectContactFlowEvent {
+  Details: {
+    ContactData: {
+      Attributes: { [key: string]: string };
+      Channel: ConnectContactFlowChannel;
+      ContactId: string;
+      CustomerEndpoint: ConnectContactFlowEndpoint | null;
+      InitialContactId: string;
+      InitiationMethod: ConnectContactFlowInitiationMethod;
+      InstanceARN: string;
+      PreviousContactId: string;
+      Queue: string | null;
+      SystemEndpoint: ConnectContactFlowEndpoint | null;
+      MediaStreams: {
+        Customer: {
+          Audio: {
+            StartFragmentNumber?: string;
+            StartTimestamp?: string;
+            StreamARN?: string;
+          };
+        };
+      };
+    };
+    Parameters: { [key: string]: string };
+  };
+  Name: "ContactFlowEvent";
+}
+
+export type ConnectContactFlowChannel = "VOICE" | "CHAT";
+
+export type ConnectContactFlowInitiationMethod =
+  | "INBOUND"
+  | "OUTBOUND"
+  | "TRANSFER"
+  | "CALLBACK"
+  | "API";
+
+export interface ConnectContactFlowEndpoint {
+  Address: string;
+  Type: "TELEPHONE_NUMBER";
+}
+
+export interface ConnectContactFlowResult {
+  [key: string]: string | null;
+}
+
+export type DynamoDBStreamHandler = Handler<DynamoDBStreamEvent, void>;
+
+// http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_streams_AttributeValue.html
+export interface AttributeValue {
+  B?: string;
+  BS?: string[];
+  BOOL?: boolean;
+  L?: AttributeValue[];
+  M?: { [id: string]: AttributeValue };
+  N?: string;
+  NS?: string[];
+  NULL?: boolean;
+  S?: string;
+  SS?: string[];
+}
+
+// http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_streams_StreamRecord.html
+export interface StreamRecord {
+  ApproximateCreationDateTime?: number;
+  Keys?: { [key: string]: AttributeValue };
+  NewImage?: { [key: string]: AttributeValue };
+  OldImage?: { [key: string]: AttributeValue };
+  SequenceNumber?: string;
+  SizeBytes?: number;
+  StreamViewType?:
+    | "KEYS_ONLY"
+    | "NEW_IMAGE"
+    | "OLD_IMAGE"
+    | "NEW_AND_OLD_IMAGES";
+}
+
+// http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_streams_Record.html
+export interface DynamoDBRecord {
+  awsRegion?: string;
+  dynamodb?: StreamRecord;
+  eventID?: string;
+  eventName?: "INSERT" | "MODIFY" | "REMOVE";
+  eventSource?: string;
+  eventSourceARN?: string;
+  eventVersion?: string;
+  userIdentity?: any;
+}
+
+// http://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-ddb-update
+export interface DynamoDBStreamEvent {
+  Records: DynamoDBRecord[];
+}
+
+export type EventBridgeHandler<TDetailType extends string, TDetail, TResult> =
+  Handler<
+    EventBridgeEvent<TDetailType, TDetail>,
+    TResult
+  >;
+
+export interface EventBridgeEvent<TDetailType extends string, TDetail> {
+  id: string;
+  version: string;
+  account: string;
+  time: string;
+  region: string;
+  resources: string[];
+  source: string;
+  "detail-type": TDetailType;
+  detail: TDetail;
+}
+
+export type FirehoseTransformationHandler = Handler<
+  FirehoseTransformationEvent,
+  FirehoseTransformationResult
+>;
+export type FirehoseTransformationCallback = Callback<
+  FirehoseTransformationResult
+>;
+
+// Kinesis Data Firehose Event
+// https://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-kinesis-firehose
+// https://docs.aws.amazon.com/firehose/latest/dev/data-transformation.html
+// https://aws.amazon.com/blogs/compute/amazon-kinesis-firehose-data-transformation-with-aws-lambda/
+// Examples in the lambda blueprints
+export interface FirehoseTransformationEvent {
+  invocationId: string;
+  deliveryStreamArn: string;
+  region: string;
+  records: FirehoseTransformationEventRecord[];
+}
+
+export interface FirehoseTransformationEventRecord {
+  recordId: string;
+  approximateArrivalTimestamp: number;
+  /** Base64 encoded */
+  data: string;
+  kinesisRecordMetadata?: FirehoseRecordMetadata;
+}
+
+export interface FirehoseRecordMetadata {
+  shardId: string;
+  partitionKey: string;
+  approximateArrivalTimestamp: number;
+  sequenceNumber: string;
+  subsequenceNumber: string;
+}
+
+export type FirehoseRecordTransformationStatus =
+  | "Ok"
+  | "Dropped"
+  | "ProcessingFailed";
+
+export interface FirehoseTransformationResultRecord {
+  recordId: string;
+  result: FirehoseRecordTransformationStatus;
+  /** Encode in Base64 */
+  data: string;
+}
+
+export interface FirehoseTransformationResult {
+  records: FirehoseTransformationResultRecord[];
+}
+
+export type KinesisStreamHandler = Handler<KinesisStreamEvent, void>;
 
 // Kinesis Streams
 // https://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-kinesis-streams
@@ -978,92 +1530,8 @@ export interface KinesisStreamEvent {
   Records: KinesisStreamRecord[];
 }
 
-// Kinesis Data Firehose Event
-// https://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-kinesis-firehose
-// https://docs.aws.amazon.com/firehose/latest/dev/data-transformation.html
-// https://aws.amazon.com/blogs/compute/amazon-kinesis-firehose-data-transformation-with-aws-lambda/
-// Examples in the lambda blueprints
-export interface FirehoseTransformationEvent {
-  invocationId: string;
-  deliveryStreamArn: string;
-  region: string;
-  records: FirehoseTransformationEventRecord[];
-}
-
-export interface FirehoseTransformationEventRecord {
-  recordId: string;
-  approximateArrivalTimestamp: number;
-  /** Base64 encoded */
-  data: string;
-  kinesisRecordMetadata?: FirehoseRecordMetadata;
-}
-
-export interface FirehoseRecordMetadata {
-  shardId: string;
-  partitionKey: string;
-  approximateArrivalTimestamp: string;
-  sequenceNumber: string;
-  subsequenceNumber: string;
-}
-
-export type FirehoseRecordTransformationStatus =
-  | "Ok"
-  | "Dropped"
-  | "ProcessingFailed";
-
-export interface FirehoseTransformationResultRecord {
-  recordId: string;
-  result: FirehoseRecordTransformationStatus;
-  /** Encode in Base64 */
-  data: string;
-}
-
-export interface FirehoseTransformationResult {
-  records: FirehoseTransformationResultRecord[];
-}
-
-// SQS
-// https://docs.aws.amazon.com/lambda/latest/dg/invoking-lambda-function.html#supported-event-source-sqs
-export interface SQSRecord {
-  messageId: string;
-  receiptHandle: string;
-  body: string;
-  attributes: SQSRecordAttributes;
-  messageAttributes: SQSMessageAttributes;
-  md5OfBody: string;
-  eventSource: string;
-  eventSourceARN: string;
-  awsRegion: string;
-}
-
-export interface SQSEvent {
-  Records: SQSRecord[];
-}
-
-export interface SQSRecordAttributes {
-  ApproximateReceiveCount: string;
-  SentTimestamp: string;
-  SenderId: string;
-  ApproximateFirstReceiveTimestamp: string;
-}
-
-export type SQSMessageAttributeDataType =
-  | "String"
-  | "Number"
-  | "Binary"
-  | string;
-
-export interface SQSMessageAttribute {
-  stringValue?: string;
-  binaryValue?: string;
-  stringListValues: never[]; // Not implemented. Reserved for future use.
-  binaryListValues: never[]; // Not implemented. Reserved for future use.
-  dataType: SQSMessageAttributeDataType;
-}
-
-export interface SQSMessageAttributes {
-  [name: string]: SQSMessageAttribute;
-}
+export type LexHandler = Handler<LexEvent, LexResult>;
+export type LexCallback = Callback<LexResult>;
 
 // Lex
 // https://docs.aws.amazon.com/lambda/latest/dg/invoking-lambda-function.html#supported-event-source-lex
@@ -1164,140 +1632,187 @@ export interface LexResult {
   dialogAction: LexDialogAction;
 }
 
-/**
- * AWS Lambda handler function.
- * http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html
- *
- * @param event – event data.
- * @param context – runtime information of the Lambda function that is executing.
- * @param callback – optional callback to return information to the caller, otherwise return value is null.
- * @return In the node8.10 runtime, a promise for the lambda result.
- */
-export type Handler<TEvent = any, TResult = any> = (
-  event: TEvent,
-  context: Context,
-  callback: Callback<TResult>
-) => void | Promise<TResult>;
-
-/**
- * Optional callback parameter.
- * http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html
- *
- * @param error – an optional parameter that you can use to provide results of the failed Lambda function execution.
- *                It can be a string for Lambda Proxy Integrations
- *                https://docs.aws.amazon.com/apigateway/latest/developerguide/handle-errors-in-lambda-integration.html
- * @param result – an optional parameter that you can use to provide the result of a successful function execution. The result provided must be JSON.stringify compatible.
- */
-export type Callback<TResult = any> = (
-  error?: Error | null | string,
-  result?: TResult
-) => void;
-
-// Begin defining Handler and Callback types for each API trigger type.
-// Ordered by https://docs.aws.amazon.com/lambda/latest/dg/invoking-lambda-function.html
-// though that list is incomplete.
-
 export type S3Handler = Handler<S3Event, void>;
 
-export type DynamoDBStreamHandler = Handler<DynamoDBStreamEvent, void>;
+/**
+ * S3Create event
+ * https://docs.aws.amazon.com/AmazonS3/latest/dev/notification-content-structure.html
+ */
 
-export type SNSHandler = Handler<SNSEvent, void>;
+export interface S3EventRecordGlacierRestoreEventData {
+  lifecycleRestorationExpiryTime: string;
+  lifecycleRestoreStorageClass: string;
+}
 
-// No SESHandler: SES event source is delivered as SNS notifications
-// https://docs.aws.amazon.com/lambda/latest/dg/invoking-lambda-function.html#supported-event-source-ses
+export interface S3EventRecordGlacierEventData {
+  restoreEventData: S3EventRecordGlacierRestoreEventData;
+}
 
-// Result type is weird: docs and samples say to return the mutated event, but it only requires an object
-// with a "response" field, the type of which is specific to the event.triggerType. Leave as any for now.
-export type CognitoUserPoolTriggerHandler = Handler<
-  CognitoUserPoolTriggerEvent
->;
-// TODO: Different event/handler types for each event trigger so we can type the result?
+export interface S3EventRecord {
+  eventVersion: string;
+  eventSource: string;
+  awsRegion: string;
+  eventTime: string;
+  eventName: string;
+  userIdentity: {
+    principalId: string;
+  };
+  requestParameters: {
+    sourceIPAddress: string;
+  };
+  responseElements: {
+    "x-amz-request-id": string;
+    "x-amz-id-2": string;
+  };
+  s3: {
+    s3SchemaVersion: string;
+    configurationId: string;
+    bucket: {
+      name: string;
+      ownerIdentity: {
+        principalId: string;
+      };
+      arn: string;
+    };
+    object: {
+      key: string;
+      size: number;
+      eTag: string;
+      versionId?: string;
+      sequencer: string;
+    };
+  };
+  glacierEventData?: S3EventRecordGlacierEventData;
+}
 
-export type SQSHandler = Handler<SQSEvent, void>;
+export interface S3Event {
+  Records: S3EventRecord[];
+}
 
-// TODO: CognitoSync
+export type S3CreateEvent = S3Event; // old name
 
-export type CloudFormationCustomResourceHandler = Handler<
-  CloudFormationCustomResourceEvent,
-  void
->;
-
-// TODO: CloudWatchEvents
-
-export type CloudWatchLogsHandler = Handler<CloudWatchLogsEvent, void>;
-
-// TODO: CodeCommit
-
-export type ScheduledHandler = Handler<ScheduledEvent, void>;
-
-// TODO: AWS Config
-
-// TODO: Alexa
-
-export type LexHandler = Handler<LexEvent, LexResult>;
-export type LexCallback = Callback<LexResult>;
-
-export type APIGatewayProxyHandler = Handler<
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult
->;
-export type APIGatewayProxyCallback = Callback<APIGatewayProxyResult>;
-export type ProxyHandler = APIGatewayProxyHandler; // Old name
-export type ProxyCallback = APIGatewayProxyCallback; // Old name
-
-export type ALBHandler = Handler<ALBEvent, ALBResult>;
-export type ALBCallback = Callback<ALBResult>;
-
-// TODO: IoT
-
-export type CodePipelineHandler = Handler<CodePipelineEvent, void>;
-
-export type CodePipelineCloudWatchHandler = Handler<
-  CodePipelineCloudWatchEvent,
-  void
->;
-export type CodePipelineCloudWatchPipelineHandler = Handler<
-  CodePipelineCloudWatchPipelineEvent,
-  void
->;
-export type CodePipelineCloudWatchStageHandler = Handler<
-  CodePipelineCloudWatchStageEvent,
-  void
->;
-export type CodePipelineCloudWatchActionHandler = Handler<
-  CodePipelineCloudWatchActionEvent,
-  void
->;
-
-export type CloudFrontRequestHandler = Handler<
-  CloudFrontRequestEvent,
-  CloudFrontRequestResult
->;
-export type CloudFrontRequestCallback = Callback<CloudFrontRequestResult>;
-
-export type CloudFrontResponseHandler = Handler<
-  CloudFrontResponseEvent,
-  CloudFrontResponseResult
->;
-export type CloudFrontResponseCallback = Callback<CloudFrontResponseResult>;
-
-export type KinesisStreamHandler = Handler<KinesisStreamEvent, void>;
-
-export type FirehoseTransformationCallback = Callback<
-  FirehoseTransformationResult
->;
-export type FirehoseTransformationHandler = Handler<
-  FirehoseTransformationEvent,
-  FirehoseTransformationResult
->;
-
-export type CustomAuthorizerHandler = Handler<
-  CustomAuthorizerEvent,
-  CustomAuthorizerResult
->;
-export type CustomAuthorizerCallback = Callback<CustomAuthorizerResult>;
-
+/**
+ * S3 Batch Operations event
+ * https://docs.aws.amazon.com/AmazonS3/latest/dev/batch-ops-invoke-lambda.html
+ */
 export type S3BatchHandler = Handler<S3BatchEvent, S3BatchResult>;
 export type S3BatchCallback = Callback<S3BatchResult>;
 
-export as namespace AWSLambda;
+export interface S3BatchEvent {
+  invocationSchemaVersion: string;
+  invocationId: string;
+  job: S3BatchEventJob;
+  tasks: S3BatchEventTask[];
+}
+
+export interface S3BatchEventJob {
+  id: string;
+}
+
+export interface S3BatchEventTask {
+  taskId: string;
+  s3Key: string;
+  s3VersionId: string | null;
+  s3BucketArn: string;
+}
+
+export interface S3BatchResult {
+  invocationSchemaVersion: string;
+  treatMissingKeysAs: S3BatchResultResultCode;
+  invocationId: string;
+  results: S3BatchResultResult[];
+}
+
+export type S3BatchResultResultCode =
+  | "Succeeded"
+  | "TemporaryFailure"
+  | "PermanentFailure";
+
+export interface S3BatchResultResult {
+  taskId: string;
+  resultCode: S3BatchResultResultCode;
+  resultString: string;
+}
+
+export type SNSHandler = Handler<SNSEvent, void>;
+
+// SNS "event"
+export interface SNSMessageAttribute {
+  Type: string;
+  Value: string;
+}
+
+export interface SNSMessageAttributes {
+  [name: string]: SNSMessageAttribute;
+}
+
+export interface SNSMessage {
+  SignatureVersion: string;
+  Timestamp: string;
+  Signature: string;
+  SigningCertUrl: string;
+  MessageId: string;
+  Message: string;
+  MessageAttributes: SNSMessageAttributes;
+  Type: string;
+  UnsubscribeUrl: string;
+  TopicArn: string;
+  Subject: string;
+}
+
+export interface SNSEventRecord {
+  EventVersion: string;
+  EventSubscriptionArn: string;
+  EventSource: string;
+  Sns: SNSMessage;
+}
+
+export interface SNSEvent {
+  Records: SNSEventRecord[];
+}
+
+export type SQSHandler = Handler<SQSEvent, void>;
+
+// SQS
+// https://docs.aws.amazon.com/lambda/latest/dg/invoking-lambda-function.html#supported-event-source-sqs
+export interface SQSRecord {
+  messageId: string;
+  receiptHandle: string;
+  body: string;
+  attributes: SQSRecordAttributes;
+  messageAttributes: SQSMessageAttributes;
+  md5OfBody: string;
+  eventSource: string;
+  eventSourceARN: string;
+  awsRegion: string;
+}
+
+export interface SQSEvent {
+  Records: SQSRecord[];
+}
+
+export interface SQSRecordAttributes {
+  AWSTraceHeader?: string;
+  ApproximateReceiveCount: string;
+  SentTimestamp: string;
+  SenderId: string;
+  ApproximateFirstReceiveTimestamp: string;
+}
+
+export type SQSMessageAttributeDataType =
+  | "String"
+  | "Number"
+  | "Binary"
+  | string;
+
+export interface SQSMessageAttribute {
+  stringValue?: string;
+  binaryValue?: string;
+  stringListValues: never[]; // Not implemented. Reserved for future use.
+  binaryListValues: never[]; // Not implemented. Reserved for future use.
+  dataType: SQSMessageAttributeDataType;
+}
+
+export interface SQSMessageAttributes {
+  [name: string]: SQSMessageAttribute;
+}
