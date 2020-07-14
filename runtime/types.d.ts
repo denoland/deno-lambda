@@ -46,54 +46,6 @@
  * invoke your lambda, but you can directly use this type for when you are invoking
  * your lambda directly.
  *
- * See tme {@link http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html AWS documentation}
- * for more information about the runtime behavior, and the
- * {@link https://aws.amazon.com/blogs/compute/node-js-8-10-runtime-now-available-in-aws-lambda/ AWS Blog post}
- * introducing the async handler behavior in the 8.10 runtime.
- *
- * @example <caption>Defining a custom handler type</caption>
- * interface NameEvent {
- *     fullName: string
- * }
- * interface NameResult {
- *     firstName: string
- *     middleNames: string
- *     lastName: string
- * }
- * type PersonHandler = Handler<NameEvent, NameResult>
- *
- * export const handler: PersonHandler = async (event) => {
- *   const names = event.fullName.split(' ')
- *   const firstName = names.shift()
- *   const lastName = names.pop()
- *   return { firstName, middleNames: names, lastName }
- * }
- *
- * @example <caption>Logs the contents of the event object and returns the location of the logs</caption>
- * export const handler: Handler = async (event, context) => {
- *   console.log("EVENT: \n" + JSON.stringify(event, null, 2))
- *   return context.logStreamName
- * }
- *
- * @example <caption>AWS SDK with Async Function and Promises</caption>
- * const s3 = new AWS.S3()
- *
- * export const handler: Handler = async (event) => {
- *   const response = await s3.listBuckets().promise()
- *   return response?.Buckets.map((bucket) => bucket.Name)
- * }
- *
- * @example <caption>HTTP Request with Callback</caption>
- * let url = "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html"
- *
- * export const handler: Handler<void, number> = (event, context, callback) => {
- *  https.get(url, (res) => {
- *    callback(null, res.statusCode)
- *  }).on('error', (e) => {
- *    callback(Error(e))
- *  })
- * }
- *
  * @param event
  *      Parsed JSON data in the lambda request payload. For an AWS service triggered
  *      lambda this should be in the format of a type ending in Event, for example the
@@ -102,11 +54,6 @@
  *      Runtime contextual information of the current invocation, for example the caller
  *      identity, available memory and time remaining, legacy completion callbacks, and
  *      a mutable property controlling when the lambda execution completes.
- * @param callback
- *      NodeJS-style completion callback that the AWS Lambda runtime will provide that can
- *      be used to provide the lambda result payload value, or any execution error. Can
- *      instead return a promise that resolves with the result payload value or rejects
- *      with the execution error.
  * @return
  *      A promise that resolves with the lambda result payload value, or rejects with the
  *      execution error. Note that if you implement your handler as an async function,
@@ -178,31 +125,6 @@ export interface ClientContextEnv {
   model: string;
   locale: string;
 }
-
-/**
-* NodeJS-style callback parameter for the {@link Handler} type.
-* Can be used instead of returning a promise, see the
-* {@link https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html AWS documentation}
-* for the handler programming model.
-*
-* @param error
-*   Parameter to use to provide the error payload for a failed lambda execution.
-*   See {@link https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-mode-exceptions.html AWS documentation}
-*   for error handling.
-*   If an Error instance is passed, the error payload uses the `name` property as the `errorType`,
-*   the `message` property as the `errorMessage`, and parses the `stack` property string into
-*   the `trace` array.
-*   For other values, the `errorType` is `typeof value`, the `errorMessage` is `String(value)`, and
-*   `trace` is an empty array.
-*
-* @param result
-*   Parameter to use to provide the result payload for a successful lambda execution.
-*   Pass `null` or `undefined` for the `error` parameter to use this parameter.
-*/
-export type Callback<TResult = any> = (
-  error?: Error | string | null,
-  result?: TResult,
-) => void;
 
 // Types shared between trigger/api-gateway-authorizer.d.ts and api-gateway-proxy.d.ts
 
@@ -361,7 +283,6 @@ export interface CloudFrontResultResponse {
 }
 
 export type ALBHandler = Handler<ALBEvent, ALBResult>;
-export type ALBCallback = Callback<ALBResult>;
 
 // https://docs.aws.amazon.com/elasticloadbalancing/latest/application/lambda-functions.html
 export interface ALBEventRequestContext {
@@ -401,11 +322,6 @@ export type APIGatewayAuthorizerWithContextHandler<
   APIGatewayAuthorizerEvent,
   APIGatewayAuthorizerWithContextResult<TAuthorizerContext>
 >;
-
-export type APIGatewayAuthorizerCallback = Callback<APIGatewayAuthorizerResult>;
-export type APIGatewayAuthorizerWithContextCallback<
-  TAuthorizerContext extends APIGatewayAuthorizerResultContext,
-> = Callback<APIGatewayAuthorizerWithContextResult<TAuthorizerContext>>;
 
 export type APIGatewayTokenAuthorizerHandler = Handler<
   APIGatewayTokenAuthorizerEvent,
@@ -483,9 +399,6 @@ export type CustomAuthorizerHandler = Handler<
   CustomAuthorizerEvent,
   APIGatewayAuthorizerResult
 >;
-
-// This one is actually fine.
-export type CustomAuthorizerCallback = APIGatewayAuthorizerCallback;
 
 /** @deprecated Use APIGatewayAuthorizerEvent or a subtype */
 export interface CustomAuthorizerEvent {
@@ -582,11 +495,6 @@ export type APIGatewayProxyHandler = Handler<
   APIGatewayProxyEvent,
   APIGatewayProxyResult
 >;
-/**
- * Works with Lambda Proxy Integration for Rest API or HTTP API integration Payload Format version 1.0
- * @see - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html
- */
-export type APIGatewayProxyCallback = Callback<APIGatewayProxyResult>;
 
 /**
  * Works with HTTP API integration Payload Format version 2.0
@@ -596,11 +504,6 @@ export type APIGatewayProxyHandlerV2<T = never> = Handler<
   APIGatewayProxyEventV2,
   APIGatewayProxyResultV2<T>
 >;
-/**
- * Works with HTTP API integration Payload Format version 2.0
- * @see - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html
- */
-export type APIGatewayProxyCallbackV2 = Callback<APIGatewayProxyResultV2>;
 
 /**
  * Works with Lambda Proxy Integration for Rest API or HTTP API integration Payload Format version 1.0
@@ -755,7 +658,6 @@ export interface APIGatewayProxyStructuredResultV2 {
 
 // Legacy names
 export type ProxyHandler = APIGatewayProxyHandler;
-export type ProxyCallback = APIGatewayProxyCallback;
 export type APIGatewayEvent = APIGatewayProxyEvent;
 export type ProxyResult = APIGatewayProxyResult;
 
@@ -838,7 +740,6 @@ export type CloudFrontRequestHandler = Handler<
   CloudFrontRequestEvent,
   CloudFrontRequestResult
 >;
-export type CloudFrontRequestCallback = Callback<CloudFrontRequestResult>;
 
 /**
  * CloudFront viewer request or origin request event
@@ -863,7 +764,6 @@ export type CloudFrontResponseHandler = Handler<
   CloudFrontResponseEvent,
   CloudFrontResponseResult
 >;
-export type CloudFrontResponseCallback = Callback<CloudFrontResponseResult>;
 
 /**
  * CloudFront viewer response or origin response event
@@ -1335,7 +1235,6 @@ export type ConnectContactFlowHandler = Handler<
   ConnectContactFlowEvent,
   ConnectContactFlowResult
 >;
-export type ConnectContactFlowCallback = Callback<ConnectContactFlowResult>;
 
 // Connect
 // https://docs.aws.amazon.com/connect/latest/adminguide/connect-lambda-functions.html
@@ -1455,9 +1354,6 @@ export type FirehoseTransformationHandler = Handler<
   FirehoseTransformationEvent,
   FirehoseTransformationResult
 >;
-export type FirehoseTransformationCallback = Callback<
-  FirehoseTransformationResult
->;
 
 // Kinesis Data Firehose Event
 // https://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-kinesis-firehose
@@ -1531,7 +1427,6 @@ export interface KinesisStreamEvent {
 }
 
 export type LexHandler = Handler<LexEvent, LexResult>;
-export type LexCallback = Callback<LexResult>;
 
 // Lex
 // https://docs.aws.amazon.com/lambda/latest/dg/invoking-lambda-function.html#supported-event-source-lex
@@ -1696,7 +1591,6 @@ export type S3CreateEvent = S3Event; // old name
  * https://docs.aws.amazon.com/AmazonS3/latest/dev/batch-ops-invoke-lambda.html
  */
 export type S3BatchHandler = Handler<S3BatchEvent, S3BatchResult>;
-export type S3BatchCallback = Callback<S3BatchResult>;
 
 export interface S3BatchEvent {
   invocationSchemaVersion: string;
