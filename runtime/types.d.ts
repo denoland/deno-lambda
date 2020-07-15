@@ -46,6 +46,64 @@
  * invoke your lambda, but you can directly use this type for when you are invoking
  * your lambda directly.
  *
+ * See tme {@link http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html AWS documentation}
+ * for more information about the runtime behavior, and the
+ * {@link https://aws.amazon.com/blogs/compute/node-js-8-10-runtime-now-available-in-aws-lambda/ AWS Blog post}
+ * introducing the async handler behavior in the 8.10 runtime.
+ *
+ * @example <caption>Defining a custom handler type</caption>
+ * import { Handler } from 'aws-lambda'
+ *
+ * interface NameEvent {
+ *     fullName: string
+ * }
+ * interface NameResult {
+ *     firstName: string
+ *     middleNames: string
+ *     lastName: string
+ * }
+ * type PersonHandler = Handler<NameEvent, NameResult>
+ *
+ * export const handler: PersonHandler = async (event) => {
+ *   const names = event.fullName.split(' ')
+ *   const firstName = names.shift()
+ *   const lastName = names.pop()
+ *   return { firstName, middleNames: names, lastName }
+ * }
+ *
+ * @example <caption>Logs the contents of the event object and returns the location of the logs</caption>
+ * import { Handler } from 'aws-lambda'
+ *
+ * export const handler: Handler = async (event, context) => {
+ *   console.log("EVENT: \n" + JSON.stringify(event, null, 2))
+ *   return context.logStreamName
+ * }
+ *
+ * @example <caption>AWS SDK with Async Function and Promises</caption>
+ * import { Handler } from 'aws-lambda'
+ * import AWS from 'aws-sdk'
+ *
+ * const s3 = new AWS.S3()
+ *
+ * export const handler: Handler = async (event) => {
+ *   const response = await s3.listBuckets().promise()
+ *   return response?.Buckets.map((bucket) => bucket.Name)
+ * }
+ *
+ * @example <caption>HTTP Request with Callback</caption>
+ * import { Handler } from 'aws-lambda'
+ * import https from 'https'
+ *
+ * let url = "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html"
+ *
+ * export const handler: Handler<void, number> = (event, context, callback) => {
+ *  https.get(url, (res) => {
+ *    callback(null, res.statusCode)
+ *  }).on('error', (e) => {
+ *    callback(Error(e))
+ *  })
+ * }
+ *
  * @param event
  *      Parsed JSON data in the lambda request payload. For an AWS service triggered
  *      lambda this should be in the format of a type ending in Event, for example the
@@ -54,6 +112,11 @@
  *      Runtime contextual information of the current invocation, for example the caller
  *      identity, available memory and time remaining, legacy completion callbacks, and
  *      a mutable property controlling when the lambda execution completes.
+ * @param callback
+ *      NodeJS-style completion callback that the AWS Lambda runtime will provide that can
+ *      be used to provide the lambda result payload value, or any execution error. Can
+ *      instead return a promise that resolves with the result payload value or rejects
+ *      with the execution error.
  * @return
  *      A promise that resolves with the lambda result payload value, or rejects with the
  *      execution error. Note that if you implement your handler as an async function,
@@ -66,9 +129,9 @@ export type Handler<TEvent = any, TResult = any> = (
 ) => Promise<TResult>;
 
 /**
-* {@link Handler} context parameter.
-* See {@link https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html AWS documentation}.
-*/
+ * {@link Handler} context parameter.
+ * See {@link https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html AWS documentation}.
+ */
 export interface Context {
   callbackWaitsForEmptyEventLoop: boolean;
   functionName: string;
@@ -125,8 +188,6 @@ export interface ClientContextEnv {
   model: string;
   locale: string;
 }
-
-// Types shared between trigger/api-gateway-authorizer.d.ts and api-gateway-proxy.d.ts
 
 // Poorly documented, but API Gateway will just fail internally if
 // the context type does not match this.
@@ -197,7 +258,6 @@ export interface APIGatewayEventIdentity {
   userAgent: string | null;
   userArn: string | null;
 }
-
 /**
  * CloudFront events
  * http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-event-structure.html
@@ -270,10 +330,10 @@ export interface CloudFrontEvent {
 }
 
 /**
-* Generated HTTP response in viewer request event or origin request event
-*
-* https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-generating-http-responses-in-requests.html#lambda-generating-http-responses-object
-*/
+ * Generated HTTP response in viewer request event or origin request event
+ *
+ * https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-generating-http-responses-in-requests.html#lambda-generating-http-responses-object
+ */
 export interface CloudFrontResultResponse {
   status: string;
   statusDescription?: string;
@@ -392,8 +452,6 @@ export interface APIGatewayAuthorizerWithContextResult<
   usageIdentifierKey?: string | null;
 }
 
-// Legacy event / names
-
 /** @deprecated Use APIGatewayAuthorizerHandler or a subtype */
 export type CustomAuthorizerHandler = Handler<
   CustomAuthorizerEvent,
@@ -426,10 +484,10 @@ export type AuthResponse = APIGatewayAuthorizerResult;
 export type AuthResponseContext = APIGatewayAuthorizerResultContext;
 
 /**
-* API Gateway CustomAuthorizer AuthResponse.PolicyDocument.
-* https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-lambda-authorizer-output.html
-* https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html#Condition
-*/
+ * API Gateway CustomAuthorizer AuthResponse.PolicyDocument.
+ * https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-lambda-authorizer-output.html
+ * https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html#Condition
+ */
 export interface PolicyDocument {
   Version: string;
   Id?: string;
@@ -437,10 +495,10 @@ export interface PolicyDocument {
 }
 
 /**
-* API Gateway CustomAuthorizer AuthResponse.PolicyDocument.Condition.
-* https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-control-access-policy-language-overview.html
-* https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition.html
-*/
+ * API Gateway CustomAuthorizer AuthResponse.PolicyDocument.Condition.
+ * https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-control-access-policy-language-overview.html
+ * https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition.html
+ */
 export interface ConditionBlock {
   [condition: string]: Condition | Condition[];
 }
@@ -450,10 +508,10 @@ export interface Condition {
 }
 
 /**
-* API Gateway CustomAuthorizer AuthResponse.PolicyDocument.Statement.
-* https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-control-access-policy-language-overview.html
-* https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html
-*/
+ * API Gateway CustomAuthorizer AuthResponse.PolicyDocument.Statement.
+ * https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-control-access-policy-language-overview.html
+ * https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html
+ */
 export type Statement =
   & BaseStatement
   & StatementAction
@@ -495,6 +553,10 @@ export type APIGatewayProxyHandler = Handler<
   APIGatewayProxyEvent,
   APIGatewayProxyResult
 >;
+/**
+ * Works with Lambda Proxy Integration for Rest API or HTTP API integration Payload Format version 1.0
+ * @see - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html
+ */
 
 /**
  * Works with HTTP API integration Payload Format version 2.0
@@ -504,6 +566,10 @@ export type APIGatewayProxyHandlerV2<T = never> = Handler<
   APIGatewayProxyEventV2,
   APIGatewayProxyResultV2<T>
 >;
+/**
+ * Works with HTTP API integration Payload Format version 2.0
+ * @see - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html
+ */
 
 /**
  * Works with Lambda Proxy Integration for Rest API or HTTP API integration Payload Format version 1.0
@@ -943,11 +1009,12 @@ export interface CodeBuildStateEventDetail {
   };
 }
 
-export interface CodeBuildCloudWatchStateEvent extends
-  EventBridgeEvent<
-    "CodeBuild Build State Change",
-    CodeBuildStateEventDetail
-  > {
+export interface CodeBuildCloudWatchStateEvent
+  extends
+    EventBridgeEvent<
+      "CodeBuild Build State Change",
+      CodeBuildStateEventDetail
+    > {
   source: "aws.codebuild";
 }
 
