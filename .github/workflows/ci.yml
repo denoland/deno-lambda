@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: denolib/setup-deno@master
         with:
-          deno-version: 1.2.2
+          deno-version: 1.2.3
       - name: start a local dynamodb
         run: |
           mkdir dyno
