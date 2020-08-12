@@ -2,7 +2,7 @@
 // i.e. we must download precisely one file from deno.land.
 // FIXME: it has since been removed from std so this should be refactored.
 // (see also importmap.ts)
-import { pad } from "https://deno.land/std@v0.38.0/strings/pad.ts";
+import { pad } from "https://deno.land/std@0.38.0/strings/pad.ts";
 
 export function handler(event: any, context: any) {
   const strLen: number = Number(event.strLen) || 5;
