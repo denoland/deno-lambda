@@ -1,5 +1,6 @@
 import { assertEquals } from "./deps.ts";
-import { TestJson, serveEvents } from "./server.ts";
+import type { TestJson } from "./server.ts";
+import { serveEvents } from "./server.ts";
 
 const dec = new TextDecoder();
 

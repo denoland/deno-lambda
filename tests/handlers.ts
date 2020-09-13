@@ -1,4 +1,4 @@
-import {
+import type {
   Context,
   APIGatewayProxyEvent
 } from "https://deno.land/x/lambda/mod.ts";
