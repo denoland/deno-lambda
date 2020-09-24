@@ -1,4 +1,4 @@
-import { assert } from "https://deno.land/std@0.69.0/testing/asserts.ts";
+import { assert } from "https://deno.land/std@0.70.0/testing/asserts.ts";
 
 const unpkg = "https://unpkg.com/@types/aws-lambda@8.10.59/";
 
