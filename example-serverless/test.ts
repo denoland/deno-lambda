@@ -4,7 +4,7 @@
 // You must also pass a access key/secret environment variables, but these don't have to be real e.g.
 // AWS_ACCESS_KEY_ID=fakeMyKeyId AWS_SECRET_ACCESS_KEY=fakeSecretAccessKey AWS_DEFAULT_REGION=local deno run --allow-env --allow-net
 
-import { assertEquals } from "https://deno.land/std@0.70.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.71.0/testing/asserts.ts";
 import {
   APIGatewayProxyEvent,
   Context
