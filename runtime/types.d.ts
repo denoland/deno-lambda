@@ -1195,15 +1195,9 @@ export interface CodePipelineCloudWatchStageEvent {
   };
 }
 
-// Result type is weird: docs and samples say to return the mutated event, but it only requires an object
-// with a "response" field, the type of which is specific to the event.triggerType. Leave as any for now.
-export type CognitoUserPoolTriggerHandler = Handler<
-  CognitoUserPoolTriggerEvent
->;
-// TODO: Different event/handler types for each event trigger so we can type the result?
-
 /**
  * Cognito User Pool event
+ * @deprecated Please use specific event types instead
  * http://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools-working-with-aws-lambda-triggers.html
  */
 export interface CognitoUserPoolTriggerEvent {
@@ -1296,7 +1290,18 @@ export interface CognitoUserPoolTriggerEvent {
     };
   };
 }
+
+/**
+ * @deprecated Please use specific event types instead
+ */
 export type CognitoUserPoolEvent = CognitoUserPoolTriggerEvent;
+
+/**
+ * @deprecated Please use specific event handler types instead
+ */
+export type CognitoUserPoolTriggerHandler = Handler<
+  CognitoUserPoolTriggerEvent
+>;
 
 export type ConnectContactFlowHandler = Handler<
   ConnectContactFlowEvent,
@@ -1695,6 +1700,70 @@ export interface S3BatchResultResult {
   resultString: string;
 }
 
+export type SESHandler = Handler<SESEvent, void>;
+
+// SES event
+export interface SESMailHeader {
+  name: string;
+  value: string;
+}
+
+export interface SESMailCommonHeaders {
+  returnPath: string;
+  from: string[];
+  date: string;
+  to: string[];
+  messageId: string;
+  subject: string;
+}
+
+export interface SESMail {
+  timestamp: string;
+  source: string;
+  messageId: string;
+  destination: string[];
+  headersTruncated: boolean;
+  headers: SESMailHeader[];
+  commonHeaders: SESMailCommonHeaders;
+}
+
+export interface SESReceiptStatus {
+  status: string;
+}
+
+export interface SESReceiptAction {
+  type: string;
+  functionArn: string;
+  invocationType: string;
+}
+
+export interface SESReceipt {
+  timestamp: string;
+  processingTimeMillis: number;
+  recipients: string[];
+  spamVerdict: SESReceiptStatus;
+  virusVerdict: SESReceiptStatus;
+  spfVerdict: SESReceiptStatus;
+  dkimVerdict: SESReceiptStatus;
+  dmarcVerdict: SESReceiptStatus;
+  action: SESReceiptAction;
+}
+
+export interface SESMessage {
+  mail: SESMail;
+  receipt: SESReceipt;
+}
+
+export interface SESEventRecord {
+  eventSource: string;
+  eventVersion: string;
+  ses: SESMessage;
+}
+
+export interface SESEvent {
+  Records: SESEventRecord[];
+}
+
 export type SNSHandler = Handler<SNSEvent, void>;
 
 // SNS "event"
@@ -1758,6 +1827,9 @@ export interface SQSRecordAttributes {
   SentTimestamp: string;
   SenderId: string;
   ApproximateFirstReceiveTimestamp: string;
+  SequenceNumber?: string;
+  MessageGroupId?: string;
+  MessageDeduplicationId?: string;
 }
 
 export type SQSMessageAttributeDataType =

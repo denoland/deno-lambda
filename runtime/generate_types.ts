@@ -1,6 +1,6 @@
-import { assert } from "https://deno.land/std@0.71.0/testing/asserts.ts";
+import { assert } from "https://deno.land/std@0.72.0/testing/asserts.ts";
 
-const unpkg = "https://unpkg.com/@types/aws-lambda@8.10.59/";
+const unpkg = "https://unpkg.com/@types/aws-lambda@8.10.63/";
 
 // Get the index file
 const indexReq = await fetch(`${unpkg}index.d.ts`);
@@ -10,13 +10,13 @@ const indexFile = await indexReq.text();
 // Extract all imported files from this file
 const imports = [...indexFile.matchAll(/\nexport \* from \"(.*)\";/g)].map((
   match,
-) => match[1].replace(/^\.\//, unpkg) + ".d.ts");
+) => match[1].replace(/^\.\//, unpkg).replace(/\/$/, "/index") + ".d.ts");
 
 let typesFile = (indexFile.split("3.0")[0] + "3.0\n\n");
 
 const files = await Promise.all(imports.map(async (url) => {
   const req = await fetch(url);
-  assert(req.ok);
+  assert(req.ok, "failed to fetch " + url);
   return req.text();
 }));
 
@@ -32,7 +32,10 @@ typesFile = typesFile.replaceAll(
 typesFile = typesFile.replace("    callback: Callback<TResult>,\n", "");
 typesFile = typesFile.replace("void | Promise<TResult>", "Promise<TResult>");
 
-typesFile = typesFile.replace(/\n\/\*\*\n \* NodeJS-style(.|\n)*?\nexport type Callback(.|\n)*?;/, "");
+typesFile = typesFile.replace(
+  /\n\/\*\*\n \* NodeJS-style(.|\n)*?\nexport type Callback(.|\n)*?;/,
+  "",
+);
 
 typesFile = typesFile.replaceAll(
   /\nexport type (.*?) =[\n ]*Callback<(.*?)>;/g,
@@ -50,7 +53,6 @@ typesFile = typesFile.replaceAll(
 
 Deno.writeTextFileSync("./types.d.ts", typesFile);
 
-
 // This file generates mod.ts from types.d.ts
 const types = [...typesFile.matchAll(/export (type|interface) (.*?)\s/g)].map((
   match,
@@ -62,4 +64,4 @@ Deno.writeTextFileSync(
   `export type {\n  ${types.join(",\n  ")}\n } from \"./types.d.ts\";\n`,
 );
 
-await Deno.run({ cmd: ["deno", "fmt", "mod.ts", "types.d.ts"] }).status()
+await Deno.run({ cmd: ["deno", "fmt", "mod.ts", "types.d.ts"] }).status();
