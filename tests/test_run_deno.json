@@ -4,11 +4,11 @@
   "expected": [
     {
       "status": "ok",
-      "content": "{\"out\":\"deno 1.4.3\"}"
+      "content": "{\"out\":\"deno 1.4.6\"}"
     },
     {
       "status": "ok",
-      "content": "{\"out\":\"deno 1.4.3\"}"
+      "content": "{\"out\":\"deno 1.4.6\"}"
     }
   ],
   "files": ["handlers.ts"],
