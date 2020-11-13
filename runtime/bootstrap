@@ -90,7 +90,7 @@ function investigate {
    || error "unable to compile $HANDLER_FILE"
 
   echo "import { $HANDLER_NAME } from '$LAMBDA_TASK_ROOT/$HANDLER_FILE';" > /tmp/runtime-test.js
-  DENO_DIR=/tmp/deno_dir NO_COLOR=true deno cache $DENO_IMPORTMAP /tmp/runtime-test.js 2> /dev/null \
+  DENO_DIR=/tmp/deno_dir NO_COLOR=true deno run $DENO_IMPORTMAP /tmp/runtime-test.js 2> /dev/null \
    || error "$HANDLER_FILE must export a function named '$HANDLER_NAME'";
 
   # FIXME perhaps a bug in bootstrap? Should we always exit 1? Or not?
