@@ -4,7 +4,7 @@
   "expected": [
     {
       "status": "error",
-      "content": "{\"errorMessage\" : \"lock file error: Subresource integrity check failed --lock=badlock.json\nhttps://deno.land/std@0.38.0/strings/pad.ts\", \"errorType\" : \"InitException\"}"
+      "content": "{\"errorMessage\" : \"lock file error: The source code is invalid, as it does not match the expected hash in the lock file.\n  Specifier: https://deno.land/std@0.38.0/strings/pad.ts\n  Lock file: badlock.json\", \"errorType\" : \"InitException\"}"
     }
   ],
   "files": ["pad.ts", "badlock.json"],
