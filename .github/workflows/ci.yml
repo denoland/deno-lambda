@@ -15,10 +15,8 @@ jobs:
           docker run test-runner
       - name: Extract artifacts
         run: |
-          docker cp extract:/bin/deno amz-deno
           docker cp extract:/src/runtime/deno-lambda-layer.zip deno-lambda-layer.zip
           docker cp extract:/src/runtime/deno-lambda-example.zip deno-lambda-example.zip
-          gzip -9 amz-deno
 
   test_example:
     runs-on: ubuntu-latest
