@@ -175,7 +175,7 @@ Now, from the directory of your application:
 # replace LAYER_DIR with the directory you unzipped the layer to e.g. $PWD/layer
 # replace hello.handler with your file/handler function
 # replace '{}' with the json to pass to the handler
-$ docker run -it --rm -v "$PWD":/var/task:ro,delegated -v "LAYER_DIR":/opt:ro,delegated lambci/lambda:provided hello.handler '{}'
+$ docker run -it --rm -v "$PWD":/var/task:ro,delegated -v "LAYER_DIR":/opt:ro,delegated lambci/lambda:provided.al2 hello.handler '{}'
 # handler response from goes to stdout
 ```
 To execute multiple times AKA "stay-open" API mode:
@@ -183,7 +183,7 @@ To execute multiple times AKA "stay-open" API mode:
 ```sh
 # replace LAYER_DIR with the directory you unzipped to e.g. $PWD/layer
 # replace hello.handler with your file.handler function
-$ docker run -e DOCKER_LAMBDA_STAY_OPEN=1 -p 9001:9001 -it --rm -v "$PWD":/var/task:ro,delegated -v "LAYER_DIR":/opt:ro,delegated lambci/lambda:provided hello.handler
+$ docker run -e DOCKER_LAMBDA_STAY_OPEN=1 -p 9001:9001 -it --rm -v "$PWD":/var/task:ro,delegated -v "LAYER_DIR":/opt:ro,delegated lambci/lambda:provided.al2 hello.handler
 Lambda API listening on port 9001...
 ```
 and in another terminal:

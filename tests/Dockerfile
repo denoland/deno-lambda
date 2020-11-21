@@ -1,11 +1,23 @@
 # Note: This must be built in the .. context
 
-FROM hayd/amazonlinux1-deno:1.6.0
-# This is the runtime used by AWS Lambda
-# plus a compatible deno executable /bin/deno.
-# https://github.com/hayd/deno_docker
+FROM amazonlinux:2.0.20200722.0
+# This is _close to_ the Amazon Linux 2 AMI/image used by AWS Lambda.
 
-RUN yum install -y unzip zip
+ENV DENO_VERSION=1.5.2
+
+# Note: We make the deno binary private (via _) so that it's not available in the PATH.
+# In order for `deno` to be made available in the PATH it must be inserted into ./bin/
+
+RUN yum makecache \
+    && yum install unzip zip -y \
+    && curl -fsSL https://github.com/denoland/deno/releases/download/v${DENO_VERSION}/deno-x86_64-unknown-linux-gnu.zip \
+    --output deno.zip \
+    && unzip deno.zip \
+    && rm deno.zip \
+    && chmod 777 deno \
+    && mv deno /bin/_deno \
+    && yum clean all \
+    && rm -rf /var/cache/yum
 
 ENV AWS_LAMBDA_RUNTIME_API=127.0.0.1:1993 \
     AWS_LAMBDA_FUNCTION_NAME=test \
@@ -21,11 +33,11 @@ ENV AWS_LAMBDA_RUNTIME_API=127.0.0.1:1993 \
 # /var/task has function code
 # /opt has the layer code
 RUN mkdir -p /src/runtime/bin /src/tests/bin /var/task /opt \
-    && cp /bin/deno /src/runtime/bin/deno \
-    && cp /bin/deno /src/tests/bin/deno
+    && cp /bin/_deno /src/runtime/bin/deno \
+    && cp /bin/_deno /src/tests/bin/deno
 
 ADD tests/deps.ts /src/tests/deps.ts
-RUN deno cache /src/tests/deps.ts
+RUN _deno cache /src/tests/deps.ts
 
 ADD hello.ts /src/runtime/hello.ts
 ADD hello.ts /src/tests/hello.ts
@@ -40,16 +52,16 @@ RUN sh artifacts \
 
 WORKDIR /src/tests
 # Note: We have to run since fetch doesn't write!
-RUN deno cache --lock-write --lock=lock.json pad.ts \
+RUN _deno cache --lock-write --lock=lock.json pad.ts \
     && echo {} > badlock.json
 
 ADD tests/server.ts server.ts
-RUN deno cache server.ts
+RUN _deno cache server.ts
 
 ADD tests/test.ts test.ts
-RUN deno cache test.ts
+RUN _deno cache test.ts
 
 ADD tests .
 
 
-CMD ["test", "-A", "--unstable"]
+CMD ["_deno", "test", "-A", "--unstable"]

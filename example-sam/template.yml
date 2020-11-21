@@ -19,7 +19,7 @@ Resources:
       CodeUri: .
       MemorySize: 128
       Handler: hello.handler
-      Runtime: provided
+      Runtime: provided.al2
       Layers:
         - !GetAtt Deno.Outputs.LayerArn
       Events:

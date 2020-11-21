@@ -74,7 +74,7 @@ export async function noArgs() {
 export async function runDeno(event: APIGatewayProxyEvent, context: Context) {
   const r = Deno.run({ cmd: ["deno", "--version"], stdout: "piped" });
   const out = await r.output();
-  const version = new TextDecoder().decode(out).split("\n")[0];
+  const version = new TextDecoder().decode(out).split("\n")[0].split(" ")[1];
   return { out: version };
 }
 

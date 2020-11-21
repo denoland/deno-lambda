@@ -5,6 +5,9 @@ SCRIPT_DIR=$(cd $(dirname $0); pwd)
 HANDLER_NAME=$(echo "$_HANDLER" | cut -d. -f2)
 HANDLER_FILE=$(echo "$_HANDLER" | cut -d. -f1)
 
+# support deno in the /bin directory of the function (not only the layer)
+PATH=$SCRIPT_DIR/bin:$PATH
+
 API_ROOT=http://${AWS_LAMBDA_RUNTIME_API}/2018-06-01/runtime/
 
 # If this ENV variable is set then copy that directory as DENO_DIR (default = .deno_dir).
@@ -71,6 +74,9 @@ function error {
 function investigate {
   [ -f $SCRIPT_DIR/bin/deno ] \
    || error "missing deno executable"
+
+  type -P deno \
+   || error "deno executable not found in PATH"
 
   deno eval 'Deno.version.deno' \
    || error "bad deno executable"

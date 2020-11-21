@@ -19,7 +19,7 @@ export class ExampleAwsCdkStack extends cdk.Stack {
         const layer = lambda.LayerVersion.fromLayerVersionArn(this, 'denoRuntimeLayer', denoRuntime.getAtt('Outputs.LayerArn').toString())
 
         const name = new lambda.Function(this, 'HelloHandler', {
-            runtime: lambda.Runtime.PROVIDED,
+            runtime: lambda.Runtime.PROVIDED_AL2,
             code: lambda.Code.fromAsset('src'),
             handler: 'hello.handler',
             layers: [layer],
