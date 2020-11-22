@@ -78,7 +78,7 @@ function investigate {
   type -P deno \
    || error "deno executable not found in PATH"
 
-  deno eval 'Deno.version.deno' \
+  DENO_DIR=/tmp/deno_dir NO_COLOR=true deno eval 'Deno.version.deno' \
    || error "bad deno executable"
 
   [ -f $LAMBDA_TASK_ROOT/$HANDLER_FILE ] \
