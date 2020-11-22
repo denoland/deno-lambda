@@ -75,7 +75,7 @@ function investigate {
   [ -f $SCRIPT_DIR/bin/deno ] \
    || error "missing deno executable"
 
-  type -P deno \
+  type -P deno &> /dev/null \
    || error "deno executable not found in PATH"
 
   DENO_DIR=/tmp/deno_dir NO_COLOR=true deno eval 'Deno.version.deno' \
