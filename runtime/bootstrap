@@ -236,7 +236,9 @@ cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/gen/. /tmp/deno_dir/gen &> /dev/null \
  && cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/deps/. /tmp/deno_dir/deps &> /dev/null \
  && cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/gen/. /tmp/deno_dir/gen &> /dev/null \
  && cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/LAMBDA_TASK_ROOT/. /tmp/deno_dir/gen/file$LAMBDA_TASK_ROOT &> /dev/null \
+ || expr match "$HANDLER_FILE" ".*bundle.js" &> /dev/null \
  || echo "warn: unable to import '$DENO_DIR/' as DENO_DIR"
+# Note: We skip printing this warning if the filename endswith bundle.js.
 
 # FIXME remove DENO_FLAGS=DENO_FLAGS environment variable setting (used in testing only).
 DENO_DIR=/tmp/deno_dir DENO_PREFIX=$DENO_PREFIX DENO_FLAGS=$DENO_FLAGS NO_COLOR=true deno run $DENO_FLAGS /tmp/runtime.js \
