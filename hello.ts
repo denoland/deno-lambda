@@ -1,7 +1,7 @@
 import {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
-  Context
+  Context,
 } from "https://deno.land/x/lambda/mod.ts";
 
 export async function handler(

@@ -7,16 +7,16 @@
 import { assertEquals } from "https://deno.land/std@0.77.0/testing/asserts.ts";
 import {
   APIGatewayProxyEvent,
-  Context
+  Context,
 } from "https://deno.land/x/lambda/mod.ts";
 
 import { client } from "./client.ts";
 import { test } from "./test_util.ts";
 import {
-  list as listCandidate,
   get as getCandidate,
+  list as listCandidate,
   submit as submitCandidate,
-  TableName
+  TableName,
 } from "./api/candidate.ts";
 
 test({

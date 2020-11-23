@@ -1,6 +1,6 @@
 import {
   APIGatewayProxyEvent,
-  Context
+  Context,
 } from "https://deno.land/x/lambda/mod.ts";
 
 import { client } from "../client.ts";

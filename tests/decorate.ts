@@ -1,6 +1,6 @@
 import type {
   APIGatewayProxyEvent,
-  Context
+  Context,
 } from "https://deno.land/x/lambda/mod.ts";
 
 function decorate(target: any) {}

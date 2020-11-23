@@ -1,16 +1,16 @@
 import {
-    APIGatewayProxyEvent,
-    APIGatewayProxyResult,
-    Context
+  APIGatewayProxyEvent,
+  APIGatewayProxyResult,
+  Context,
 } from "https://deno.land/x/lambda/mod.ts";
 
 export async function handler(
-    event: APIGatewayProxyEvent,
-    context: Context,
+  event: APIGatewayProxyEvent,
+  context: Context,
 ): Promise<APIGatewayProxyResult> {
-    return {
-        statusCode: 200,
-        headers: { "content-type": "text/html;charset=utf8" },
-        body: `Hello World! Sent from AWS CDK deno ${Deno.version.deno} 🦕`,
-    };
+  return {
+    statusCode: 200,
+    headers: { "content-type": "text/html;charset=utf8" },
+    body: `Hello World! Sent from AWS CDK deno ${Deno.version.deno} 🦕`,
+  };
 }
