@@ -92,12 +92,12 @@ function investigate {
      || error "lock file error: $(cat /tmp/lock.out)"
   fi
 
-  DENO_DIR=/tmp/deno_dir NO_COLOR=true deno cache $DENO_CACHE_FLAGS $LAMBDA_TASK_ROOT/$HANDLER_FILE 2> /dev/null \
+  DENO_DIR=/tmp/deno_dir NO_COLOR=true deno cache $DENO_CACHE_FLAGS $LAMBDA_TASK_ROOT/$HANDLER_FILE &> /dev/null \
    || error "unable to compile $HANDLER_FILE"
 
   echo "import { $HANDLER_NAME } from '$LAMBDA_TASK_ROOT/$HANDLER_FILE';" > /tmp/runtime-test.js
-  DENO_DIR=/tmp/deno_dir NO_COLOR=true deno run $DENO_IMPORTMAP /tmp/runtime-test.js 2> /dev/null \
-   || error "$HANDLER_FILE must export a function named '$HANDLER_NAME'";
+  DENO_DIR=/tmp/deno_dir NO_COLOR=true deno run $DENO_IMPORTMAP /tmp/runtime-test.js &> /dev/null \
+   || error "unable to import '$HANDLER_NAME' from $HANDLER_FILE";
 
   # FIXME perhaps a bug in bootstrap? Should we always exit 1? Or not?
   error "deno exited"
