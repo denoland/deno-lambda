@@ -1,0 +1,19 @@
+name: Test
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: denolib/setup-deno@master
+        with:
+          deno-version: 1.5.4
+      - name: Run fmt
+        run: |
+          deno fmt --check
+      - name: Run lint
+        run: |
+          deno lint --unstable hello.ts tests
+          deno lint --unstable examples-aws-cdk
+          deno lint --unstable example-sam --ignore=example-sam/.aws-sam
+          deno lint --unstable example-serverless --ignore=example-serverless/node_modules,example-serverless/.deno_dir

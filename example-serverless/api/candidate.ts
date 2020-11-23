@@ -8,13 +8,13 @@ import { Doc, uuid } from "../deps.ts";
 
 export const TableName = "candidates";
 
-function ok(body: any, statusCode: number = 200) {
+function ok(body: unknown, statusCode = 200) {
   return {
     statusCode,
     body: JSON.stringify(body),
   };
 }
-function error(message: string, statusCode: number = 500) {
+function error(message: string, statusCode = 500) {
   return ok({ message: message }, statusCode);
 }
 
@@ -48,7 +48,7 @@ export async function list(event: APIGatewayProxyEvent, context: Context) {
     TableName,
     ProjectionExpression: "id, fullname, email",
   };
-  let result: any;
+  let result: unknown;
   try {
     result = await client.scan(params);
   } catch (e) {
