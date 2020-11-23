@@ -1,5 +1,5 @@
 {
-  "env": { "_HANDLER": "pad.assertLock", "DENO_LOCK": "lock.json" },
+  "env": { "_HANDLER": "lock.assertLock", "DENO_LOCK": "lock.json" },
   "events": [{ "hello": "deno" }],
   "expected": [
     {
@@ -7,6 +7,6 @@
       "content": "{}"
     }
   ],
-  "files": ["pad.ts", "lock.json"],
+  "files": ["lock.ts", "lock.json"],
   "layer": "deno-lambda-layer.zip"
 }

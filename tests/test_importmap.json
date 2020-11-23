@@ -7,7 +7,7 @@
   "expected": [
     {
       "status": "ok",
-      "content": "\" deno\""
+      "content": "\"deno\""
     }
   ],
   "files": ["importmap.ts", "importmap.json"],

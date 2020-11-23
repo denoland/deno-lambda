@@ -24,6 +24,6 @@ DENO_DIR=/src/runtime/.deno_dir ./bin/deno bundle hello.ts hello.bundle.js
 rm -rf .deno_dir
 mkdir -p .deno_dir/deps/https/deno.land/x/lambda/
 cp mod.ts .deno_dir/deps/https/deno.land/x/lambda/mod.ts
-DENO_DIR=/src/runtime/.deno_dir ./bin/deno cache pad.ts
+DENO_DIR=/src/runtime/.deno_dir ./bin/deno cache lock.ts
 cp -R .deno_dir/gen/file/$PWD/. .deno_dir/LAMBDA_TASK_ROOT
-zip -qq pad.zip -x '.deno_dir/gen/file/*' -r .deno_dir pad.ts
+zip -qq lock.zip -x '.deno_dir/gen/file/*' -r .deno_dir lock.ts

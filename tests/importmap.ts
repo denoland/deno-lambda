@@ -2,10 +2,9 @@ import type {
   APIGatewayProxyEvent,
   Context,
 } from "https://deno.land/x/lambda/mod.ts";
-// FIXME use a different file here (see also pad.ts)
-import { pad } from "std/strings/pad.ts";
+import { delay } from "std/async/delay.ts";
 
-export function handler(event: any, context: Context) {
-  const strLen: number = Number(event.strLen) || 5;
-  return pad("deno", strLen);
+export async function handler(event: unknown, context: Context) {
+  await delay(10);
+  return "deno";
 }

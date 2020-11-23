@@ -41,8 +41,8 @@ RUN _deno cache /src/tests/deps.ts
 
 ADD hello.ts /src/runtime/hello.ts
 ADD hello.ts /src/tests/hello.ts
-ADD tests/pad.ts /src/runtime/pad.ts
-ADD tests/pad.ts /src/tests/pad.ts
+ADD tests/lock.ts /src/runtime/lock.ts
+ADD tests/lock.ts /src/tests/lock.ts
 ADD runtime /src/runtime
 
 WORKDIR /src/runtime
@@ -52,7 +52,7 @@ RUN sh artifacts \
 
 WORKDIR /src/tests
 # Note: We have to run since fetch doesn't write!
-RUN _deno cache --lock-write --lock=lock.json pad.ts \
+RUN _deno cache --lock-write --lock=lock.json lock.ts \
     && echo {} > badlock.json
 
 ADD tests/server.ts server.ts

@@ -1,1 +1,1 @@
-import { missing_import } from "./mod.ts";
+import { missingImport } from "./mod.ts";
