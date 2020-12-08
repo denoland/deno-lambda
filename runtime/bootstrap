@@ -18,9 +18,8 @@ if [[ -z "$DENO_DIR" ]]; then
 fi
 
 # Potentially this could be overwritten HOWEVER several permissions are required for bootstrap.
-# FIXME should this simply be -A?
-# FIXME can plugins work?? (If so, it should be documented.)
-DENO_FLAGS="-A"
+# Note: Do can plugins work?? (If so, it should be documented.)
+DENO_FLAGS="-A --no-check"
 DENO_CACHE_FLAGS=""
 
 # For unstable flags we must pass --unstable
@@ -95,11 +94,7 @@ function investigate {
   DENO_DIR=/tmp/deno_dir NO_COLOR=true deno cache $DENO_CACHE_FLAGS $LAMBDA_TASK_ROOT/$HANDLER_FILE &> /dev/null \
    || error "unable to compile $HANDLER_FILE"
 
-  echo "import { $HANDLER_NAME } from '$LAMBDA_TASK_ROOT/$HANDLER_FILE';" > /tmp/runtime-test.js
-  DENO_DIR=/tmp/deno_dir NO_COLOR=true deno run $DENO_IMPORTMAP /tmp/runtime-test.js &> /dev/null \
-   || error "unable to import '$HANDLER_NAME' from $HANDLER_FILE";
-
-  # FIXME perhaps a bug in bootstrap? Should we always exit 1? Or not?
+  # e.g. the HANDLER_FILE threw an error or did not import HANDLER_NAME
   error "deno exited"
 }
 
@@ -229,7 +224,6 @@ mkdir -p /tmp/deno_dir/gen/file$LAMBDA_TASK_ROOT
 # We cp first from the deno-lambda-layer.
 cp -R /opt/.deno_dir/gen/. /tmp/deno_dir/gen &> /dev/null \
  && cp -R /opt/.deno_dir/deps/. /tmp/deno_dir/deps &> /dev/null \
- && cp -R /opt/.deno_dir/LAMBDA_TASK_ROOT/. /tmp/deno_dir/gen/file$LAMBDA_TASK_ROOT &> /dev/null \
  || true
 # Then we overwrite with from the DENO_DIR in the function code.
 cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/gen/. /tmp/deno_dir/gen &> /dev/null \

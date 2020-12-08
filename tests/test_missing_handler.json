@@ -4,7 +4,7 @@
   "expected": [
     {
       "status": "error",
-      "content": "{\"errorMessage\" : \"unable to import 'missing' from handlers.ts\", \"errorType\" : \"InitException\"}"
+      "content": "{\"errorMessage\" : \"deno exited\", \"errorType\" : \"InitException\"}"
     }
   ],
   "files": ["handlers.ts"],
