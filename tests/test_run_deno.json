@@ -4,11 +4,11 @@
   "expected": [
     {
       "status": "ok",
-      "content": "{\"out\":\"deno 1.5.2 (UNKNOWN, release, x86_64-unknown-linux-gnu)\"}"
+      "content": "{\"out\":\"deno 1.6.0 (release, x86_64-unknown-linux-gnu)\"}"
     },
     {
       "status": "ok",
-      "content": "{\"out\":\"deno 1.5.2 (UNKNOWN, release, x86_64-unknown-linux-gnu)\"}"
+      "content": "{\"out\":\"deno 1.6.0 (release, x86_64-unknown-linux-gnu)\"}"
     }
   ],
   "files": ["handlers.ts"],
