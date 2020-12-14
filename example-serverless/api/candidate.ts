@@ -58,11 +58,11 @@ export async function list(event: APIGatewayProxyEvent, context: Context) {
     // FIXME better way to handle this??
     const items = [];
     try {
-      for await (const page of result) {
+      for await (const page of result as AsyncIterableIterator<Doc>) {
         items.push(...page.Items);
       }
     } catch {
-      items.push(...result.Items);
+      items.push(...(result as Doc).Items);
     }
     return ok({ candidates: items });
   } catch (e) {
