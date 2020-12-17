@@ -1,9 +1,10 @@
 import {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
-  Context
+  Context,
 } from "https://deno.land/x/lambda/mod.ts";
 
+// deno-lint-ignore require-await
 export async function handler(
   event: APIGatewayProxyEvent,
   context: Context,

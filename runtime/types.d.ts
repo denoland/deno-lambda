@@ -1009,12 +1009,11 @@ export interface CodeBuildStateEventDetail {
   };
 }
 
-export interface CodeBuildCloudWatchStateEvent
-  extends
-    EventBridgeEvent<
-      "CodeBuild Build State Change",
-      CodeBuildStateEventDetail
-    > {
+export interface CodeBuildCloudWatchStateEvent extends
+  EventBridgeEvent<
+    "CodeBuild Build State Change",
+    CodeBuildStateEventDetail
+  > {
   source: "aws.codebuild";
 }
 

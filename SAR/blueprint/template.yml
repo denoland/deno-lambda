@@ -19,7 +19,7 @@ Resources:
         Key: deno-lambda-example_DENO_LAMBDA_VERSION.zip
       MemorySize: 128
       Handler: hello.handler
-      Runtime: provided
+      Runtime: provided.al2
       Layers:
         - !GetAtt Deno.Outputs.LayerArn
       Events:

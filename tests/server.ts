@@ -16,8 +16,8 @@ export interface TestJson {
 
 function bootstrap(testJson: TestJson) {
   const bootstrapScript = [...Deno.readDirSync("/var/task/")]
-    .map((x) => x.name)
-    .includes("bootstrap")
+      .map((x) => x.name)
+      .includes("bootstrap")
     ? "/var/task/bootstrap"
     : "/opt/bootstrap";
 
@@ -79,7 +79,7 @@ export async function serveEvents(testJson: TestJson) {
           "lambda-runtime-deadline-ms": (Date.now() + 300000).toString(),
         });
         if (testJson.headers) {
-          for (let [k, v] of Object.entries(testJson.headers)) {
+          for (const [k, v] of Object.entries(testJson.headers)) {
             const vv = typeof v === "string" ? v : JSON.stringify(v);
             assert(typeof vv === "string");
             headers.append(k, vv);

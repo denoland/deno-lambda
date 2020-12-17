@@ -4,7 +4,7 @@
   "expected": [
     {
       "status": "error",
-      "content": "{\"errorMessage\" : \"handlers.ts must export a function named 'missing'\", \"errorType\" : \"InitException\"}"
+      "content": "{\"errorMessage\" : \"deno exited\", \"errorType\" : \"InitException\"}"
     }
   ],
   "files": ["handlers.ts"],

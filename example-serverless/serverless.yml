@@ -3,7 +3,7 @@ frameworkVersion: ">=1.1.1 <2.0.0"
 
 provider:
   name: aws
-  runtime: provided
+  runtime: provided.al2
   stage: dev
   region: ${env:AWS_DEFAULT_REGION, 'us-east-1'}
   iamRoleStatements:
@@ -64,7 +64,7 @@ resources:
       Properties:
         Location:
           ApplicationId: arn:aws:serverlessrepo:us-east-1:390065572566:applications/deno
-          SemanticVersion: 1.6.0
+          SemanticVersion: 1.6.1
 
     candidatesTable:
       Type: AWS::DynamoDB::Table
