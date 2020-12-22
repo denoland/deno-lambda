@@ -1,0 +1,4 @@
+*
+!runtime/*
+!tests/*
+!hello.ts
