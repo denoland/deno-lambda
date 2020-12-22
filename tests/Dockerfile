@@ -14,7 +14,7 @@ RUN yum makecache \
     --output deno.zip \
     && unzip deno.zip \
     && rm deno.zip \
-    && chmod 777 deno \
+    && chmod 755 deno \
     && mv deno /bin/_deno \
     && yum clean all \
     && rm -rf /var/cache/yum
