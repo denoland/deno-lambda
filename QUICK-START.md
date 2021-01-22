@@ -4,8 +4,9 @@ sample SAR application.
 
 ## Quick Start in the AWS console
 
-1. Visit the [deno SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno)
-and click the Deploy button:
+1. Visit the
+   [deno SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno)
+   and click the Deploy button:
 
 <img width="1301" alt="Screen Shot 2020-02-17 at 14 42 36" src="https://user-images.githubusercontent.com/1931852/74705321-50da1500-51c8-11ea-8709-afc3d46dde8c.png">
 
@@ -23,8 +24,8 @@ Click on "View Cloudformation Stack":
 
 On the "Outputs" tab copy the `LayerArn`.
 
-3. Visit the [lambda console](https://console.aws.amazon.com/lambda/).
-Create a lambda function from scratch with runtime "provide your own bootstrap".
+3. Visit the [lambda console](https://console.aws.amazon.com/lambda/). Create a
+   lambda function from scratch with runtime "provide your own bootstrap".
 
 <img width="1295" alt="Create function" src="https://user-images.githubusercontent.com/1931852/68455784-0ac8ea80-01b1-11ea-93ba-8c64a4e487e7.png">
 
@@ -34,8 +35,9 @@ Create a lambda function from scratch with runtime "provide your own bootstrap".
 
 <img width="820" alt="Add layer to function" src="https://user-images.githubusercontent.com/1931852/68455782-0ac8ea80-01b1-11ea-9a1b-0a87f8052c25.png">
 
-5. Upload the latest [deno-lambda-example.zip](https://github.com/hayd/deno-lambda/releases)
-as function code.
+5. Upload the latest
+   [deno-lambda-example.zip](https://github.com/hayd/deno-lambda/releases) as
+   function code.
 
 <img width="1300" alt="Upload function code" src="https://user-images.githubusercontent.com/1931852/68455780-0ac8ea80-01b1-11ea-87ee-164abe110c77.png">
 

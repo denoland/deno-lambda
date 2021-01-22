@@ -6,22 +6,23 @@
 import {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
-  Context
+  Context,
 } from "https://deno.land/x/lambda/mod.ts";
 
 export async function handler(
   event: APIGatewayProxyEvent,
-  context: Context
+  context: Context,
 ): Promise<APIGatewayProxyResult> {
   return {
     body: `Welcome to deno ${Deno.version.deno} 🦕`,
     headers: { "content-type": "text/html;charset=utf8" },
-    statusCode: 200
+    statusCode: 200,
   };
 }
 ```
 
-_See [deno-lambda repository](https://github.com/hayd/deno-lambda) for more info on running deno on AWS Lambda._
+_See [deno-lambda repository](https://github.com/hayd/deno-lambda) for more info
+on running deno on AWS Lambda._
 
 ---
 

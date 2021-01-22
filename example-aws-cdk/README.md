@@ -1,6 +1,7 @@
 # Serverless
 
-Working with [AWS CDK in Typescript Guide](https://docs.aws.amazon.com/cdk/latest/guide/work-with-cdk-typescript.html)
+Working with
+[AWS CDK in Typescript Guide](https://docs.aws.amazon.com/cdk/latest/guide/work-with-cdk-typescript.html)
 
 The `cdk.json` file defines the command to execute the cdk app
 
@@ -14,7 +15,6 @@ npm install -g aws-cdk
 
 cdk deploy
 ```
-
 
 ---
 
