@@ -1,6 +1,7 @@
 # SAM
 
-An example [Serverless Application Model](https://aws.amazon.com/serverless/sam/) template.
+An example
+[Serverless Application Model](https://aws.amazon.com/serverless/sam/) template.
 
 ### Deploy via
 
