@@ -1,6 +1,6 @@
 // delay.ts was chosen since it has no dependencies.
 // i.e. importing downloads precisely one file from deno.land.
-import { delay } from "https://deno.land/std@0.80.0/async/delay.ts";
+import { delay } from "https://deno.land/std@0.93.0/async/delay.ts";
 
 export async function handler(event: unknown, context: unknown) {
   await delay(10);
