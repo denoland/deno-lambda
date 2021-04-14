@@ -14,6 +14,6 @@ jobs:
       - name: Run lint
         run: |
           deno lint --unstable hello.ts tests
-          deno lint --unstable examples-aws-cdk
+          deno lint --unstable example-aws-cdk --ignore=example-aws-cdk/node_modules
           deno lint --unstable example-sam --ignore=example-sam/.aws-sam
           deno lint --unstable example-serverless --ignore=example-serverless/node_modules,example-serverless/.deno_dir

@@ -18,7 +18,7 @@ function error(message: string, statusCode = 500) {
   return ok({ message: message }, statusCode);
 }
 
-export async function get(event: APIGatewayProxyEventV2, context: Context) {
+export async function get(event: APIGatewayProxyEventV2, _context: Context) {
   const id = event.pathParameters && event.pathParameters.id;
   if (id === null) {
     return error(`id not found in pathParameters`);
@@ -43,7 +43,7 @@ export async function get(event: APIGatewayProxyEventV2, context: Context) {
   }
 }
 
-export async function list(event: APIGatewayProxyEventV2, context: Context) {
+export async function list(_event: APIGatewayProxyEventV2, _context: Context) {
   var params = {
     TableName,
     ProjectionExpression: "id, fullname, email",
@@ -70,7 +70,7 @@ export async function list(event: APIGatewayProxyEventV2, context: Context) {
   }
 }
 
-export async function submit(event: APIGatewayProxyEventV2, context: Context) {
+export async function submit(event: APIGatewayProxyEventV2, _context: Context) {
   let requestBody;
   try {
     requestBody = JSON.parse(event.body!);

@@ -6,8 +6,8 @@ import {
 
 // deno-lint-ignore require-await
 export async function handler(
-  event: APIGatewayProxyEventV2,
-  context: Context,
+  _event: APIGatewayProxyEventV2,
+  _context: Context,
 ): Promise<APIGatewayProxyResultV2> {
   return {
     statusCode: 200,
