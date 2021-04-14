@@ -1,4 +1,4 @@
-import { assert, serve } from "./deps.ts";
+import { assert, readAll, serve } from "./deps.ts";
 
 const enc = new TextEncoder();
 const dec = new TextDecoder();
@@ -48,17 +48,17 @@ export async function serveEvents(testJson: TestJson) {
   for await (const req of s) {
     if (req.method == "POST") {
       if (req.url.endsWith("/response")) {
-        const body = dec.decode(await Deno.readAll(req.body));
+        const body = dec.decode(await readAll(req.body));
         responses.push(JSON.stringify({ status: "ok", content: body }));
       } else if (req.url.endsWith("/init/error")) {
-        const body = dec.decode(await Deno.readAll(req.body));
+        const body = dec.decode(await readAll(req.body));
         responses.push(JSON.stringify({ status: "error", content: body }));
         await req.respond({ body: statusOK });
         break;
       } else if (
         req.url.endsWith(`/${String.fromCharCode(96 + reqId)}/error`)
       ) {
-        const body = dec.decode(await Deno.readAll(req.body));
+        const body = dec.decode(await readAll(req.body));
         responses.push(JSON.stringify({ status: "error", content: body }));
       } else {
         throw new Error("Unreachable!");
@@ -92,7 +92,7 @@ export async function serveEvents(testJson: TestJson) {
       }
     }
   }
-  /// const out = await Deno.readAll(p.stdout);
+  /// const out = await readAll(p.stdout);
   p.kill(9);
   p.stdout!.close();
   p.stderr!.close();

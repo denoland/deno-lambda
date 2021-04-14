@@ -1,9 +1,9 @@
+// deno-lint-ignore-file
 // Type definitions for AWS Lambda 8.10
 // Project: http://docs.aws.amazon.com/lambda
 // Definitions by: James Darbyshire <https://github.com/darbio>
 //                 Michael Skarum <https://github.com/skarum>
 //                 Stef Heyenrath <https://github.com/StefH>
-//                 Toby Hede <https://github.com/tobyhede>
 //                 Rich Buggy <https://github.com/buggy>
 //                 Yoriki Yamaguchi <https://github.com/y13i>
 //                 wwwy3y3 <https://github.com/wwwy3y3>
@@ -37,6 +37,8 @@
 //                 Sachin Shekhar <https://github.com/SachinShekhar>
 //                 Ivan Martos <https://github.com/ivanmartos>
 //                 Zach Anthony <https://github.com/zach-anthony>
+//                 Peter Savnik <https://github.com/savnik>
+//                 Sven Milewski <https://github.com/svenmilewski>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 3.0
 
@@ -351,14 +353,30 @@ export interface ALBEventRequestContext {
   };
 }
 
+export interface ALBEventQueryStringParameters {
+  [name: string]: string | undefined;
+}
+
+export interface ALBEventHeaders {
+  [name: string]: string | undefined;
+}
+
+export interface ALBEventMultiValueHeaders {
+  [name: string]: string[] | undefined;
+}
+
+export interface ALBEventMultiValueQueryStringParameters {
+  [name: string]: string[] | undefined;
+}
+
 export interface ALBEvent {
   requestContext: ALBEventRequestContext;
   httpMethod: string;
   path: string;
-  queryStringParameters?: { [parameter: string]: string }; // URL encoded
-  headers?: { [header: string]: string };
-  multiValueQueryStringParameters?: { [parameter: string]: string[] }; // URL encoded
-  multiValueHeaders?: { [header: string]: string[] };
+  queryStringParameters?: ALBEventQueryStringParameters; // URL encoded
+  headers?: ALBEventHeaders;
+  multiValueQueryStringParameters?: ALBEventMultiValueQueryStringParameters; // URL encoded
+  multiValueHeaders?: ALBEventMultiValueHeaders;
   body: string | null;
   isBase64Encoded: boolean;
 }
@@ -415,6 +433,30 @@ export interface APIGatewayTokenAuthorizerEvent {
   authorizationToken: string;
 }
 
+export interface APIGatewayRequestAuthorizerEventHeaders {
+  [name: string]: string | undefined;
+}
+
+export interface APIGatewayRequestAuthorizerEventMultiValueHeaders {
+  [name: string]: string[] | undefined;
+}
+
+export interface APIGatewayRequestAuthorizerEventPathParameters {
+  [name: string]: string | undefined;
+}
+
+export interface APIGatewayRequestAuthorizerEventQueryStringParameters {
+  [name: string]: string | undefined;
+}
+
+export interface APIGatewayRequestAuthorizerEventMultiValueQueryStringParameters {
+  [name: string]: string[] | undefined;
+}
+
+export interface APIGatewayRequestAuthorizerEventStageVariables {
+  [name: string]: string | undefined;
+}
+
 // Note, when invoked by the tester in the AWS web console, the map values can be null,
 // but they will be empty objects in the real object.
 // Worse, it will include "body" and "isBase64Encoded" properties, unlike the real call!
@@ -426,12 +468,16 @@ export interface APIGatewayRequestAuthorizerEvent {
   resource: string;
   path: string;
   httpMethod: string;
-  headers: { [name: string]: string } | null;
-  multiValueHeaders: { [name: string]: string[] } | null;
-  pathParameters: { [name: string]: string } | null;
-  queryStringParameters: { [name: string]: string } | null;
-  multiValueQueryStringParameters: { [name: string]: string[] } | null;
-  stageVariables: { [name: string]: string } | null;
+  headers: APIGatewayRequestAuthorizerEventHeaders | null;
+  multiValueHeaders: APIGatewayRequestAuthorizerEventMultiValueHeaders | null;
+  pathParameters: APIGatewayRequestAuthorizerEventPathParameters | null;
+  queryStringParameters:
+    | APIGatewayRequestAuthorizerEventQueryStringParameters
+    | null;
+  multiValueQueryStringParameters:
+    | APIGatewayRequestAuthorizerEventMultiValueQueryStringParameters
+    | null;
+  stageVariables: APIGatewayRequestAuthorizerEventStageVariables | null;
   requestContext: APIGatewayEventRequestContextWithAuthorizer<undefined>;
 }
 
@@ -623,17 +669,43 @@ export interface APIGatewayProxyCognitoAuthorizer {
   };
 }
 
+export interface APIGatewayProxyEventHeaders {
+  [name: string]: string | undefined;
+}
+
+export interface APIGatewayProxyEventMultiValueHeaders {
+  [name: string]: string[] | undefined;
+}
+
+export interface APIGatewayProxyEventPathParameters {
+  [name: string]: string | undefined;
+}
+
+export interface APIGatewayProxyEventQueryStringParameters {
+  [name: string]: string | undefined;
+}
+
+export interface APIGatewayProxyEventMultiValueQueryStringParameters {
+  [name: string]: string[] | undefined;
+}
+
+export interface APIGatewayProxyEventStageVariables {
+  [name: string]: string | undefined;
+}
+
 export interface APIGatewayProxyEventBase<TAuthorizerContext> {
   body: string | null;
-  headers: { [name: string]: string };
-  multiValueHeaders: { [name: string]: string[] };
+  headers: APIGatewayProxyEventHeaders;
+  multiValueHeaders: APIGatewayProxyEventMultiValueHeaders;
   httpMethod: string;
   isBase64Encoded: boolean;
   path: string;
-  pathParameters: { [name: string]: string } | null;
-  queryStringParameters: { [name: string]: string } | null;
-  multiValueQueryStringParameters: { [name: string]: string[] } | null;
-  stageVariables: { [name: string]: string } | null;
+  pathParameters: APIGatewayProxyEventPathParameters | null;
+  queryStringParameters: APIGatewayProxyEventQueryStringParameters | null;
+  multiValueQueryStringParameters:
+    | APIGatewayProxyEventMultiValueQueryStringParameters
+    | null;
+  stageVariables: APIGatewayProxyEventStageVariables | null;
   requestContext: APIGatewayEventRequestContextWithAuthorizer<
     TAuthorizerContext
   >;
@@ -666,8 +738,8 @@ export interface APIGatewayProxyEventV2 {
   rawPath: string;
   rawQueryString: string;
   cookies?: string[];
-  headers: { [name: string]: string };
-  queryStringParameters?: { [name: string]: string };
+  headers: APIGatewayProxyEventHeaders;
+  queryStringParameters?: APIGatewayProxyEventQueryStringParameters;
   requestContext: {
     accountId: string;
     apiId: string;
@@ -693,9 +765,9 @@ export interface APIGatewayProxyEventV2 {
     timeEpoch: number;
   };
   body?: string;
-  pathParameters?: { [name: string]: string };
+  pathParameters?: APIGatewayProxyEventPathParameters;
   isBase64Encoded: boolean;
-  stageVariables?: { [name: string]: string };
+  stageVariables?: APIGatewayProxyEventStageVariables;
 }
 
 /**
@@ -726,6 +798,59 @@ export interface APIGatewayProxyStructuredResultV2 {
 export type ProxyHandler = APIGatewayProxyHandler;
 export type APIGatewayEvent = APIGatewayProxyEvent;
 export type ProxyResult = APIGatewayProxyResult;
+
+export type AppSyncResolverHandler<T, V> = Handler<
+  AppSyncResolverEvent<T>,
+  V | V[]
+>;
+
+export interface AppSyncResolverEventHeaders {
+  [name: string]: string | undefined;
+}
+
+/**
+ * See https://docs.aws.amazon.com/appsync/latest/devguide/resolver-context-reference.html
+ *
+ * @param T type of the arguments
+ */
+export interface AppSyncResolverEvent<T> {
+  arguments: T;
+  identity?: AppSyncIdentityIAM | AppSyncIdentityCognito;
+  source: { [key: string]: any } | null;
+  request: {
+    headers: AppSyncResolverEventHeaders;
+  };
+  info: {
+    selectionSetList: string[];
+    selectionSetGraphQL: string;
+    parentTypeName: string;
+    fieldName: string;
+    variables: { [key: string]: any };
+  };
+  prev: { result: { [key: string]: any } } | null;
+  stash: { [key: string]: any };
+}
+
+export interface AppSyncIdentityIAM {
+  accountId: string;
+  cognitoIdentityPoolId: string;
+  cognitoIdentityId: string;
+  sourceIp: string[];
+  username: string;
+  userArn: string;
+  cognitoIdentityAuthType: string;
+  cognitoIdentityAuthProvider: string;
+}
+
+export interface AppSyncIdentityCognito {
+  sub: string;
+  issuer: string;
+  username: string;
+  claims: any;
+  sourceIp: string[];
+  defaultAuthStrategy: string;
+  groups: string[] | null;
+}
 
 // Note, responses are *not* lambda results, they are sent to the event ResponseURL.
 export type CloudFormationCustomResourceHandler = Handler<
@@ -887,6 +1012,10 @@ export interface CloudWatchLogsDecodedData {
   logEvents: CloudWatchLogsLogEvent[];
 }
 
+export interface CloudWatchLogsLogEventExtractedFields {
+  [name: string]: string | undefined;
+}
+
 /**
  * See http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html#LambdaFunctionExample
  */
@@ -894,7 +1023,7 @@ export interface CloudWatchLogsLogEvent {
   id: string;
   timestamp: number;
   message: string;
-  extractedFields?: { [key: string]: string };
+  extractedFields?: CloudWatchLogsLogEventExtractedFields;
 }
 
 export type CodeBuildCloudWatchStateHandler = EventBridgeHandler<
@@ -1302,6 +1431,18 @@ export type CognitoUserPoolTriggerHandler = Handler<
   CognitoUserPoolTriggerEvent
 >;
 
+export * from "./create-auth-challenge";
+export * from "./custom-message";
+export * from "./custom-email-sender";
+export * from "./define-auth-challenge";
+export * from "./post-authentication";
+export * from "./post-confirmation";
+export * from "./pre-authentication";
+export * from "./pre-signup";
+export * from "./pre-token-generation";
+export * from "./user-migration";
+export * from "./verify-auth-challenge-response";
+
 export type ConnectContactFlowHandler = Handler<
   ConnectContactFlowEvent,
   ConnectContactFlowResult
@@ -1320,7 +1461,7 @@ export interface ConnectContactFlowEvent {
       InitiationMethod: ConnectContactFlowInitiationMethod;
       InstanceARN: string;
       PreviousContactId: string;
-      Queue: string | null;
+      Queue: ConnectContactFlowQueue | null;
       SystemEndpoint: ConnectContactFlowEndpoint | null;
       MediaStreams: {
         Customer: {
@@ -1349,6 +1490,11 @@ export type ConnectContactFlowInitiationMethod =
 export interface ConnectContactFlowEndpoint {
   Address: string;
   Type: "TELEPHONE_NUMBER";
+}
+
+export interface ConnectContactFlowQueue {
+  ARN: string;
+  Name: string;
 }
 
 export interface ConnectContactFlowResult {
@@ -1419,6 +1565,36 @@ export interface EventBridgeEvent<TDetailType extends string, TDetail> {
   source: string;
   "detail-type": TDetailType;
   detail: TDetail;
+}
+
+export type IoTHandler = Handler<IoTEvent, void>;
+
+// IoT
+// https://docs.aws.amazon.com/lambda/latest/dg/services-iot.html
+// IoT payload is not restriced to JSON, but JSON is highly recommended. Types as string, number or array are possible to use.
+
+export type IoTEvent<T = never> = string | number | T;
+
+// PreProvisioningHook
+// https://docs.aws.amazon.com/iot/latest/developerguide/pre-provisioning-hook.html
+// When using AWS IoT fleet provisioning, you can set up a Lambda function to validate parameters passed from the device before allowing the device to be provisioned.
+export type IoTPreProvisioningHookHandler = Handler<
+  IoTPreProvisioningHookEvent,
+  IoTPreProvisioningHookResult
+>;
+
+export interface IoTPreProvisioningHookEvent {
+  claimCertificateId: string;
+  certificateId: string;
+  certificatePem: string;
+  templateArn: string;
+  clientId: string;
+  parameters: Record<string, string>;
+}
+
+export interface IoTPreProvisioningHookResult {
+  allowProvisioning: boolean;
+  parameterOverrides: Record<string, string>;
 }
 
 export type FirehoseTransformationHandler = Handler<
@@ -1499,12 +1675,24 @@ export interface KinesisStreamEvent {
 
 export type LexHandler = Handler<LexEvent, LexResult>;
 
+export interface LexEventSlots {
+  [name: string]: string | undefined | null;
+}
+
+export interface LexEventSessionAttributes {
+  [key: string]: string | undefined;
+}
+
+export interface LexEventRequestAttributes {
+  [key: string]: string | undefined;
+}
+
 // Lex
 // https://docs.aws.amazon.com/lambda/latest/dg/invoking-lambda-function.html#supported-event-source-lex
 export interface LexEvent {
   currentIntent: {
     name: string;
-    slots: { [name: string]: string | null };
+    slots: LexEventSlots;
     slotDetails: LexSlotDetails;
     confirmationStatus: "None" | "Confirmed" | "Denied";
   };
@@ -1518,21 +1706,28 @@ export interface LexEvent {
   invocationSource: "DialogCodeHook" | "FulfillmentCodeHook";
   outputDialogMode: "Text" | "Voice";
   messageVersion: "1.0";
-  sessionAttributes: { [key: string]: string };
-  requestAttributes: { [key: string]: string } | null;
+  sessionAttributes: LexEventSessionAttributes;
+  requestAttributes: LexEventRequestAttributes | null;
 }
 
 export interface LexSlotResolution {
   value: string;
 }
 
+export interface LexSlotDetail {
+  // "at least 1 but no more than 5 items"
+  resolutions: [
+    LexSlotResolution,
+    LexSlotResolution?,
+    LexSlotResolution?,
+    LexSlotResolution?,
+    LexSlotResolution?,
+  ];
+  originalValue: string;
+}
+
 export interface LexSlotDetails {
-  [name: string]: {
-    // The following line only works in TypeScript Version: 3.0, The array should have at least 1 and no more than 5 items
-    // resolutions: [LexSlotResolution, LexSlotResolution?, LexSlotResolution?, LexSlotResolution?, LexSlotResolution?];
-    resolutions: LexSlotResolution[];
-    originalValue: string;
-  };
+  [name: string]: LexSlotDetail;
 }
 
 export interface LexGenericAttachment {
@@ -1709,11 +1904,15 @@ export interface SESMailHeader {
 
 export interface SESMailCommonHeaders {
   returnPath: string;
-  from: string[];
+  from?: string[];
   date: string;
-  to: string[];
+  to?: string[];
+  cc?: string[];
+  bcc?: string[];
+  sender?: string[];
+  replyTo?: string[];
   messageId: string;
-  subject: string;
+  subject?: string;
 }
 
 export interface SESMail {
@@ -1727,13 +1926,46 @@ export interface SESMail {
 }
 
 export interface SESReceiptStatus {
-  status: string;
+  status: "PASS" | "FAIL" | "GRAY" | "PROCESSING_FAILED" | "DISABLED";
 }
 
-export interface SESReceiptAction {
-  type: string;
+export interface SESReceiptS3Action {
+  type: "S3";
+  topicArn?: string;
+  bucketName: string;
+  objectKey: string;
+}
+
+export interface SESReceiptSnsAction {
+  type: "SNS";
+  topicArn: string;
+}
+
+export interface SESReceiptBounceAction {
+  type: "Bounce";
+  topicArn?: string;
+  smtpReplyCode: string;
+  statusCode: string;
+  message: string;
+  sender: string;
+}
+
+export interface SESReceiptLambdaAction {
+  type: "Lambda";
+  topicArn?: string;
   functionArn: string;
   invocationType: string;
+}
+
+export interface SESReceiptStopAction {
+  type: "Stop";
+  topicArn?: string;
+}
+
+export interface SESReceiptWorkMailAction {
+  type: "WorkMail";
+  topicArn?: string;
+  organizationArn: string;
 }
 
 export interface SESReceipt {
@@ -1745,7 +1977,14 @@ export interface SESReceipt {
   spfVerdict: SESReceiptStatus;
   dkimVerdict: SESReceiptStatus;
   dmarcVerdict: SESReceiptStatus;
-  action: SESReceiptAction;
+  dmarcPolicy?: "none" | "quarantine" | "reject";
+  action:
+    | SESReceiptS3Action
+    | SESReceiptSnsAction
+    | SESReceiptBounceAction
+    | SESReceiptLambdaAction
+    | SESReceiptStopAction
+    | SESReceiptWorkMailAction;
 }
 
 export interface SESMessage {

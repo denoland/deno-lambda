@@ -1,5 +1,5 @@
 import type {
-  APIGatewayProxyEvent,
+  APIGatewayProxyEventV2,
   Context,
 } from "https://deno.land/x/lambda/mod.ts";
 
@@ -10,18 +10,18 @@ class MyError extends Error {
   }
 }
 
-export function error(event: APIGatewayProxyEvent, context: Context) {
+export function error(_event: APIGatewayProxyEventV2, _context: Context) {
   throw new MyError("error thrown");
 }
 
 // deno-lint-ignore no-explicit-any
-export function foo(event: any, context: Context) {
+export function foo(event: any, _context: Context) {
   // is there a foo attribute?! who knows!
   return event.foo || "a string";
 }
 
 export function withContext(
-  event: APIGatewayProxyEvent,
+  _event: APIGatewayProxyEventV2,
   context: Context,
 ) {
   return {
@@ -42,7 +42,7 @@ console.log = (...args) => {
 };
 
 // deno-lint-ignore no-explicit-any
-export function log(event: any, context: Context) {
+export function log(event: any, _context: Context) {
   LOGGED = [];
   // pretty print with newlines
   const message = JSON.stringify({ message: event.hello }, null, 2);
@@ -60,7 +60,7 @@ export function log(event: any, context: Context) {
 }
 
 // deno-lint-ignore no-explicit-any
-export function badPrefix(event: any, context: Context) {
+export function badPrefix(event: any, _context: Context) {
   // assert warning message on init:
   console.log(event.hello);
   const log = LOGGED.map((args) => {
@@ -75,7 +75,10 @@ export function noArgs() {
   return {};
 }
 
-export async function runDeno(event: APIGatewayProxyEvent, context: Context) {
+export async function runDeno(
+  _event: APIGatewayProxyEventV2,
+  _context: Context,
+) {
   const r = Deno.run({ cmd: ["deno", "--version"], stdout: "piped" });
   const out = await r.output();
   const version = new TextDecoder().decode(out).split("\n")[0].split(" ")[1];
@@ -86,6 +89,6 @@ export function wrongArgs(a: number, b: number, c: number) {
   return { result: a * b * c };
 }
 
-export function xray(event: APIGatewayProxyEvent, context: Context) {
+export function xray(_event: APIGatewayProxyEventV2, _context: Context) {
   return { _X_AMZN_TRACE_ID: Deno.env.get("_X_AMZN_TRACE_ID") };
 }

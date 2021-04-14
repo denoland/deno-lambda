@@ -2,13 +2,13 @@
 // i.e. importing downloads precisely one file from deno.land.
 import { delay } from "https://deno.land/std@0.93.0/async/delay.ts";
 
-export async function handler(event: unknown, context: unknown) {
+export async function handler(_event: unknown, _context: unknown) {
   await delay(10);
   return "deno";
 }
 
 // This is here as we want to require the file have a locked dependency.
-export function assertLock(event: unknown, context: unknown) {
+export function assertLock(_event: unknown, _context: unknown) {
   // assert --lock was passed
   // FIXME remove this env hack and pull out the actual cli args from Deno itself.
   // (we shouldn't need to set DENO_FLAGS for deno in bootstrap.)

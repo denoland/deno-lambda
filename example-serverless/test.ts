@@ -6,7 +6,7 @@
 
 import { assertEquals } from "https://deno.land/std@0.93.0/testing/asserts.ts";
 import {
-  APIGatewayProxyEvent,
+  APIGatewayProxyEventV2,
   Context,
 } from "https://deno.land/x/lambda/mod.ts";
 
@@ -35,7 +35,7 @@ test({
   name: "test list",
   fn: async () => {
     const result = await listCandidate(
-      {} as APIGatewayProxyEvent,
+      {} as APIGatewayProxyEventV2,
       {} as Context,
     );
     assertEquals(result.statusCode, 200);
@@ -48,7 +48,7 @@ test({
   name: "test get",
   fn: async () => {
     const result = await getCandidate(
-      ({ pathParameters: { id: "abc" } } as unknown) as APIGatewayProxyEvent,
+      ({ pathParameters: { id: "abc" } } as unknown) as APIGatewayProxyEventV2,
       {} as Context,
     );
     assertEquals(result.statusCode, 200);
@@ -62,7 +62,7 @@ test({
   name: "test get missing",
   fn: async () => {
     const result = await getCandidate(
-      ({ pathParameters: { id: "bad" } } as unknown) as APIGatewayProxyEvent,
+      ({ pathParameters: { id: "bad" } } as unknown) as APIGatewayProxyEventV2,
       {} as Context,
     );
     assertEquals(result.statusCode, 404);
@@ -79,7 +79,7 @@ test({
         '{"fullname":"Shekhar Gulati","email": "shekhargulati84@gmail.com", "experience":12}',
     };
     const result = await submitCandidate(
-      event as APIGatewayProxyEvent,
+      event as APIGatewayProxyEventV2,
       {} as Context,
     );
     assertEquals(result.statusCode, 200);
@@ -96,7 +96,7 @@ test({
   fn: async () => {
     const event = { body: "{}" };
     const result = await submitCandidate(
-      event as APIGatewayProxyEvent,
+      event as APIGatewayProxyEventV2,
       {} as Context,
     );
     assertEquals(result.statusCode, 422);

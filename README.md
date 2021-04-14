@@ -18,15 +18,15 @@ Define a handler function, for example:
 // hello.ts
 
 import {
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
+  APIGatewayProxyEventV2,
+  APIGatewayProxyResultV2,
   Context,
 } from "https://deno.land/x/lambda/mod.ts";
 
 export async function handler(
-  event: APIGatewayProxyEvent,
+  event: APIGatewayProxyEventV2,
   context: Context,
-): Promise<APIGatewayProxyResult> {
+): Promise<APIGatewayProxyResultV2> {
   return {
     body: `Welcome to deno ${Deno.version.deno} 🦕`,
     headers: { "content-type": "text/html;charset=utf8" },
@@ -63,13 +63,13 @@ https://deno.land/x/lambda/mod.ts and defined in
 https://deno.land/x/lambda/types.d.ts.
 
 It's good practice to reference the trigger's type in the handler, for example:
-APIGateway use `APIGatewayProxyEvent` and `APIGatewayProxyResult`, SQS use
+APIGateway use `APIGatewayProxyEventV2` and `APIGatewayProxyResultV2`, SQS use
 `SQSEvent`, etc.
 
 _Note: Despite there being multiple interfaces with the `Context` suffix, the
 second handler argument must be `Context`. These other interfaces can be
 accessed from the first argument (the event), for example `event.requestContext`
-of an `APIGatewayProxyEvent`._
+of an `APIGatewayProxyEventV2`._
 
 ## How to deploy
 
@@ -109,17 +109,17 @@ suspended between invocations and will sometimes be shutdown afterwards.
 
 ```ts
 export async function badHandler(
-  event: APIGatewayProxyEvent,
+  event: APIGatewayProxyEventV2,
   context: Context,
-): Promise<APIGatewayProxyResult> {
+): Promise<APIGatewayProxyResultV2> {
   somethingAsync(); // not awaited so may not complete
   return { statusCode: 200, body: "" };
 }
 
 export async function goodHandler(
-  event: APIGatewayProxyEvent,
+  event: APIGatewayProxyEventV2,
   context: Context,
-): Promise<APIGatewayProxyResult> {
+): Promise<APIGatewayProxyResultV2> {
   await somethingAsync();
   return { statusCode: 200, body: "" };
 }

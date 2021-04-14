@@ -1,5 +1,5 @@
 import {
-  APIGatewayProxyEvent,
+  APIGatewayProxyEventV2,
   Context,
 } from "https://deno.land/x/lambda/mod.ts";
 
@@ -18,7 +18,7 @@ function error(message: string, statusCode = 500) {
   return ok({ message: message }, statusCode);
 }
 
-export async function get(event: APIGatewayProxyEvent, context: Context) {
+export async function get(event: APIGatewayProxyEventV2, context: Context) {
   const id = event.pathParameters && event.pathParameters.id;
   if (id === null) {
     return error(`id not found in pathParameters`);
@@ -43,7 +43,7 @@ export async function get(event: APIGatewayProxyEvent, context: Context) {
   }
 }
 
-export async function list(event: APIGatewayProxyEvent, context: Context) {
+export async function list(event: APIGatewayProxyEventV2, context: Context) {
   var params = {
     TableName,
     ProjectionExpression: "id, fullname, email",
@@ -70,7 +70,7 @@ export async function list(event: APIGatewayProxyEvent, context: Context) {
   }
 }
 
-export async function submit(event: APIGatewayProxyEvent, context: Context) {
+export async function submit(event: APIGatewayProxyEventV2, context: Context) {
   let requestBody;
   try {
     requestBody = JSON.parse(event.body!);
