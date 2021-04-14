@@ -1,6 +1,6 @@
-import { assert } from "https://deno.land/std@0.80.0/testing/asserts.ts";
+import { assert } from "https://deno.land/std@0.93.0/testing/asserts.ts";
 
-const unpkg = "https://unpkg.com/@types/aws-lambda@8.10.63/";
+const unpkg = "https://unpkg.com/@types/aws-lambda@8.10.75/";
 
 // Get the index file
 const indexReq = await fetch(`${unpkg}index.d.ts`);
@@ -50,6 +50,8 @@ typesFile = typesFile.replaceAll(
   /\n\n\/\/(.*?)\n\n/g,
   "\n\n",
 );
+
+typesFile = "// deno-lint-ignore-file\n" + typesFile;
 
 Deno.writeTextFileSync("./types.d.ts", typesFile);
 

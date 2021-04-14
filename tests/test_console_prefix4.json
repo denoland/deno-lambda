@@ -1,5 +1,8 @@
 {
-  "env": { "_HANDLER": "handlers.log", "DENO_PREFIX": "[${level}]\t${new Date().toISOString()}\t${requestId}\r" },
+  "env": {
+    "_HANDLER": "handlers.log",
+    "DENO_PREFIX": "[${level}]\t${new Date().toISOString()}\t${requestId}\r"
+  },
   "events": [{ "hello": "deno" }, { "hello": "again" }],
   "expected": [
     {

@@ -1,15 +1,15 @@
 import type {
-  APIGatewayProxyEvent,
+  APIGatewayProxyEventV2,
   Context,
 } from "https://deno.land/x/lambda/mod.ts";
 
-function decorate(target: unknown) {}
+function decorate(_target: unknown) {}
 
 @decorate
-class Foo {
+class _Foo {
 }
 
-export function handler(event: APIGatewayProxyEvent, context: Context) {
+export function handler(_event: APIGatewayProxyEventV2, _context: Context) {
   return {
     statusCode: 200,
     body: `decorated 🦕`,

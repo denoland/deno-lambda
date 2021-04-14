@@ -1,18 +1,18 @@
 # deno on AWS Lambda
 
-`mod.ts` exports types, from `types.d.ts`, for writing handler functions:
+`mod.ts` exports types for writing handler functions:
 
 ```ts
 import {
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
+  APIGatewayProxyEventV2,
+  APIGatewayProxyResultV2,
   Context,
 } from "https://deno.land/x/lambda/mod.ts";
 
 export async function handler(
-  event: APIGatewayProxyEvent,
+  event: APIGatewayProxyEventV2,
   context: Context,
-): Promise<APIGatewayProxyResult> {
+): Promise<APIGatewayProxyResultV2> {
   return {
     body: `Welcome to deno ${Deno.version.deno} 🦕`,
     headers: { "content-type": "text/html;charset=utf8" },
