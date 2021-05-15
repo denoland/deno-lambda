@@ -1,6 +1,6 @@
 import { assert } from "https://deno.land/std@0.93.0/testing/asserts.ts";
 
-const unpkg = "https://unpkg.com/@types/aws-lambda@8.10.75/";
+const unpkg = "https://unpkg.com/@types/aws-lambda@8.10.76/";
 
 // Get the index file
 const indexReq = await fetch(`${unpkg}index.d.ts`);
@@ -53,7 +53,7 @@ typesFile = typesFile.replaceAll(
 
 typesFile = "// deno-lint-ignore-file\n" + typesFile;
 
-Deno.writeTextFileSync("./types.d.ts", typesFile);
+Deno.writeTextFileSync("./runtime/types.d.ts", typesFile);
 
 // This file generates mod.ts from types.d.ts
 const types = [...typesFile.matchAll(/export (type|interface) (.*?)\s/g)].map((
@@ -62,8 +62,8 @@ const types = [...typesFile.matchAll(/export (type|interface) (.*?)\s/g)].map((
   .sort();
 
 Deno.writeTextFileSync(
-  "./mod.ts",
+  "./runtime/mod.ts",
   `export type {\n  ${types.join(",\n  ")}\n } from \"./types.d.ts\";\n`,
 );
 
-await Deno.run({ cmd: ["deno", "fmt", "mod.ts", "types.d.ts"] }).status();
+await Deno.run({ cmd: ["deno", "fmt", "runtime/mod.ts", "runtime/types.d.ts"] }).status();

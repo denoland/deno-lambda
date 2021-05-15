@@ -1138,11 +1138,12 @@ export interface CodeBuildStateEventDetail {
   };
 }
 
-export interface CodeBuildCloudWatchStateEvent extends
-  EventBridgeEvent<
-    "CodeBuild Build State Change",
-    CodeBuildStateEventDetail
-  > {
+export interface CodeBuildCloudWatchStateEvent
+  extends
+    EventBridgeEvent<
+      "CodeBuild Build State Change",
+      CodeBuildStateEventDetail
+    > {
   source: "aws.codebuild";
 }
 
@@ -1453,11 +1454,7 @@ export interface ConnectContactFlowEvent {
       SystemEndpoint: ConnectContactFlowEndpoint | null;
       MediaStreams: {
         Customer: {
-          Audio: {
-            StartFragmentNumber?: string;
-            StartTimestamp?: string;
-            StreamARN?: string;
-          };
+          Audio: CustomerAudio;
         };
       };
     };
@@ -1487,6 +1484,23 @@ export interface ConnectContactFlowQueue {
 
 export interface ConnectContactFlowResult {
   [key: string]: string | null;
+}
+
+export type CustomerAudio =
+  | null // If Media Streaming has never been started.
+  | StartedCustomerAudio // If Media Streaming has been started, but not stopped.
+  | StartedCustomerAudio & StoppedCustomerAudio // If Media Streaming has been started and stopped.
+;
+
+export interface StartedCustomerAudio {
+  StartFragmentNumber: string;
+  StartTimestamp: string;
+  StreamARN: string;
+}
+
+export interface StoppedCustomerAudio {
+  StopFragmentNumber: string;
+  StopTimestamp: string;
 }
 
 export type DynamoDBStreamHandler = Handler<DynamoDBStreamEvent, void>;
