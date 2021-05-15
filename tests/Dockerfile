@@ -9,15 +9,15 @@ ENV DENO_VERSION=1.10.2
 # In order for `deno` to be made available in the PATH it must be inserted into ./bin/
 
 RUN yum makecache \
-    && yum install unzip zip -y \
-    && curl -fsSL https://github.com/denoland/deno/releases/download/v${DENO_VERSION}/deno-x86_64-unknown-linux-gnu.zip \
-    --output deno.zip \
-    && unzip deno.zip \
-    && rm deno.zip \
-    && chmod 755 deno \
-    && mv deno /bin/_deno \
-    && yum clean all \
-    && rm -rf /var/cache/yum
+ && yum install unzip zip -y \
+ && curl -fsSL https://github.com/denoland/deno/releases/download/v${DENO_VERSION}/deno-x86_64-unknown-linux-gnu.zip \
+         --output deno.zip \
+ && unzip deno.zip \
+ && rm deno.zip \
+ && chmod 755 deno \
+ && mv deno /bin/_deno \
+ && yum clean all \
+ && rm -rf /var/cache/yum
 
 ENV AWS_LAMBDA_RUNTIME_API=127.0.0.1:1993 \
     AWS_LAMBDA_FUNCTION_NAME=test \
@@ -33,27 +33,31 @@ ENV AWS_LAMBDA_RUNTIME_API=127.0.0.1:1993 \
 # /var/task has function code
 # /opt has the layer code
 RUN mkdir -p /src/runtime/bin /src/tests/bin /var/task /opt \
-    && cp /bin/_deno /src/runtime/bin/deno \
-    && cp /bin/_deno /src/tests/bin/deno
+ && cp /bin/_deno /src/runtime/bin/deno \
+ && cp /bin/_deno /src/tests/bin/deno
 
 ADD tests/deps.ts /src/tests/deps.ts
 RUN _deno cache /src/tests/deps.ts
 
-ADD hello.ts /src/runtime/hello.ts
-ADD hello.ts /src/tests/hello.ts
+ADD tests/hello.ts /src/runtime/hello.ts
+ADD tests/hello.ts /src/tests/hello.ts
 ADD tests/lock.ts /src/runtime/lock.ts
 ADD tests/lock.ts /src/tests/lock.ts
 ADD runtime /src/runtime
 
+# assert that the types are valid.
+# FIXME this shouldn't be required (tests should import from runtime?)
+RUN _deno run /src/runtime/mod.ts
+
 WORKDIR /src/runtime
 RUN sh artifacts \
-    && cp hello.bundle.js /src/tests/hello.bundle.js \
-    && cp bootstrap /src/tests/bootstrap
+ && cp hello.bundle.js /src/tests/hello.bundle.js \
+ && cp bootstrap /src/tests/bootstrap
 
 WORKDIR /src/tests
 # Note: We have to run since fetch doesn't write!
 RUN _deno cache --lock-write --lock=lock.json lock.ts \
-    && echo {} > badlock.json
+ && echo {} > badlock.json
 
 ADD tests/server.ts server.ts
 RUN _deno cache server.ts

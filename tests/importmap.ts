@@ -1,7 +1,7 @@
 import type {
   APIGatewayProxyEventV2,
   Context,
-} from "https://deno.land/x/lambda/mod.ts";
+} from "../runtime/mod.ts";
 import { delay } from "std/async/delay.ts";
 
 export async function handler(
