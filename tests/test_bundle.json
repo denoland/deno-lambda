@@ -1,5 +1,8 @@
 {
-  "env": { "_HANDLER": "hello.handler", "HANDLER_EXT": "bundle.js" },
+  "env": {
+    "_HANDLER": "hello.handler",
+    "HANDLER_EXT": "bundle.js"
+  },
   "events": [{ "hello": "deno" }, { "hello": "again" }],
   "expected": [
     {
