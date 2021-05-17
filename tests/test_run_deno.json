@@ -1,16 +1,27 @@
 {
-  "env": { "_HANDLER": "handlers.runDeno" },
-  "events": [{ "hello": "deno" }, { "hello": "again" }],
+  "env": {
+    "_HANDLER": "handlers.runDeno"
+  },
+  "events": [
+    {
+      "hello": "deno"
+    },
+    {
+      "hello": "again"
+    }
+  ],
   "expected": [
     {
       "status": "ok",
-      "content": "{\"out\":\"1.9.0\"}"
+      "content": "{\"out\":\"1.10.2\"}"
     },
     {
       "status": "ok",
-      "content": "{\"out\":\"1.9.0\"}"
+      "content": "{\"out\":\"1.10.2\"}"
     }
   ],
-  "files": ["handlers.ts"],
+  "files": [
+    "handlers.ts"
+  ],
   "layer": "deno-lambda-layer.zip"
 }

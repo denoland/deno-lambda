@@ -1,15 +1,28 @@
 {
-  "env": { "_HANDLER": "hello.handler" },
-  "events": [{ "hello": "deno" }, { "hello": "again" }],
+  "env": {
+    "_HANDLER": "hello.handler"
+  },
+  "events": [
+    {
+      "hello": "deno"
+    },
+    {
+      "hello": "again"
+    }
+  ],
   "expected": [
     {
       "status": "ok",
-      "content": "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html;charset=utf8\"},\"body\":\"Welcome to deno 1.9.0 🦕\"}"
+      "content": "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html;charset=utf8\"},\"body\":\"Welcome to deno 1.10.2 🦕\"}"
     },
     {
       "status": "ok",
-      "content": "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html;charset=utf8\"},\"body\":\"Welcome to deno 1.9.0 🦕\"}"
+      "content": "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html;charset=utf8\"},\"body\":\"Welcome to deno 1.10.2 🦕\"}"
     }
   ],
-  "files": ["hello.ts", "bootstrap", "bin/deno"]
+  "files": [
+    "hello.ts",
+    "bootstrap",
+    "bin/deno"
+  ]
 }
