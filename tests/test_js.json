@@ -3,14 +3,7 @@
     "_HANDLER": "hello.handler",
     "HANDLER_EXT": "js"
   },
-  "events": [
-    {
-      "hello": "deno"
-    },
-    {
-      "hello": "again"
-    }
-  ],
+  "events": [{ "hello": "deno" }, { "hello": "again" }],
   "expected": [
     {
       "status": "ok",
@@ -21,8 +14,6 @@
       "content": "{\"statusCode\":200,\"body\":\"Welcome to deno 1.10.2 🦕\"}"
     }
   ],
-  "files": [
-    "hello.js"
-  ],
+  "files": ["hello.js"],
   "layer": "deno-lambda-layer.zip"
 }

@@ -1,15 +1,6 @@
 {
-  "env": {
-    "_HANDLER": "hello.handler"
-  },
-  "events": [
-    {
-      "hello": "deno"
-    },
-    {
-      "hello": "again"
-    }
-  ],
+  "env": { "_HANDLER": "hello.handler" },
+  "events": [{ "hello": "deno" }, { "hello": "again" }],
   "expected": [
     {
       "status": "ok",
