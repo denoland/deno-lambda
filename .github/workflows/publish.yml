@@ -32,7 +32,7 @@ jobs:
           # FIXME: Installation of sam is fiddly.
           export DEBIAN_FRONTEND=noninteractive
           sudo apt -qq update
-          sudo apt -qq install -y awscli python3-setuptools
+          sudo apt -qq install -y awscli python3-setuptools python3-testresources
           pip3 -q install -U --force pip
           export PATH=/home/runner/.local/bin:$PATH
           export SAM_CLI_TELEMETRY=1
