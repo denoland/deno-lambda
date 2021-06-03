@@ -1,28 +1,40 @@
 import { assert } from "https://deno.land/std@0.93.0/testing/asserts.ts";
 
-const unpkg = "https://unpkg.com/@types/aws-lambda@8.10.76/";
+const UNPKG = "https://unpkg.com/@types/aws-lambda@8.10.76/";
 
 // Get the index file
-const indexReq = await fetch(`${unpkg}index.d.ts`);
+const indexReq = await fetch(`${UNPKG}index.d.ts`);
 assert(indexReq.ok);
 const indexFile = await indexReq.text();
 
-// Extract all imported files from this file
-const imports = [...indexFile.matchAll(/\nexport \* from \"(.*)\";/g)].map((
-  match,
-) => match[1].replace(/^\.\//, unpkg).replace(/\/$/, "/index") + ".d.ts");
+async function extractImports(typesFile: string, baseUrl: string) {
+  // Extract all imported files from this file
+  const imports = [...typesFile.matchAll(/\nexport \* from [\"\'](.*)[\"\'];/g)].map((
+    match,
+  ) => [match, match[1].replace(/^\.\//, baseUrl).replace(/\/$/, "/index") + ".d.ts"]);
 
-let typesFile = (indexFile.split("3.0")[0] + "3.0\n\n");
+  const files = await Promise.all(imports.map(async (t) => {
+    const [match, url] = t;
+    console.log(url.toString())
+    const req = await fetch(url.toString());
+    assert(req.ok, "failed to fetch " + url);
 
-const files = await Promise.all(imports.map(async (url) => {
-  const req = await fetch(url);
-  assert(req.ok, "failed to fetch " + url);
-  return req.text();
-}));
+    const text = await req.text();
 
-for (const file of files) {
-  typesFile += file;
+    if (text.match(/\nexport \* from/g)) {
+      await extractImports(text, new URL(match[1], baseUrl).href)
+    }
+    return [match, text];
+  }));
+
+  for (const t of files) {
+    typesFile += t[1];
+  }
+  return typesFile;
 }
+
+let typesFile = await extractImports(indexFile, UNPKG);
+console.log([...typesFile.matchAll(/\nexport \* from .*/g)])
 
 typesFile = typesFile.replaceAll(
   /\nimport {(.|\n)*?} from ["'](.*?)["'];?/g,
@@ -31,6 +43,8 @@ typesFile = typesFile.replaceAll(
 
 typesFile = typesFile.replace("    callback: Callback<TResult>,\n", "");
 typesFile = typesFile.replace("void | Promise<TResult>", "Promise<TResult>");
+
+typesFile = typesFile.replace(/export \* from ["']\..*['"];/g, "");
 
 typesFile = typesFile.replace(
   /\n\/\*\*\n \* NodeJS-style(.|\n)*?\nexport type Callback(.|\n)*?;/,

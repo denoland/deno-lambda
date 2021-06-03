@@ -42,6 +42,12 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 3.0
 
+// TODO:
+
+// ElastiCache section just describes using lambdas in an ElastiCache context (VPC issues, etc.)
+// EC2 events are delivered using cloudwatch events...
+
+export as namespace AWSLambda;
 /**
  * The interface that AWS Lambda will invoke your handler with.
  * There are more specialized types for many cases where AWS services
@@ -2088,4 +2094,24 @@ export interface SQSMessageAttribute {
 
 export interface SQSMessageAttributes {
   [name: string]: SQSMessageAttribute;
+}
+
+export type MSKHandler = Handler<MSKEvent, void>;
+
+export interface MSKRecord {
+  topic: string;
+  partition: number;
+  offset: number;
+  timestamp: number;
+  timestampType: "CREATE_TIME" | "LOG_APPEND_TIME";
+  key: string;
+  value: string;
+}
+
+export interface MSKEvent {
+  eventSource: "aws:kafka";
+  eventSourceArn: string;
+  records: {
+    [topic: string]: MSKRecord[];
+  };
 }
