@@ -27,7 +27,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           DENO_LAMBDA_BUCKET: ${{ secrets.DENO_LAMBDA_BUCKET }}
         run: |
-          export DENO_LAMBDA_VERSION=$(echo $GITHUB_REF | tr / '\n' | tail -n 1)
+          export DENO_LAMBDA_VERSION=1.10.3
           echo tag: $DENO_LAMBDA_VERSION
           # FIXME: Installation of sam is fiddly.
           export DEBIAN_FRONTEND=noninteractive
