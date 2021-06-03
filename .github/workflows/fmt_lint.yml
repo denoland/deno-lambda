@@ -7,7 +7,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: denoland/setup-deno@main
         with:
-          deno-version: 1.10.2
+          deno-version: 1.10.3
       - name: Run fmt
         run: |
           deno fmt --check
@@ -17,3 +17,6 @@ jobs:
           deno lint --unstable example-aws-cdk --ignore=example-aws-cdk/node_modules
           deno lint --unstable example-sam --ignore=example-sam/.aws-sam
           deno lint --unstable example-serverless --ignore=example-serverless/node_modules,example-serverless/.deno_dir
+      - name: Sanity check types
+        run: |
+          deno run runtime/mod.ts

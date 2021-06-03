@@ -42,6 +42,12 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 3.0
 
+// TODO:
+
+// ElastiCache section just describes using lambdas in an ElastiCache context (VPC issues, etc.)
+// EC2 events are delivered using cloudwatch events...
+
+export as namespace AWSLambda;
 /**
  * The interface that AWS Lambda will invoke your handler with.
  * There are more specialized types for many cases where AWS services
@@ -1138,11 +1144,12 @@ export interface CodeBuildStateEventDetail {
   };
 }
 
-export interface CodeBuildCloudWatchStateEvent extends
-  EventBridgeEvent<
-    "CodeBuild Build State Change",
-    CodeBuildStateEventDetail
-  > {
+export interface CodeBuildCloudWatchStateEvent
+  extends
+    EventBridgeEvent<
+      "CodeBuild Build State Change",
+      CodeBuildStateEventDetail
+    > {
   source: "aws.codebuild";
 }
 
@@ -1431,18 +1438,6 @@ export type CognitoUserPoolTriggerHandler = Handler<
   CognitoUserPoolTriggerEvent
 >;
 
-export * from "./create-auth-challenge";
-export * from "./custom-message";
-export * from "./custom-email-sender";
-export * from "./define-auth-challenge";
-export * from "./post-authentication";
-export * from "./post-confirmation";
-export * from "./pre-authentication";
-export * from "./pre-signup";
-export * from "./pre-token-generation";
-export * from "./user-migration";
-export * from "./verify-auth-challenge-response";
-
 export type ConnectContactFlowHandler = Handler<
   ConnectContactFlowEvent,
   ConnectContactFlowResult
@@ -1465,11 +1460,7 @@ export interface ConnectContactFlowEvent {
       SystemEndpoint: ConnectContactFlowEndpoint | null;
       MediaStreams: {
         Customer: {
-          Audio: {
-            StartFragmentNumber?: string;
-            StartTimestamp?: string;
-            StreamARN?: string;
-          };
+          Audio: CustomerAudio;
         };
       };
     };
@@ -1499,6 +1490,23 @@ export interface ConnectContactFlowQueue {
 
 export interface ConnectContactFlowResult {
   [key: string]: string | null;
+}
+
+export type CustomerAudio =
+  | null // If Media Streaming has never been started.
+  | StartedCustomerAudio // If Media Streaming has been started, but not stopped.
+  | StartedCustomerAudio & StoppedCustomerAudio // If Media Streaming has been started and stopped.
+;
+
+export interface StartedCustomerAudio {
+  StartFragmentNumber: string;
+  StartTimestamp: string;
+  StreamARN: string;
+}
+
+export interface StoppedCustomerAudio {
+  StopFragmentNumber: string;
+  StopTimestamp: string;
 }
 
 export type DynamoDBStreamHandler = Handler<DynamoDBStreamEvent, void>;
@@ -2086,4 +2094,24 @@ export interface SQSMessageAttribute {
 
 export interface SQSMessageAttributes {
   [name: string]: SQSMessageAttribute;
+}
+
+export type MSKHandler = Handler<MSKEvent, void>;
+
+export interface MSKRecord {
+  topic: string;
+  partition: number;
+  offset: number;
+  timestamp: number;
+  timestampType: "CREATE_TIME" | "LOG_APPEND_TIME";
+  key: string;
+  value: string;
+}
+
+export interface MSKEvent {
+  eventSource: "aws:kafka";
+  eventSourceArn: string;
+  records: {
+    [topic: string]: MSKRecord[];
+  };
 }
