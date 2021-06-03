@@ -9,20 +9,24 @@ const indexFile = await indexReq.text();
 
 async function extractImports(typesFile: string, baseUrl: string) {
   // Extract all imported files from this file
-  const imports = [...typesFile.matchAll(/\nexport \* from [\"\'](.*)[\"\'];/g)].map((
-    match,
-  ) => [match, match[1].replace(/^\.\//, baseUrl).replace(/\/$/, "/index") + ".d.ts"]);
+  const imports = [...typesFile.matchAll(/\nexport \* from [\"\'](.*)[\"\'];/g)]
+    .map((
+      match,
+    ) => [
+      match,
+      match[1].replace(/^\.\//, baseUrl).replace(/\/$/, "/index") + ".d.ts",
+    ]);
 
   const files = await Promise.all(imports.map(async (t) => {
     const [match, url] = t;
-    console.log(url.toString())
+    console.log(url.toString());
     const req = await fetch(url.toString());
     assert(req.ok, "failed to fetch " + url);
 
     const text = await req.text();
 
     if (text.match(/\nexport \* from/g)) {
-      await extractImports(text, new URL(match[1], baseUrl).href)
+      await extractImports(text, new URL(match[1], baseUrl).href);
     }
     return [match, text];
   }));
@@ -34,7 +38,7 @@ async function extractImports(typesFile: string, baseUrl: string) {
 }
 
 let typesFile = await extractImports(indexFile, UNPKG);
-console.log([...typesFile.matchAll(/\nexport \* from .*/g)])
+console.log([...typesFile.matchAll(/\nexport \* from .*/g)]);
 
 typesFile = typesFile.replaceAll(
   /\nimport {(.|\n)*?} from ["'](.*?)["'];?/g,
@@ -80,4 +84,5 @@ Deno.writeTextFileSync(
   `export type {\n  ${types.join(",\n  ")}\n } from \"./types.d.ts\";\n`,
 );
 
-await Deno.run({ cmd: ["deno", "fmt", "runtime/mod.ts", "runtime/types.d.ts"] }).status();
+await Deno.run({ cmd: ["deno", "fmt", "runtime/mod.ts", "runtime/types.d.ts"] })
+  .status();

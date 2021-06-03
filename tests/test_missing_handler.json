@@ -4,7 +4,7 @@
   "expected": [
     {
       "status": "error",
-      "content": "{\"errorMessage\" : \"deno exited\", \"errorType\" : \"InitException\"}"
+      "content": "{\"errorMessage\" : \"unable to compile handlers.ts\", \"errorType\" : \"InitException\"}"
     }
   ],
   "files": ["handlers.ts"],

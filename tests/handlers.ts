@@ -1,7 +1,4 @@
-import type {
-  APIGatewayProxyEventV2,
-  Context,
-} from "../runtime/mod.ts";
+import type { APIGatewayProxyEventV2, Context } from "../runtime/mod.ts";
 
 class MyError extends Error {
   constructor(message: string) {
