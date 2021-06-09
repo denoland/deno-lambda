@@ -4,11 +4,11 @@
   "expected": [
     {
       "status": "ok",
-      "content": "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html;charset=utf8\"},\"body\":\"Welcome to deno 1.10.3 🦕\"}"
+      "content": "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html;charset=utf8\"},\"body\":\"Welcome to deno 1.11.0 🦕\"}"
     },
     {
       "status": "ok",
-      "content": "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html;charset=utf8\"},\"body\":\"Welcome to deno 1.10.3 🦕\"}"
+      "content": "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html;charset=utf8\"},\"body\":\"Welcome to deno 1.11.0 🦕\"}"
     }
   ],
   "files": "deno-lambda-example.zip",
