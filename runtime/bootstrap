@@ -49,6 +49,12 @@ if [[ ! -z "$DENO_IMPORTMAP" ]]; then
   DENO_CACHE_FLAGS="$DENO_CACHE_FLAGS --importmap=$DENO_IMPORTMAP"
 fi
 
+DENO_LOCATION=${DENO_LOCATION-}
+if [[ ! -z "$DENO_LOCATION" ]]; then
+  DENO_FLAGS="$DENO_FLAGS --location=$DENO_LOCATION"
+  DENO_CACHE_FLAGS="$DENO_CACHE_FLAGS --location=$DENO_LOCATION"
+fi
+
 DENO_PREFIX=${DENO_PREFIX-"\${level}\tRequestId: \${requestId}\r"}
 
 # whether to use ts, js, bundle.js, etc.
