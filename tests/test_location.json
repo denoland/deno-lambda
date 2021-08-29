@@ -1,0 +1,15 @@
+{
+  "env": {
+    "_HANDLER": "location.handler",
+    "DENO_LOCATION": "https://deno.land/x/lambda"
+  },
+  "events": [{ "hello": "deno" }],
+  "expected": [
+    {
+      "status": "ok",
+      "content": "\"https://deno.land/x/lambda\""
+    }
+  ],
+  "files": ["location.ts"],
+  "layer": "deno-lambda-layer.zip"
+}
