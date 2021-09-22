@@ -93,7 +93,7 @@ export async function serveEvents(testJson: TestJson) {
     }
   }
   /// const out = await readAll(p.stdout);
-  p.kill(9);
+  p.kill("SIGKILL");
   p.stdout!.close();
   p.stderr!.close();
   s.close();

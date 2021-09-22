@@ -44,7 +44,7 @@ export async function get(event: APIGatewayProxyEventV2, _context: Context) {
 }
 
 export async function list(_event: APIGatewayProxyEventV2, _context: Context) {
-  var params = {
+  const params = {
     TableName,
     ProjectionExpression: "id, fullname, email",
   };
