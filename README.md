@@ -53,6 +53,7 @@ The following environment variables can be set to change deno-lambda's behavior:
   include `requestId` and `level` variables only (default
   `${level}\tRequestId: ${requestId}\r`).
 - `DENO_UNSTABLE` so deno runs with the `--unstable`.
+- `DENO_FLAGS_OVERRIDE` so deno only runs with a specific list of permissions. **Deno requires**: `--allow-env` and `--allow-net`
 
 Further configuration TBD.
 
