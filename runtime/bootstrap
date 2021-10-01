@@ -24,7 +24,7 @@ DENO_CACHE_FLAGS=""
 
 DENO_FLAGS_OVERRIDE=${DENO_FLAGS_OVERRIDE-}
 if [[ ! -z "$DENO_FLAGS_OVERRIDE" ]]; then
-  DENO_FLAGS="$DENO_FLAGS $DENO_FLAGS_OVERRIDE"
+  DENO_FLAGS="$DENO_FLAGS_OVERRIDE"
 fi
 
 # For unstable flags we must pass --unstable
