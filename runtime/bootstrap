@@ -22,6 +22,11 @@ fi
 DENO_FLAGS="-A --no-check"
 DENO_CACHE_FLAGS=""
 
+DENO_FLAGS_OVERRIDE=${DENO_FLAGS_OVERRIDE-}
+if [[ ! -z "$DENO_FLAGS_OVERRIDE" ]]; then
+  DENO_FLAGS="$DENO_FLAGS $DENO_FLAGS_OVERRIDE"
+fi
+
 # For unstable flags we must pass --unstable
 DENO_UNSTABLE=${DENO_UNSTABLE-}
 if [[ ! -z "$DENO_UNSTABLE${DENO_IMPORTMAP-}" ]]; then
