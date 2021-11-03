@@ -49,8 +49,8 @@ The following environment variables can be set to change deno-lambda's behavior:
 - `DENO_IMPORTMAP` so deno runs with `--importmap=$DENO_IMPORTMAP`.
 - `DENO_LOCATION` so deno runs with `--location=$DENO_LOCATION`.
 - `DENO_LOCK` so deno runs with `--lock=$DENO_LOCK`.
-- `DENO_PERMISSIONS` so deno only runs with a specific list of permissions.
-  Deno lambda requires at least `--allow-env` and `--allow-net`.
+- `DENO_PERMISSIONS` so deno only runs with a specific list of permissions. Deno
+  lambda requires at least `--allow-env` and `--allow-net`.
 - `DENO_PREFIX` prepends to console.log etc. a template literal, this can
   include `requestId` and `level` variables only (default
   `${level}\tRequestId: ${requestId}\r`).
