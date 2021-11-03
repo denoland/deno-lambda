@@ -19,8 +19,11 @@ fi
 
 # Potentially this could be overwritten HOWEVER several permissions are required for bootstrap.
 # Note: Do can plugins work?? (If so, it should be documented.)
-DENO_FLAGS="-A --no-check"
+DENO_FLAGS="--no-check"
 DENO_CACHE_FLAGS=""
+
+DENO_PERMISSIONS=${DENO_PERMISSIONS--A}
+DENO_FLAGS="$DENO_PERMISSIONS $DENO_FLAGS"
 
 # For unstable flags we must pass --unstable
 DENO_UNSTABLE=${DENO_UNSTABLE-}
