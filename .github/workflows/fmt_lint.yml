@@ -1,4 +1,4 @@
-name: Test
+name: Fmt and lint
 on: [push, pull_request]
 jobs:
   build:
