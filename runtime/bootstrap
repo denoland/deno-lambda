@@ -24,7 +24,7 @@ DENO_CACHE_FLAGS=""
 
 # For unstable flags we must pass --unstable
 DENO_UNSTABLE=${DENO_UNSTABLE-}
-if [[ ! -z "$DENO_UNSTABLE${DENO_IMPORTMAP-}" ]]; then
+if [[ ! -z "$DENO_UNSTABLE" ]]; then
   DENO_FLAGS="$DENO_FLAGS --unstable"
   DENO_CACHE_FLAGS="$DENO_CACHE_FLAGS --unstable"
 fi
