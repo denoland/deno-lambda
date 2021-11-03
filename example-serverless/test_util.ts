@@ -6,7 +6,7 @@ export async function test(t: Deno.TestDefinition) {
     let err;
     await setUp();
     try {
-      await t.fn();
+      await t.fn(undefined as any);
     } catch (e) {
       err = e;
     }
