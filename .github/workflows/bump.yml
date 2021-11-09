@@ -1,0 +1,56 @@
+name: version-bump
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "42 19 * * *"
+
+jobs:
+  version-bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: denoland/setup-deno@v1
+      - name: version
+        id: version
+        run: |
+          echo "::set-output name=existing::$(grep DENO_VERSION= docker/base.dockerfile | cut -d= -f2)"
+          echo "::set-output name=latest::$(deno eval 'console.log(Deno.version.deno)')"
+      - name: Update dependencies
+        run: |
+          echo existing=${{ steps.version.outputs.existing }}
+          echo latest=${{ steps.version.outputs.latest }}
+          sed -i "s/${{ steps.version.outputs.existing }}/${{ steps.version.outputs.latest }}/" tests/*.json tests/Dockerfile example-aws-cdk/cdk/example-aws-cdk-stack.ts example-serverless/serverless.yml example-sam/template.yml .github/workflows/ci.yml .github/workflows/fmt_lint.yml docker/base.dockerfile
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        id: cpr
+        with:
+          commit-message: "Bump deno version to ${{ steps.version.outputs.latest }}"
+          title: "Update deno version to ${{ steps.version.outputs.latest }}"
+          body:
+          branch: version-bump
+          author: GitHub <noreply@github.com>
+          delete-branch: true
+      - name: Set commit status with pending
+        uses: Sibz/github-status-action@v1
+        with: 
+          authToken: ${{ secrets.GITHUB_TOKEN }}
+          context: 'Basic tests'
+          state: 'pending'
+          sha: ${{ steps.cpr.outputs.pull-request-head-sha }}
+      - name: Basic tests
+        id: test
+        continue-on-error: true
+        working-directory: ./tests
+        run: |
+          ! grep -r ${{ steps.version.outputs.latest }} --exclude-dir=node_modules --exclude=yarn.lock
+          docker build -f Dockerfile -t test-runner ..
+          docker run test-runner
+      - name: Set commit status with outcome
+        uses: Sibz/github-status-action@v1
+        with: 
+          authToken: ${{ secrets.GITHUB_TOKEN }}
+          context: 'Basic tests'
+          description: 'close&reopen PR triggers all CI actions'
+          state: ${{ steps.test.outcome }}
+          sha: ${{ steps.cpr.outputs.pull-request-head-sha }}
