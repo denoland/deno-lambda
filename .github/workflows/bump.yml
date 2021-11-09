@@ -43,7 +43,7 @@ jobs:
         continue-on-error: true
         working-directory: ./tests
         run: |
-          ! grep -r ${{ steps.version.outputs.latest }} --exclude-dir=node_modules --exclude=yarn.lock
+          ! grep -r ${{ steps.version.outputs.existing }} --exclude-dir=node_modules --exclude=yarn.lock
           docker build -f Dockerfile -t test-runner ..
           docker run test-runner
       - name: Set commit status with outcome
