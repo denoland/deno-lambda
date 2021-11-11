@@ -38,37 +38,40 @@ const statusOK = enc.encode('{"status":"OK"}\n');
 
 export async function serveEvents(testJson: TestJson) {
   // start the server prior to running bootstrap.
-  const s = serve(`0.0.0.0:${PORT}`);
+  const addr = `0.0.0.0:${PORT}`;
+  const abortController = new AbortController();
+
   const p = bootstrap(testJson);
 
   const events = testJson["events"][Symbol.iterator]();
-  const responses = [];
+  const responses: string[] = [];
   // iterate through the events until done.
   let reqId = 0;
-  for await (const req of s) {
+
+  const handler = async (req: Request) => {
     if (req.method == "POST") {
       if (req.url.endsWith("/response")) {
-        const body = dec.decode(await readAll(req.body));
+        const body = req.text();
         responses.push(JSON.stringify({ status: "ok", content: body }));
       } else if (req.url.endsWith("/init/error")) {
-        const body = dec.decode(await readAll(req.body));
+        const body = req.text();
         responses.push(JSON.stringify({ status: "error", content: body }));
-        await req.respond({ body: statusOK });
-        break;
+        return new Response(statusOK);
       } else if (
         req.url.endsWith(`/${String.fromCharCode(96 + reqId)}/error`)
       ) {
-        const body = dec.decode(await readAll(req.body));
+        const body = req.text();
         responses.push(JSON.stringify({ status: "error", content: body }));
       } else {
         throw new Error("Unreachable!");
       }
-      await req.respond({ body: statusOK });
+      return new Response(statusOK);
     } else {
       // assert endsWith /next
       const e = events.next();
       if (e.done) {
-        break;
+        // TODO signal?
+        throw new Error("BREAK!");
       } else {
         reqId++;
         const headers = new Headers({
@@ -85,18 +88,17 @@ export async function serveEvents(testJson: TestJson) {
             headers.append(k, vv);
           }
         }
-        await req.respond({
-          body: enc.encode(JSON.stringify(e.value)),
-          headers,
-        });
+        return new Response(enc.encode(JSON.stringify(e.value)), { headers });
       }
     }
   }
+  await serve(handler, { addr, signal: abortController.signal } );
   /// const out = await readAll(p.stdout);
   p.kill("SIGKILL");
   p.stdout!.close();
   p.stderr!.close();
-  s.close();
+  abortController.abort();
+  // s.close();
   await p.status();
   p.close();
   return {
