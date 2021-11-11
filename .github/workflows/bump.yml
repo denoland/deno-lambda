@@ -26,12 +26,13 @@ jobs:
         id: cpr
         with:
           commit-message: "Bump deno version to ${{ steps.version.outputs.latest }}"
-          title: "Update deno version to ${{ steps.version.outputs.latest }}"
+          title: "Bump deno version to ${{ steps.version.outputs.latest }}"
           body:
           branch: version-bump
           author: GitHub <noreply@github.com>
           delete-branch: true
       - name: Set commit status with pending
+        if: ${{ steps.cpr.outputs.pull-request-number }}
         uses: Sibz/github-status-action@v1
         with: 
           authToken: ${{ secrets.GITHUB_TOKEN }}
@@ -39,6 +40,7 @@ jobs:
           state: 'pending'
           sha: ${{ steps.cpr.outputs.pull-request-head-sha }}
       - name: Basic tests
+        if: ${{ steps.cpr.outputs.pull-request-number }}
         id: test
         continue-on-error: true
         working-directory: ./tests
@@ -47,6 +49,7 @@ jobs:
           docker build -f Dockerfile -t test-runner ..
           docker run test-runner
       - name: Set commit status with outcome
+        if: ${{ steps.cpr.outputs.pull-request-number }}
         uses: Sibz/github-status-action@v1
         with: 
           authToken: ${{ secrets.GITHUB_TOKEN }}
