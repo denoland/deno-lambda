@@ -23,8 +23,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: denoland/setup-deno@main
-        with:
-          deno-version: 1.16.0
       - name: start a local dynamodb
         run: |
           mkdir dyno

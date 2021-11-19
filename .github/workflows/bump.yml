@@ -20,7 +20,7 @@ jobs:
         run: |
           echo existing=${{ steps.version.outputs.existing }}
           echo latest=${{ steps.version.outputs.latest }}
-          sed -i "s/${{ steps.version.outputs.existing }}/${{ steps.version.outputs.latest }}/" tests/*.json tests/Dockerfile example-aws-cdk/cdk/example-aws-cdk-stack.ts example-serverless/serverless.yml example-sam/template.yml .github/workflows/ci.yml .github/workflows/fmt_lint.yml docker/base.dockerfile
+          sed -i "s/${{ steps.version.outputs.existing }}/${{ steps.version.outputs.latest }}/" tests/*.json tests/Dockerfile example-aws-cdk/cdk/example-aws-cdk-stack.ts example-serverless/serverless.yml example-sam/template.yml docker/base.dockerfile
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         id: cpr
