@@ -3,7 +3,7 @@
 FROM amazonlinux:2.0.20200722.0
 # This is _close to_ the Amazon Linux 2 AMI/image used by AWS Lambda.
 
-ENV DENO_VERSION=1.16.0
+ENV DENO_VERSION=1.17.1
 
 # Note: We make the deno binary private (via _) so that it's not available in the PATH.
 # In order for `deno` to be made available in the PATH it must be inserted into ./bin/
@@ -44,6 +44,7 @@ ADD tests/hello.ts /src/tests/hello.ts
 ADD tests/lock.ts /src/runtime/lock.ts
 ADD tests/lock.ts /src/tests/lock.ts
 ADD runtime /src/runtime
+ADD runtime /var/runtime
 
 # assert that the types are valid.
 # FIXME this shouldn't be required (tests should import from runtime?)
