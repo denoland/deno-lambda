@@ -44,6 +44,7 @@ ADD tests/hello.ts /src/tests/hello.ts
 ADD tests/lock.ts /src/runtime/lock.ts
 ADD tests/lock.ts /src/tests/lock.ts
 ADD runtime /src/runtime
+ADD runtime /var/runtime
 
 # assert that the types are valid.
 # FIXME this shouldn't be required (tests should import from runtime?)
