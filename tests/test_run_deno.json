@@ -4,11 +4,11 @@
   "expected": [
     {
       "status": "ok",
-      "content": "{\"out\":\"1.17.3\"}"
+      "content": "{\"out\":\"1.18.0\"}"
     },
     {
       "status": "ok",
-      "content": "{\"out\":\"1.17.3\"}"
+      "content": "{\"out\":\"1.18.0\"}"
     }
   ],
   "files": ["handlers.ts"],
