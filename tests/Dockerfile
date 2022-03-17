@@ -3,7 +3,7 @@
 FROM amazonlinux:2.0.20200722.0
 # This is _close to_ the Amazon Linux 2 AMI/image used by AWS Lambda.
 
-ENV DENO_VERSION=1.19.3
+ENV DENO_VERSION=1.20.1
 
 # Note: We make the deno binary private (via _) so that it's not available in the PATH.
 # In order for `deno` to be made available in the PATH it must be inserted into ./bin/
@@ -19,7 +19,7 @@ RUN yum makecache \
  && yum clean all \
  && rm -rf /var/cache/yum
 
-ENV AWS_LAMBDA_RUNTIME_API=127.0.0.1:1993 \
+ENV AWS_LAMBDA_RUNTIME_API=127.0.0.1.20.1 \
     AWS_LAMBDA_FUNCTION_NAME=test \
     LAMBDA_TASK_ROOT=/var/task \
     AWS_LAMBDA_FUNCTION_VERSION=1 \
