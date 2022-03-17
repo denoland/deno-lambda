@@ -19,7 +19,7 @@ RUN yum makecache \
  && yum clean all \
  && rm -rf /var/cache/yum
 
-ENV AWS_LAMBDA_RUNTIME_API=127.0.0.1.20.1 \
+ENV AWS_LAMBDA_RUNTIME_API=127.0.0.1:1993 \
     AWS_LAMBDA_FUNCTION_NAME=test \
     LAMBDA_TASK_ROOT=/var/task \
     AWS_LAMBDA_FUNCTION_VERSION=1 \
