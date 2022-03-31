@@ -3,7 +3,7 @@
 FROM amazonlinux:2.0.20200722.0
 # This is _close to_ the Amazon Linux 2 AMI/image used by AWS Lambda.
 
-ENV DENO_VERSION=1.20.3
+ENV DENO_VERSION=1.20.4
 
 # Note: We make the deno binary private (via _) so that it's not available in the PATH.
 # In order for `deno` to be made available in the PATH it must be inserted into ./bin/
