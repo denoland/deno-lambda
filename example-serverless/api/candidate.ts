@@ -14,6 +14,7 @@ function ok(body: unknown, statusCode = 200) {
     body: JSON.stringify(body),
   };
 }
+
 function error(message: string, statusCode = 500) {
   return ok({ message: message }, statusCode);
 }
