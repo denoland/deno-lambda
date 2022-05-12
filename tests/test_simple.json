@@ -4,11 +4,11 @@
   "expected": [
     {
       "status": "ok",
-      "content": "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html;charset=utf8\"},\"body\":\"Welcome to deno 1.21.2 🦕\"}"
+      "content": "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html;charset=utf8\"},\"body\":\"Welcome to deno 1.21.3 🦕\"}"
     },
     {
       "status": "ok",
-      "content": "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html;charset=utf8\"},\"body\":\"Welcome to deno 1.21.2 🦕\"}"
+      "content": "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html;charset=utf8\"},\"body\":\"Welcome to deno 1.21.3 🦕\"}"
     }
   ],
   "files": ["hello.ts"],
