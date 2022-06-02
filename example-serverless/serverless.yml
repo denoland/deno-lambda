@@ -64,7 +64,7 @@ resources:
       Properties:
         Location:
           ApplicationId: arn:aws:serverlessrepo:us-east-1:390065572566:applications/deno
-          SemanticVersion: 1.22.1
+          SemanticVersion: 1.22.2
 
     candidatesTable:
       Type: AWS::DynamoDB::Table
