@@ -22,10 +22,3 @@ echo "Zipping build"
 # First zip deno deps up
 zip -X build/lambda.zip -x '.deno_dir/gen/file/*' -r .deno_dir hello.ts 1> /dev/null
 
-
-## Bundle Method
-
-# Compile the handler (and cache dependencies and compile artifacts into DENO_DIR).
-
-# # First zip deno deps up
-# (cd build && zip lambda.zip lambda.js);

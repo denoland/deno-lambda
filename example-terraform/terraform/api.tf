@@ -36,3 +36,4 @@ resource "aws_lambda_permission" "api_lambda" {
   function_name = aws_lambda_function.api.arn
   source_arn    = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
 }
+
