@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+mkdir -p build
+
+# DENO_VERSION="1.21.3"
+
+if [ ! -f build/layer.zip ]; then
+  echo "Fetching deno layer"
+  curl https://github.com/hayd/deno-lambda/releases/download/${DENO_VERSION}/deno-lambda-layer.zip \
+    --output build/layer.zip --silent -L # follow redirect
+fi

@@ -1,0 +1,36 @@
+
+#!/bin/bash
+set -e
+
+WORKSPACE=${1}
+APP_NAME="deno-lambda"
+DENO_VERSION="1.22.0"
+
+_scripts="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+_app="${_scripts}/.."
+_terraform="${_app}/terraform"
+
+# Build
+pushd "${_app}" >/dev/null
+if [ "$CI" != true ] ; then
+    ${_scripts}/lambda_bundle
+    DENO_VERSION=$DENO_VERSION ${_scripts}/layer
+fi
+popd >/dev/null
+
+# Cleanup .terraform
+pushd "${_terraform}" >/dev/null
+
+# Deploy terraform
+terraform init
+
+# If the workspace does not exist, create it.
+if ! terraform workspace select ${WORKSPACE} >/dev/null; then
+    terraform workspace new ${WORKSPACE}
+fi
+
+echo "Deploying"
+
+terraform plan
+
+popd

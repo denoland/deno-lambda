@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -e
+
+mkdir -p build
+
+rm -f build/lambda.zip
+
+## CACHE METHOD
+echo "Caching dependencies"
+
+# Compile the handler (and cache dependencies and compile artifacts into DENO_DIR).
+# DENO_DIR=.deno_dir deno cache --no-check src/lambda.ts 1> /dev/null
+DENO_DIR=.deno_dir deno cache hello.ts 1> /dev/null
+
+# This is the "remapping" step:
+cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT 1> /dev/null
+# Note: We do the inversew of this operation in bootstrap.
+
+echo "Zipping build"
+
+# First zip deno deps up
+zip -X build/lambda.zip -x '.deno_dir/gen/file/*' -r .deno_dir hello.ts 1> /dev/null
+
+
+## Bundle Method
+
+# Compile the handler (and cache dependencies and compile artifacts into DENO_DIR).
+
+# # First zip deno deps up
+# (cd build && zip lambda.zip lambda.js);

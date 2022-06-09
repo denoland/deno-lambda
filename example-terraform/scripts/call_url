@@ -1,0 +1,17 @@
+
+#!/bin/bash
+set -e
+
+
+_scripts="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+_app="${_scripts}/.."
+_terraform="${_app}/terraform"
+
+# Cleanup .terraform
+pushd "${_terraform}" >/dev/null
+
+LAMBDA_URL="$(terraform output -raw api_url)"
+
+popd  >/dev/null
+
+curl "$LAMBDA_URL"
