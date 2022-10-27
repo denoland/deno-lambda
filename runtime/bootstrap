@@ -86,7 +86,7 @@ function investigate {
   type -P deno &> /dev/null \
    || error "deno executable not found in PATH"
 
-  DENO_DIR=/tmp/deno_dir NO_COLOR=true deno eval 'Deno.version.deno' \
+  DENO_DIR=/tmp/deno_dir NO_COLOR=true DENO_NO_UPDATE_CHECK=true deno eval 'Deno.version.deno' \
    || error "bad deno executable"
 
   [ -f $LAMBDA_TASK_ROOT/$HANDLER_FILE ] \
@@ -96,11 +96,11 @@ function investigate {
     [ -f $DENO_LOCK ] \
      || error "missing lock file '$DENO_LOCK'"
     # This second check might be unecessary (in that it would be caught by the 'unable to compile')
-    DENO_DIR=/tmp/deno_dir NO_COLOR=true deno cache $DENO_CACHE_FLAGS $LAMBDA_TASK_ROOT/$HANDLER_FILE &> /tmp/lock.out \
+    DENO_DIR=/tmp/deno_dir NO_COLOR=true DENO_NO_UPDATE_CHECK=true deno cache $DENO_CACHE_FLAGS $LAMBDA_TASK_ROOT/$HANDLER_FILE &> /tmp/lock.out \
      || error "lock file error: $(cat /tmp/lock.out)"
   fi
 
-  DENO_DIR=/tmp/deno_dir NO_COLOR=true deno cache $DENO_CACHE_FLAGS $LAMBDA_TASK_ROOT/$HANDLER_FILE &> /dev/null \
+  DENO_DIR=/tmp/deno_dir NO_COLOR=true DENO_NO_UPDATE_CHECK=true deno cache $DENO_CACHE_FLAGS $LAMBDA_TASK_ROOT/$HANDLER_FILE &> /dev/null \
    || error "unable to compile $HANDLER_FILE"
 
   # e.g. the HANDLER_FILE threw an error or did not import HANDLER_NAME
@@ -244,11 +244,11 @@ cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/gen/. /tmp/deno_dir/gen &> /dev/null \
 # Note: We skip printing this warning if the filename endswith bundle.js.
 
 # FIXME remove DENO_FLAGS=DENO_FLAGS environment variable setting (used in testing only).
-DENO_DIR=/tmp/deno_dir DENO_PREFIX=$DENO_PREFIX DENO_FLAGS=$DENO_FLAGS NO_COLOR=true deno run $DENO_FLAGS /tmp/runtime.js \
+DENO_DIR=/tmp/deno_dir DENO_PREFIX=$DENO_PREFIX DENO_FLAGS=$DENO_FLAGS NO_COLOR=true DENO_NO_UPDATE_CHECK=true deno run $DENO_FLAGS /tmp/runtime.js \
  || investigate;
 
 # For debugging purposes of the bootstrap script itself it's useful to change the extension to /tmp/runtime.ts
 # and run this code instead to get more verbose and type errors during testing.
 # Note: on production you will see the verbose error message anyway in cloudwatch logs.
-# DENO_DIR=/tmp/deno_dir DENO_FLAGS=$DENO_FLAGS NO_COLOR=true deno run $DENO_FLAGS /tmp/runtime.ts &> /tmp/fail.out \
+# DENO_DIR=/tmp/deno_dir DENO_FLAGS=$DENO_FLAGS NO_COLOR=true DENO_NO_UPDATE_CHECK=true deno run $DENO_FLAGS /tmp/runtime.ts &> /tmp/fail.out \
 #  || error "error: $(cat /tmp/fail.out)"
