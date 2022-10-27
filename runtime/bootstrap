@@ -17,6 +17,8 @@ if [[ -z "$DENO_DIR" ]]; then
   DENO_DIR=.deno_dir
 fi
 
+DENO_NO_UPDATE_CHECK=1
+
 # Potentially this could be overwritten HOWEVER several permissions are required for bootstrap.
 # Note: Do can plugins work?? (If so, it should be documented.)
 DENO_FLAGS="--no-check"
