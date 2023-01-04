@@ -237,7 +237,7 @@ cp -R /opt/.deno_dir/gen/. /tmp/deno_dir/gen &> /dev/null \
 # Then we overwrite with from the DENO_DIR in the function code.
 cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/gen/. /tmp/deno_dir/gen &> /dev/null \
  && cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/deps/. /tmp/deno_dir/deps &> /dev/null \
- && cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/gen/. /tmp/deno_dir/gen &> /dev/null \
+ && cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/npm/. /tmp/deno_dir/npm &> /dev/null \
  && cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/LAMBDA_TASK_ROOT/. /tmp/deno_dir/gen/file$LAMBDA_TASK_ROOT &> /dev/null \
  || expr match "$HANDLER_FILE" ".*bundle.js" &> /dev/null \
  || echo "warn: unable to import '$DENO_DIR/' as DENO_DIR"
