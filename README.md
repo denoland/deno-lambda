@@ -92,7 +92,7 @@ and either reference the outputted `LayerArn` as a layer in your function.
 - Zipped source example,
   [`deno-lambda-example.zip`](https://github.com/hayd/deno-lambda/releases/),
   see
-  [bundling-code](https://github.com/hayd/deno-lambda/blob/master/README.md#bundling-code)
+  [bundling-code](#bundling-code)
   section.
 
 _See
@@ -100,7 +100,7 @@ _See
 for a walkthrough of how to bundle yourself._
 
 See the
-[deno_dir-remapping](https://github.com/hayd/deno-lambda/blob/master/README.md#deno_dir-remapping)
+[deno_dir-remapping](#deno_dir-remapping)
 section for how to include the correct DENO_DIR files to avoid any runtime
 compilation.
 
