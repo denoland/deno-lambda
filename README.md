@@ -91,18 +91,14 @@ and either reference the outputted `LayerArn` as a layer in your function.
 - [Docker container example](https://github.com/hayd/deno-lambda/tree/master/example-docker-container)
 - Zipped source example,
   [`deno-lambda-example.zip`](https://github.com/hayd/deno-lambda/releases/),
-  see
-  [bundling-code](https://github.com/hayd/deno-lambda/blob/master/README.md#bundling-code)
-  section.
+  see [bundling-code](#bundling-code) section.
 
 _See
 [earlier version of quick start](https://github.com/hayd/deno-lambda/blob/56d8b4e4030c0096f7b5c589ba1194201e2f97dc/QUICK-START.md)
 for a walkthrough of how to bundle yourself._
 
-See the
-[deno_dir-remapping](https://github.com/hayd/deno-lambda/blob/master/README.md#deno_dir-remapping)
-section for how to include the correct DENO_DIR files to avoid any runtime
-compilation.
+See the [deno_dir-remapping](#deno_dir-remapping) section for how to include the
+correct DENO_DIR files to avoid any runtime compilation.
 
 ## Warning
 
