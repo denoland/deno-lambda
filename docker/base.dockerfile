@@ -1,6 +1,6 @@
 FROM public.ecr.aws/lambda/provided:al2
 
-ENV DENO_VERSION=1.31.3
+ENV DENO_VERSION=1.32.5
 
 ENV DENO_DIR=.deno_dir
 ENV DENO_INSTALL_ROOT=/usr/local
