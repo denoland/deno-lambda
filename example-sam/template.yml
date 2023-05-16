@@ -25,3 +25,5 @@ Resources:
       Events:
         ApiEvent:
           Type: HttpApi
+    Metadata:
+      BuildMethod: makefile
