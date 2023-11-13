@@ -4,7 +4,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - name: Build docker image
         working-directory: ./tests
         run: |
@@ -21,7 +21,7 @@ jobs:
   test_example:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: denoland/setup-deno@main
       - name: start a local dynamodb
         run: |
@@ -37,7 +37,7 @@ jobs:
   test_docker:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
     - name: Build Docker Image
       run: |
         docker build -f docker/base.dockerfile -t hayd/deno-lambda .

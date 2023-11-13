@@ -4,7 +4,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - name: Build docker image
         working-directory: ./tests
         run: |
@@ -71,7 +71,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/') && github.repository == 'hayd/deno-lambda'
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
     - name: Get the version
       id: get_version
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}

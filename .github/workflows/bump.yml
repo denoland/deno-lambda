@@ -9,7 +9,7 @@ jobs:
   version-bump:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: denoland/setup-deno@v1
       - name: version
         id: version
@@ -34,7 +34,7 @@ jobs:
       - name: Set commit status with pending
         if: ${{ steps.cpr.outputs.pull-request-number }}
         uses: Sibz/github-status-action@v1
-        with: 
+        with:
           authToken: ${{ secrets.GITHUB_TOKEN }}
           context: 'Basic tests'
           state: 'pending'
@@ -51,7 +51,7 @@ jobs:
       - name: Set commit status with outcome
         if: ${{ steps.cpr.outputs.pull-request-number }}
         uses: Sibz/github-status-action@v1
-        with: 
+        with:
           authToken: ${{ secrets.GITHUB_TOKEN }}
           context: 'Basic tests'
           description: 'close&reopen PR triggers all CI actions'
