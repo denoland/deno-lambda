@@ -24,14 +24,13 @@ function bootstrap(testJson: TestJson) {
   if (!testJson.env.DENO_DIR) {
     testJson.env.DENO_DIR = "";
   }
-  return Deno.run({
-    cmd: [bootstrapScript],
+  return new Deno.Command(bootstrapScript, {
     stdout: "piped",
     // FIXME: uncommenting this no longer works cleanly (since .close is undefined on stderr)
     stderr: "piped", // comment this out to debug
     env: testJson.env,
     cwd: "/var/task",
-  });
+  }).spawn();
 }
 
 const statusOK = enc.encode('{"status":"OK"}\n');
@@ -40,7 +39,6 @@ export async function serveEvents(testJson: TestJson) {
   // start the server prior to running bootstrap.
   const s = serve(`0.0.0.0:${PORT}`);
   const p = bootstrap(testJson);
-
   const events = testJson["events"][Symbol.iterator]();
   const responses = [];
   // iterate through the events until done.
@@ -94,11 +92,8 @@ export async function serveEvents(testJson: TestJson) {
   }
   /// const out = await readAll(p.stdout);
   p.kill("SIGKILL");
-  p.stdout!.close();
-  p.stderr!.close();
   s.close();
-  await p.status();
-  p.close();
+  await p.output();
   return {
     responses: responses,
   };

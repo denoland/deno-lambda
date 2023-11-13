@@ -26,11 +26,10 @@ async function addFiles(
   if (typeof zipOrFiles == "string") {
     const zipFile = zipOrFiles;
     // TODO check it raises on errors?
-    const p = Deno.run({
-      cmd: ["unzip", "-qq", `/src/runtime/${zipFile}`, "-d", toDir],
+    const p = new Deno.Command("unzip", {
+      args: ["-qq", `/src/runtime/${zipFile}`, "-d", toDir],
     });
-    await p.status();
-    p.close();
+    await p.output();
   } else {
     await Deno.mkdir(toDir + "/bin");
     const files = zipOrFiles;

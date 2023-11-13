@@ -76,9 +76,10 @@ export async function runDeno(
   _event: APIGatewayProxyEventV2,
   _context: Context,
 ) {
-  const r = Deno.run({ cmd: ["deno", "--version"], stdout: "piped" });
+  const r = new Deno.Command("deno", { args: ["--version"], stdout: "piped" });
   const out = await r.output();
-  const version = new TextDecoder().decode(out).split("\n")[0].split(" ")[1];
+  const version =
+    new TextDecoder().decode(out.stdout).split("\n")[0].split(" ")[1];
   return { out: version };
 }
 
