@@ -22,7 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: denoland/setup-deno@main
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: "1.32.5"
       - name: start a local dynamodb
         run: |
           mkdir dyno
