@@ -4,7 +4,8 @@ documentation](https://docs.aws.amazon.com/lambda/latest/dg/configuration-images
 (TODO enumerate the aws cli commands to deploy.)
 
 The base image is published on dockerhub at
-[ehsankhfr/deno-lambda](https://hub.docker.com/r/ehsankhfr/deno-lambda), and defined in
+[ehsankhfr/deno-lambda](https://hub.docker.com/r/ehsankhfr/deno-lambda), and
+defined in
 [../docker](https://github.com/ehsankhfr/deno-lambda/blob/master/docker/base.dockerfile).
 
 Example `Dockerfile` below:
@@ -19,8 +20,8 @@ RUN deno cache hello.ts
 CMD ["hello.handler"]
 ```
 
-Note: ehsankhfr/deno-lambda's :version (i.e. 1.26.0 above) coincides with the deno
-version.
+Note: ehsankhfr/deno-lambda's :version (i.e. 1.26.0 above) coincides with the
+deno version.
 
 To build your image:
 

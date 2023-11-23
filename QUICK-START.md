@@ -36,8 +36,8 @@ On the "Outputs" tab copy the `LayerArn`.
 <img width="820" alt="Add layer to function" src="https://user-images.githubusercontent.com/1931852/68455782-0ac8ea80-01b1-11ea-9a1b-0a87f8052c25.png">
 
 5. Upload the latest
-   [deno-lambda-example.zip](https://github.com/ehsankhfr/deno-lambda/releases) as
-   function code.
+   [deno-lambda-example.zip](https://github.com/ehsankhfr/deno-lambda/releases)
+   as function code.
 
 <img width="1300" alt="Upload function code" src="https://user-images.githubusercontent.com/1931852/68455780-0ac8ea80-01b1-11ea-87ee-164abe110c77.png">
 

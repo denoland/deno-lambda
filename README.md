@@ -188,8 +188,8 @@ See
 
 You can execute deno-lambda locally using
 [docker-lambda](https://github.com/lambci/docker-lambda). First, unzip the
-[deno-lambda-layer.zip](https://github.com/ehsankhfr/deno-lambda/releases) layer into
-a directory.
+[deno-lambda-layer.zip](https://github.com/ehsankhfr/deno-lambda/releases) layer
+into a directory.
 
 Now, from the directory of your application:
 
