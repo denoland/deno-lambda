@@ -11,6 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: denoland/setup-deno@v1
+        with:
+          deno-version: "1.32.5"
       - name: version
         id: version
         run: |
@@ -34,7 +36,7 @@ jobs:
       - name: Set commit status with pending
         if: ${{ steps.cpr.outputs.pull-request-number }}
         uses: Sibz/github-status-action@v1
-        with: 
+        with:
           authToken: ${{ secrets.GITHUB_TOKEN }}
           context: 'Basic tests'
           state: 'pending'
@@ -51,7 +53,7 @@ jobs:
       - name: Set commit status with outcome
         if: ${{ steps.cpr.outputs.pull-request-number }}
         uses: Sibz/github-status-action@v1
-        with: 
+        with:
           authToken: ${{ secrets.GITHUB_TOKEN }}
           context: 'Basic tests'
           description: 'close&reopen PR triggers all CI actions'

@@ -1,4 +1,4 @@
-FROM hayd/deno-lambda
+FROM ehsankhfr/deno-lambda
 
 COPY hello.ts .
 RUN deno cache hello.ts

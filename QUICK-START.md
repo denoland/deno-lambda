@@ -1,11 +1,11 @@
 For an even quicker start, deploy the example application
-[deno-hello-world](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno-hello-world)
+[deno-hello-world](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:702899346695:applications~deno-lambda-hello-world)
 sample SAR application.
 
 ## Quick Start in the AWS console
 
 1. Visit the
-   [deno SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno)
+   [deno SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:702899346695:applications~deno-lambda)
    and click the Deploy button:
 
 <img width="1301" alt="Screen Shot 2020-02-17 at 14 42 36" src="https://user-images.githubusercontent.com/1931852/74705321-50da1500-51c8-11ea-8709-afc3d46dde8c.png">
@@ -36,8 +36,8 @@ On the "Outputs" tab copy the `LayerArn`.
 <img width="820" alt="Add layer to function" src="https://user-images.githubusercontent.com/1931852/68455782-0ac8ea80-01b1-11ea-9a1b-0a87f8052c25.png">
 
 5. Upload the latest
-   [deno-lambda-example.zip](https://github.com/hayd/deno-lambda/releases) as
-   function code.
+   [deno-lambda-example.zip](https://github.com/ehsankhfr/deno-lambda/releases)
+   as function code.
 
 <img width="1300" alt="Upload function code" src="https://user-images.githubusercontent.com/1931852/68455780-0ac8ea80-01b1-11ea-87ee-164abe110c77.png">
 
@@ -48,4 +48,4 @@ On the "Outputs" tab copy the `LayerArn`.
 ---
 
 _To "roll your own", without SAR, see the earlier version of this
-[QUICK-START.md](https://github.com/hayd/deno-lambda/blob/56d8b4e4030c0096f7b5c589ba1194201e2f97dc/QUICK-START.md)._
+[QUICK-START.md](https://github.com/ehsankhfr/deno-lambda/blob/56d8b4e4030c0096f7b5c589ba1194201e2f97dc/QUICK-START.md)._

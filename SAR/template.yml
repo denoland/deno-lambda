@@ -21,16 +21,16 @@ Outputs:
 
 Metadata:
   AWS::ServerlessRepo::Application:
-    Name: deno
+    Name: deno-lambda
     Description: |
       Deno runtime for AWS Lambda
-    Author: Andy Hayden
+    Author: Ehsan Khakifirooz
     SpdxLicenseId: MIT
     Labels:
     - deno
     - layer
     - lambda
     - typescript
-    HomePageUrl: https://github.com/hayd/deno-lambda
+    HomePageUrl: https://github.com/ehsankhfr/deno-lambda
     SemanticVersion: DENO_LAMBDA_VERSION
-    SourceCodeUrl: https://github.com/hayd/deno-lambda/releases/tag/DENO_LAMBDA_VERSION
+    SourceCodeUrl: https://github.com/ehsankhfr/deno-lambda/releases/tag/DENO_LAMBDA_VERSION

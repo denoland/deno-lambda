@@ -8,11 +8,11 @@ Resources:
     Type: AWS::Serverless::Application
     Properties:
       Location:
-        ApplicationId: arn:aws:serverlessrepo:us-east-1:390065572566:applications/deno
+        ApplicationId: arn:aws:serverlessrepo:us-east-1:702899346695:applications/deno
         SemanticVersion: DENO_LAMBDA_VERSION
 
   DenoHelloWorldFunction:
-    Type: AWS::Serverless::Function 
+    Type: AWS::Serverless::Function
     Properties:
       CodeUri:
         Bucket: DENO_LAMBDA_BUCKET
@@ -32,16 +32,16 @@ Outputs:
 
 Metadata:
   AWS::ServerlessRepo::Application:
-    Name: deno-hello-world
+    Name: deno-lambda-hello-world
     Description: |
       Deno example function blueprint for AWS Lambda
-    Author: Andy Hayden
+    Author: Ehsan Khakifirooz
     SpdxLicenseId: MIT
     Labels:
     - deno
     - lambda
     - typescript
     - blueprint
-    HomePageUrl: https://github.com/hayd/deno-lambda
+    HomePageUrl: https://github.com/ehsankhfr/deno-lambda
     SemanticVersion: DENO_LAMBDA_VERSION
-    SourceCodeUrl: https://github.com/hayd/deno-lambda/releases/tag/DENO_LAMBDA_VERSION
+    SourceCodeUrl: https://github.com/ehsankhfr/deno-lambda/releases/tag/DENO_LAMBDA_VERSION
