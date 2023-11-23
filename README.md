@@ -10,7 +10,8 @@ _Deploy deno code via
 [serverless](https://github.com/ehsankhfr/deno-lambda/tree/master/example-serverless),
 or bundle it yourself._
 
-![ci status](https://github.com/ehsankhfr/deno-lambda/workflows/Test/badge.svg?branch=master)
+[![Test](https://github.com/ehsankhfr/deno-lambda/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ehsankhfr/deno-lambda/actions/workflows/ci.yml)
+[![Publish](https://github.com/ehsankhfr/deno-lambda/actions/workflows/publish.yml/badge.svg?branch=main)](https://github.com/ehsankhfr/deno-lambda/actions/workflows/publish.yml)
 
 Define a handler function, for example:
 
