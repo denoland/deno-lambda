@@ -244,4 +244,6 @@ This will prefix each log with the level, the request id and the line number:
 
 _Many thanks to
 [Yoshiya Hinosawa's blogpost](https://dev.to/kt3k/write-aws-lambda-function-in-deno-4b20)
-for the initial work on this runtime._
+for the initial work on this runtime, and
+[Andy Hayden](https://github.com/hayd/deno-lambda) for creating the basis for
+this repository._
