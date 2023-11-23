@@ -21,7 +21,7 @@ export async function handler(
 }
 ```
 
-_See [deno-lambda repository](https://github.com/hayd/deno-lambda) for more info
+_See [deno-lambda repository](https://github.com/ehsankhfr/deno-lambda) for more info
 on running deno on AWS Lambda._
 
 ---

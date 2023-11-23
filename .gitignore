@@ -4,3 +4,6 @@ node_modules
 package-lock.json
 *.zip
 example-sam/.aws-sam/*
+./idea
+dyno
+dynamo*

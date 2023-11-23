@@ -3,14 +3,14 @@
 A [deno](https://github.com/denoland/deno/) runtime for AWS Lambda.
 
 _Deploy deno code via
-[SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno)
+[SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:702899346695:applications~deno-lambda)
 (see
-[quick start](https://github.com/hayd/deno-lambda/blob/master/QUICK-START.md)),
-[SAM](https://github.com/hayd/deno-lambda/tree/master/example-sam),
-[serverless](https://github.com/hayd/deno-lambda/tree/master/example-serverless),
+[quick start](https://github.com/ehsankhfr/deno-lambda/blob/master/QUICK-START.md)),
+[SAM](https://github.com/ehsankhfr/deno-lambda/tree/master/example-sam),
+[serverless](https://github.com/ehsankhfr/deno-lambda/tree/master/example-serverless),
 or bundle it yourself._
 
-![ci status](https://github.com/hayd/deno-lambda/workflows/Test/badge.svg?branch=master)
+![ci status](https://github.com/ehsankhfr/deno-lambda/workflows/Test/badge.svg?branch=master)
 
 Define a handler function, for example:
 
@@ -77,24 +77,24 @@ of an `APIGatewayProxyEventV2`._
 ## How to deploy
 
 The recommended way to deploy is to use the
-[SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno)
+[SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:702899346695:applications~deno-lambda)
 and either reference the outputted `LayerArn` as a layer in your function.
 
 - :bowtie:
-  [SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno)
+  [SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:702899346695:applications~deno-lambda)
   (see
-  [quick start](https://github.com/hayd/deno-lambda/blob/master/QUICK-START.md))
-- [SAM example](https://github.com/hayd/deno-lambda/tree/master/example-sam)
-- [Serverless example](https://github.com/hayd/deno-lambda/tree/master/example-serverless)
+  [quick start](https://github.com/ehsankhfr/deno-lambda/blob/master/QUICK-START.md))
+- [SAM example](https://github.com/ehsankhfr/deno-lambda/tree/master/example-sam)
+- [Serverless example](https://github.com/ehsankhfr/deno-lambda/tree/master/example-serverless)
   (feat. [Dynamodb](https://github.com/chiefbiiko/dynamodb/))
-- [AWS CDK example](https://github.com/hayd/deno-lambda/tree/master/example-aws-cdk)
-- [Docker container example](https://github.com/hayd/deno-lambda/tree/master/example-docker-container)
+- [AWS CDK example](https://github.com/ehsankhfr/deno-lambda/tree/master/example-aws-cdk)
+- [Docker container example](https://github.com/ehsankhfr/deno-lambda/tree/master/example-docker-container)
 - Zipped source example,
-  [`deno-lambda-example.zip`](https://github.com/hayd/deno-lambda/releases/),
+  [`deno-lambda-example.zip`](https://github.com/ehsankhfr/deno-lambda/releases/),
   see [bundling-code](#bundling-code) section.
 
 _See
-[earlier version of quick start](https://github.com/hayd/deno-lambda/blob/56d8b4e4030c0096f7b5c589ba1194201e2f97dc/QUICK-START.md)
+[earlier version of quick start](https://github.com/ehsankhfr/deno-lambda/blob/56d8b4e4030c0096f7b5c589ba1194201e2f97dc/QUICK-START.md)
 for a walkthrough of how to bundle yourself._
 
 See the [deno_dir-remapping](#deno_dir-remapping) section for how to include the
@@ -182,13 +182,13 @@ custom:
 ```
 
 See
-[`example-serverless/serverless.yml`](https://github.com/hayd/deno-lambda/blob/master/example-serverless/serverless.yml).
+[`example-serverless/serverless.yml`](https://github.com/ehsankhfr/deno-lambda/blob/master/example-serverless/serverless.yml).
 
 ## Testing locally with docker-lambda
 
 You can execute deno-lambda locally using
 [docker-lambda](https://github.com/lambci/docker-lambda). First, unzip the
-[deno-lambda-layer.zip](https://github.com/hayd/deno-lambda/releases) layer into
+[deno-lambda-layer.zip](https://github.com/ehsankhfr/deno-lambda/releases) layer into
 a directory.
 
 Now, from the directory of your application:

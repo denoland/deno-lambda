@@ -10,7 +10,7 @@ export class ExampleAwsCdkStack extends cdk.Stack {
     const denoRuntime = new CfnApplication(this, "DenoRuntime", {
       location: {
         applicationId:
-          "arn:aws:serverlessrepo:us-east-1:390065572566:applications/deno",
+          "arn:aws:serverlessrepo:us-east-1:702899346695:applications/deno",
         semanticVersion: "1.32.5",
       },
     });

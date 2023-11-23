@@ -142,7 +142,7 @@ try {
 
 const log = console.log;
 // In order to support multiline cloudwatch logs we replace \n with \r.
-// see https://github.com/hayd/deno-lambda/issues/40
+// see https://github.com/ehsankhfr/deno-lambda/issues/40
 // we also prefix log events with DENO_PREFIX
 
 let requestId;

@@ -21,12 +21,12 @@ export async function handler(
 }
 ```
 
-See the [README on github](https://github.com/hayd/deno-lambda) for more
+See the [README on GitHub](https://github.com/ehsankhfr/deno-lambda) for more
 information.
 
 ---
 
-Made with ❤️ by Andy Hayden. Available on the
+AWS SAR is available on:
 [AWS Serverless Application Repository](https://aws.amazon.com/serverless).
 
 ## License
