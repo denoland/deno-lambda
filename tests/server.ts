@@ -24,6 +24,7 @@ function bootstrap(testJson: TestJson) {
   if (!testJson.env.DENO_DIR) {
     testJson.env.DENO_DIR = "";
   }
+  // deno-lint-ignore no-deprecated-deno-api
   return Deno.run({
     cmd: [bootstrapScript],
     stdout: "piped",

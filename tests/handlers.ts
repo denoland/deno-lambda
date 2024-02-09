@@ -76,6 +76,7 @@ export async function runDeno(
   _event: APIGatewayProxyEventV2,
   _context: Context,
 ) {
+  // deno-lint-ignore no-deprecated-deno-api
   const r = Deno.run({ cmd: ["deno", "--version"], stdout: "piped" });
   const out = await r.output();
   const version = new TextDecoder().decode(out).split("\n")[0].split(" ")[1];

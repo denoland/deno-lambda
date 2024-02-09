@@ -1,5 +1,0 @@
-.deno_dir/gen/file
-node_modules
-package-lock.json
-template.yml
-README.md

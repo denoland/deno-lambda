@@ -26,6 +26,7 @@ async function addFiles(
   if (typeof zipOrFiles == "string") {
     const zipFile = zipOrFiles;
     // TODO check it raises on errors?
+    // deno-lint-ignore no-deprecated-deno-api
     const p = Deno.run({
       cmd: ["unzip", "-qq", `/src/runtime/${zipFile}`, "-d", toDir],
     });
