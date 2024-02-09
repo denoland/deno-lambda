@@ -3,14 +3,11 @@
 A [deno](https://github.com/denoland/deno/) runtime for AWS Lambda.
 
 _Deploy deno code via
-[SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno)
-(see
-[quick start](https://github.com/hayd/deno-lambda/blob/master/QUICK-START.md)),
-[SAM](https://github.com/hayd/deno-lambda/tree/master/example-sam),
-[serverless](https://github.com/hayd/deno-lambda/tree/master/example-serverless),
-or bundle it yourself._
+[docker container](https://github.com/denoland/deno-lambda/tree/master/example-docker-container)
+or
+[bundle it yourself](https://github.com/denoland/deno-lambda/blob/master/QUICK-START.md)._
 
-![ci status](https://github.com/hayd/deno-lambda/workflows/Test/badge.svg?branch=master)
+![ci status](https://github.com/denoland/deno-lambda/workflows/Test/badge.svg?branch=master)
 
 Define a handler function, for example:
 
@@ -76,26 +73,8 @@ of an `APIGatewayProxyEventV2`._
 
 ## How to deploy
 
-The recommended way to deploy is to use the
-[SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno)
-and either reference the outputted `LayerArn` as a layer in your function.
-
-- :bowtie:
-  [SAR application](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:390065572566:applications~deno)
-  (see
-  [quick start](https://github.com/hayd/deno-lambda/blob/master/QUICK-START.md))
-- [SAM example](https://github.com/hayd/deno-lambda/tree/master/example-sam)
-- [Serverless example](https://github.com/hayd/deno-lambda/tree/master/example-serverless)
-  (feat. [Dynamodb](https://github.com/chiefbiiko/dynamodb/))
-- [AWS CDK example](https://github.com/hayd/deno-lambda/tree/master/example-aws-cdk)
-- [Docker container example](https://github.com/hayd/deno-lambda/tree/master/example-docker-container)
-- Zipped source example,
-  [`deno-lambda-example.zip`](https://github.com/hayd/deno-lambda/releases/),
-  see [bundling-code](#bundling-code) section.
-
-_See
-[earlier version of quick start](https://github.com/hayd/deno-lambda/blob/56d8b4e4030c0096f7b5c589ba1194201e2f97dc/QUICK-START.md)
-for a walkthrough of how to bundle yourself._
+- [Docker container example](https://github.com/denoland/deno-lambda/tree/master/example-docker-container)
+- [Bundle yourself](https://github.com/denoland/deno-lambda/blob/master/QUICK-START.md)
 
 See the [deno_dir-remapping](#deno_dir-remapping) section for how to include the
 correct DENO_DIR files to avoid any runtime compilation.
@@ -167,29 +146,12 @@ cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT
 zip lambda.zip -x '.deno_dir/gen/file/*' -r .deno_dir hello.ts  # other source files
 ```
 
-### Serverless pre-deploy remapping
-
-In a `serverless.yml` this can be automatically prior to each upload using the
-[`serverless-scriptable-plugin`](https://www.npmjs.com/package/serverless-scriptable-plugin):
-
-```
-plugins:
-  - serverless-scriptable-plugin
-
-custom:
-  scriptHooks:
-    before:package:createDeploymentArtifacts: DENO_DIR=.deno_dir deno cache api/candidate.ts && cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT
-```
-
-See
-[`example-serverless/serverless.yml`](https://github.com/hayd/deno-lambda/blob/master/example-serverless/serverless.yml).
-
 ## Testing locally with docker-lambda
 
 You can execute deno-lambda locally using
 [docker-lambda](https://github.com/lambci/docker-lambda). First, unzip the
-[deno-lambda-layer.zip](https://github.com/hayd/deno-lambda/releases) layer into
-a directory.
+[deno-lambda-layer.zip](https://github.com/denoland/deno-lambda/releases) layer
+into a directory.
 
 Now, from the directory of your application:
 

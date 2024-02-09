@@ -84,5 +84,6 @@ Deno.writeTextFileSync(
   `export type {\n  ${types.join(",\n  ")}\n } from \"./types.d.ts\";\n`,
 );
 
+// deno-lint-ignore no-deprecated-deno-api
 await Deno.run({ cmd: ["deno", "fmt", "runtime/mod.ts", "runtime/types.d.ts"] })
   .status();
