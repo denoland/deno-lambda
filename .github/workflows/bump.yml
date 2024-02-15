@@ -1,59 +1,51 @@
 name: Version Bump
 
+permissions:
+  contents: write
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "42 19 * * *"
+    inputs:
+      releaseKind:
+        description: 'Deno version bump'
+        default: 'patch'
+        type: choice
+        options:
+        - patch
+        - minor
+        - major
+        required: true
 
 jobs:
-  version-bump:
+  build:
+    name: version bump
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: denoland/setup-deno@v1
-      - name: version
-        id: version
+      - name: Configure git
         run: |
-          echo "::set-output name=existing::$(grep DENO_VERSION= docker/base.dockerfile | cut -d= -f2)"
-          echo "::set-output name=latest::$(deno eval 'console.log(Deno.version.deno)')"
-      - name: Update dependencies
-        run: |
-          echo existing=${{ steps.version.outputs.existing }}
-          echo latest=${{ steps.version.outputs.latest }}
-          sed -i "s/${{ steps.version.outputs.existing }}/${{ steps.version.outputs.latest }}/" tests/*.json tests/Dockerfile docker/base.dockerfile
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        id: cpr
+          git config --global core.symlinks true
+          git config --global fetch.parallel 32
+
+      - name: Clone repository
+        uses: actions/checkout@v3
+
+      - name: Install deno
+        uses: denoland/setup-deno@v1
         with:
-          commit-message: "Bump deno version to ${{ steps.version.outputs.latest }}"
-          title: "Bump deno version to ${{ steps.version.outputs.latest }}"
-          body:
-          branch: version-bump
-          author: GitHub <noreply@github.com>
-          delete-branch: true
-      - name: Set commit status with pending
-        if: ${{ steps.cpr.outputs.pull-request-number }}
-        uses: Sibz/github-status-action@v1
-        with: 
-          authToken: ${{ secrets.GITHUB_TOKEN }}
-          context: 'Basic tests'
-          state: 'pending'
-          sha: ${{ steps.cpr.outputs.pull-request-head-sha }}
-      - name: Basic tests
-        if: ${{ steps.cpr.outputs.pull-request-number }}
-        id: test
-        continue-on-error: true
-        working-directory: ./tests
+          # use a recent version instead of the latest version in case
+          # the latest version ever has issues that breaks publishing
+          deno-version: v1.30.0
+
+      - name: Run version bump
         run: |
-          ! grep -r ${{ steps.version.outputs.existing }} --exclude-dir=node_modules --exclude=yarn.lock .
-          docker build -f Dockerfile -t test-runner ..
-          docker run test-runner
-      - name: Set commit status with outcome
-        if: ${{ steps.cpr.outputs.pull-request-number }}
-        uses: Sibz/github-status-action@v1
-        with: 
-          authToken: ${{ secrets.GITHUB_TOKEN }}
-          context: 'Basic tests'
-          description: 'close&reopen PR triggers all CI actions'
-          state: ${{ steps.test.outcome }}
-          sha: ${{ steps.cpr.outputs.pull-request-head-sha }}
+          deno run --allow-read=. --allow-write=. https://deno.land/x/bmp@v0.1.0/cli.ts --${{github.event.inputs.releaseKind}}
+
+      - name: Create PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.DENOBOT_PAT }}
+          GH_WORKFLOW_ACTOR: ${{ github.actor }}
+        run: |
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git config user.name "${{ github.actor }}"
+          ./tools/release/create_pr.ts
