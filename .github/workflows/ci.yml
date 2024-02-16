@@ -23,6 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Echo GitHub reference
+      run: echo "GitHub reference is ${{ github.ref }}"
     - name: Build Docker Image
       run: |
         docker build -f docker/base.dockerfile -t denoland/deno-lambda .
