@@ -19,7 +19,7 @@ jobs:
           docker cp extract:/src/runtime/deno-lambda-example.zip deno-lambda-example.zip
 
   test_docker:
-    if: ${{ ! startsWith(github.ref, 'refs/heads/release') }}
+    if: ${{ ! contains(github.ref, 'release_') }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
