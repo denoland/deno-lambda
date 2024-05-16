@@ -1,4 +1,4 @@
-version: 1.41.3
+version: 1.43.3
 commit: '%.%.%'
 files:
   docker/base.dockerfile: ENV DENO_VERSION=%.%.%
