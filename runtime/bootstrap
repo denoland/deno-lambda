@@ -226,26 +226,8 @@ while (true) {
 }
 " > /tmp/runtime.js
 
-# We copy DENO_DIR into a writable directory (/tmp/deno_dir)
-# and expand DENO_DIR/LAMBDA_TASK_ROOT to match the new location ($LAMBDA_TASK_ROOT).
-
-mkdir -p /tmp/deno_dir/gen/file$LAMBDA_TASK_ROOT
-# We cp first from the deno-lambda-layer.
-cp -R /opt/.deno_dir/gen/. /tmp/deno_dir/gen &> /dev/null \
- && cp -R /opt/.deno_dir/deps/. /tmp/deno_dir/deps &> /dev/null \
- || true
-# Then we overwrite with from the DENO_DIR in the function code.
-cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/gen/. /tmp/deno_dir/gen &> /dev/null \
- && cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/deps/. /tmp/deno_dir/deps &> /dev/null \
- && cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/gen/. /tmp/deno_dir/gen &> /dev/null \
- && cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/npm/. /tmp/deno_dir/npm &> /dev/null \
- && cp -R $LAMBDA_TASK_ROOT/$DENO_DIR/LAMBDA_TASK_ROOT/. /tmp/deno_dir/gen/file$LAMBDA_TASK_ROOT &> /dev/null \
- || expr match "$HANDLER_FILE" ".*bundle.js" &> /dev/null \
- || echo "warn: unable to import '$DENO_DIR/' as DENO_DIR"
-# Note: We skip printing this warning if the filename endswith bundle.js.
-
 # FIXME remove DENO_FLAGS=DENO_FLAGS environment variable setting (used in testing only).
-DENO_DIR=/tmp/deno_dir DENO_PREFIX=$DENO_PREFIX DENO_FLAGS=$DENO_FLAGS NO_COLOR=true DENO_NO_UPDATE_CHECK=true deno run $DENO_FLAGS /tmp/runtime.js \
+DENO_DIR=$LAMBDA_TASK_ROOT/$DENO_DIR DENO_PREFIX=$DENO_PREFIX DENO_FLAGS=$DENO_FLAGS NO_COLOR=true DENO_NO_UPDATE_CHECK=true deno run $DENO_FLAGS /tmp/runtime.js \
  || investigate;
 
 # For debugging purposes of the bootstrap script itself it's useful to change the extension to /tmp/runtime.ts
