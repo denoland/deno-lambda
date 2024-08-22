@@ -7,11 +7,11 @@
   "expected": [
     {
       "status": "ok",
-      "content": "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html;charset=utf8\"},\"body\":\"Welcome to deno 1.46.0 🦕\"}"
+      "content": "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html;charset=utf8\"},\"body\":\"Welcome to deno 1.46.1 🦕\"}"
     },
     {
       "status": "ok",
-      "content": "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html;charset=utf8\"},\"body\":\"Welcome to deno 1.46.0 🦕\"}"
+      "content": "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html;charset=utf8\"},\"body\":\"Welcome to deno 1.46.1 🦕\"}"
     }
   ],
   "files": ["hello.bundle.js"],
