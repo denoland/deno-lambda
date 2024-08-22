@@ -1,4 +1,4 @@
-FROM denoland/deno-lambda:1.45.5
+FROM denoland/deno-lambda:1.46.0
 
 COPY hello.ts .
 RUN deno cache hello.ts
