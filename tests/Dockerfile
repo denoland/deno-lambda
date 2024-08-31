@@ -10,7 +10,7 @@ ENV DENO_VERSION=2.0.0-rc.0
 
 RUN yum makecache \
  && yum install unzip zip -y \
- && curl -fsSL https://github.com/denoland/deno/releases/download/v${DENO_VERSION}/deno-x86_64-unknown-linux-gnu.zip \
+ && curl -fsSL https://dl.deno.land/release/v${DENO_VERSION}/deno-x86_64-unknown-linux-gnu.zip \
          --output deno.zip \
  && unzip deno.zip \
  && rm deno.zip \
