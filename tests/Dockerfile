@@ -3,14 +3,14 @@
 FROM amazonlinux:2.0.20200722.0
 # This is _close to_ the Amazon Linux 2 AMI/image used by AWS Lambda.
 
-ENV DENO_VERSION=1.46.2
+ENV DENO_VERSION=2.0.0-rc.0
 
 # Note: We make the deno binary private (via _) so that it's not available in the PATH.
 # In order for `deno` to be made available in the PATH it must be inserted into ./bin/
 
 RUN yum makecache \
  && yum install unzip zip -y \
- && curl -fsSL https://github.com/denoland/deno/releases/download/v${DENO_VERSION}/deno-x86_64-unknown-linux-gnu.zip \
+ && curl -fsSL https://dl.deno.land/release/v${DENO_VERSION}/deno-x86_64-unknown-linux-gnu.zip \
          --output deno.zip \
  && unzip deno.zip \
  && rm deno.zip \
