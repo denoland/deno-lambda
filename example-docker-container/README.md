@@ -11,7 +11,7 @@ defined in
 Example `Dockerfile` below:
 
 ```Dockerfile
-FROM denoland/deno-lambda:2.0.0-rc.0
+FROM denoland/deno-lambda:2.0.1
 
 COPY hello.ts .
 RUN deno cache hello.ts
