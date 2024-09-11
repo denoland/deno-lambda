@@ -8,4 +8,4 @@
 > [Deno documentation](https://docs.deno.com/runtime/tutorials/aws_lambda/).
 
 To view the original content of this repository,
-[click here](https://github.com/denoland/deno-lambda/blob/40a7384fe77952f31f2d5f4180556422d58651b9/README.md).
+[click here](https://github.com/denoland/deno-lambda/blob/40a7384fe77952f31f2d5f4180556422d58651b9).
